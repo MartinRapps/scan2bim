@@ -81,9 +81,10 @@ Die vollständige Projektimplementierung (Pipeline-Orchestrierung `run_pipeline.
 `src/`, `tools/`, Containerdefinitionen, SuGaR-Fork als Submodul) ist im
 GitHub-Repository abgelegt:
 
-- **URL:** <https://github.com/MartinRapps/scan2bim-pipeline>
-- **Branch:** `pa-fertigstellung`
-- **Commit-Stand dieser Abgabe:** `d73b858` (27.08.2026) — Stand der abgegebenen Quellen
+- **URL (Abgabe-Repository):** <https://github.com/MartinRapps/scan2bim-abgabe>
+- **Branch:** `main`
+- **Commit-Stand dieser Abgabe:** `f6079b7` (initialer Abgabe-Commit, Fassung 08.09.2026)
+- **Hinweis:** Dieses Repository ist inhaltlich in sich geschlossen; das frühere Entwicklungs-Repository (`scan2bim-pipeline`) bleibt separat als private Arbeits-Historie bestehen.
 - **SuGaR-Fork-Commit:** `a0fc37b` (siehe `05_SuGaR-Fork/`, dort auch das
   vollständige Diff zur Vanilla-Basis `48bbfdd`)
 
