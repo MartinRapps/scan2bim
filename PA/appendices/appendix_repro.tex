@@ -1,0 +1,65 @@
+\section{Anhang: Reproduzierbarkeit}
+
+Die Ausführung erfolgt mit Docker Compose; Domänenkette, Warp-Stufe und
+Quality-Gates sind in Kapitel~\ref{sec:implementierung} beschrieben und gelten
+für Inline-Vollauf, Matrixrunner und Replays mit frischem COLMAP gleichermaßen.
+Dieser Anhang fasst nur die konstanten Parameter der PA-Versuche zusammen:
+
+\begin{itemize}
+  \item Prompt \texttt{pipe};
+  \item 4096 SIFT-Merkmale, Sequential-Overlap 15, Guided Matching aus;
+  \item STS 7000 Gesamtiterationen, Stage-2-Fenster 5000;
+  \item Objektmasken für die Bildmetriken und feste Eval-Listen
+        (210 Training / 30 Evaluation);
+  \item 200.000 Mesh-Vertices, 5.000.000 Oberflächenstichproben und Seed 42;
+  \item objektmaskierte PSNR-, SSIM- und LPIPS-Auswertung;
+  \item Produktionsroute \texttt{original\_gs}; SuGaR-Coarse nur als
+        explizite Vergleichsroute;
+  \item Centerline-Modus \texttt{single}, Voxelgröße 0,1, B-Spline Grad 10,
+        Eckensegmentierung deaktiviert.
+\end{itemize}
+
+\subsection*{Ausführungsmodi}
+
+\begin{description}
+  \item[Interaktiver Vollauf] führt durch Video-, COLMAP-, STS- und
+    Meshroutenparameter sowie den optionalen GCP-Breakpoint.
+  \item[Autopilot] fragt nach seiner Aktivierung nur Lauf-Preset und
+    Objekt-Prompt ab, setzt die übrigen dokumentierten Standardwerte und
+    überspringt den manuellen GCP-Breakpoint, falls keine Matrix bereitsteht.
+  \item[Matrixrunner] führt deklarierte Varianten seriell aus, archiviert sie
+    und bereinigt danach den Live-Workspace.
+\end{description}
+
+\subsection*{SuGaR-Fork: Versionierung}
+
+Der mask-aware Fork liegt unter \path{third_party/SuGaR}. Parent-Gitlink,
+Fork-Checkout und Docker-Parameter \texttt{SUGAR\_REF} verweisen konsistent
+auf \texttt{a0fc37b} im Zweig \path{project/masked-sugar}; genau dieser
+Stand wurde in allen archivierten Läufen verwendet. Die Änderungsschichten im
+Einzelnen:
+
+\begin{itemize}
+  \item \texttt{48bbfdd}: maskenbewusster Semantic-Mask-Provider sowie
+    maskierte RGB-/DSSIM-Supervision in den Coarse-Trainern und im Refinement,
+    maskierte DN-Consistency, konfigurierbare Maskenstufen/Dilatationen,
+    semantisch begrenztes UV-Baking sowie erweiterte Trainings- und
+    Meshparameter;
+  \item \texttt{8f4f7a2}: Poisson-Schutz bei zu kleinen Punktwolken oder
+    ungültigen Normalen und Korrektur der Coarse-Iterationsprüfung für
+    STS-Startzähler;
+  \item \texttt{e254000}: Schalter für Gaussian-Rasterizer-Tiefe als
+    kontrollierte Surface-Sampling-Diagnose;
+  \item \texttt{ecda7ef}: zusätzliche Surface-Sampling-Optionen und explizite
+    Background-Mesh-Steuerung;
+  \item \texttt{eca4ea1}/\texttt{a0fc37b}: normalisierte feste Eval-Splits,
+    Schutz gegen nicht gematchte Kameras und explizite Prüfung der
+    Eval-Kameranamen.
+\end{itemize}
+
+Den vollständigen Diff ab \texttt{48bbfdd} hält die Datei
+\path{sugar_fork_diff_48bbfdd_a0fc37b.diff} im digitalen Anlagenband fest.
+Repository-Commit, Submodul-Commit, Docker-Image-Version und Hardware werden
+zusätzlich im finalen Laufmanifest dokumentiert; das Laufmanifest ist Teil des
+\path{ABGABE_Index.md} im Anlagenband und verweist auf das Projektrepository
+(\parencite{scan2bimImplementation}).

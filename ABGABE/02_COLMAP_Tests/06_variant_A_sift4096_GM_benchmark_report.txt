@@ -1,0 +1,43 @@
+﻿COLMAP Video-Benchmark
+======================
+Video: C:\colmap_project\01_video\Alurohr_THWS.mp4
+Originalaufloesung: 1920x1080
+Erstellt: 2026-08-03 19:58:37
+
+Hinweis: Dieser Benchmark erzeugt Sparse-Punktwolken. Der installierte
+COLMAP-Build ist CPU-only; Dense-PatchMatch benoetigt CUDA/NVIDIA-GPU.
+
+Ergebnisse
+----------
+Fall             FPS Hoehe Bilder Regist. Reg.-%   Paare   Punkte  Pkt/Reg  Tracks  Obs/Bild  Reproj  Zeit[s] Qualitaet Status
+---------------- --- ----- ------ ------- ------- ------- -------- -------- -------- -------- ------- -------- -------- ------
+fps05_h720         5   720    240     240   100.0    1665   142208      593     7.44   4408.7   0.790   1677.5   100.00 OK    
+
+Empfehlungen
+------------
+Hoechste heuristische Qualitaet: fps05_h720 (Score 100.00, 1677.5s)
+Schnellster erfolgreicher Lauf: fps05_h720 (1677.5s, Score 100.00)
+Bester Zeit/Qualitaets-Kompromiss: fps05_h720 (1677.5s, Score 100.00; mindestens 90% des besten Scores)
+
+Metrik-Erklaerung
+-----------------
+Reg.-%: Anteil der Eingabebilder, die in einem gemeinsamen Modell registriert wurden; hoeher ist besser.
+Punkte: Anzahl triangulierter 3D-Punkte; absolute Anzahl ist bei mehr Bildern naturgemaess hoeher.
+Pkt/Reg: 3D-Punkte pro registriertem Bild; proxy fuer Punktdichte und Vergleichbarkeit.
+Tracks: mittlere Anzahl Beobachtungen je 3D-Punkt; hoeher bedeutet meist stabilere Geometrie.
+Obs/Bild: mittlere 2D-Beobachtungen pro Bild; hoeher bedeutet mehr verwertbare Verknuepfungen.
+Reproj: mittlerer Reprojektionsfehler in Pixeln; niedriger ist besser. Der Score nutzt zusaetzlich Reproj/Bilddiagonale.
+Zeit: komplette Laufzeit inklusive Frame-Extraktion, SIFT, Matching, Mapping und PLY-Export.
+Overlap: fester Frame-Overlap; bei hoeherem FPS entspricht derselbe Wert einem kuerzeren Zeitfenster.
+Qualitaet: heuristischer relativer Proxy, keine absolute Genauigkeitsmessung.
+Metrikbasis: https://colmap.github.io/faq.html
+
+Wichtige Einschraenkung
+-----------------------
+Ohne Ground-Truth-Scan oder bekannte Kameraposen kann die metrische Genauigkeit nicht direkt bestimmt werden.
+Fuer eine belastbare Genauigkeit waeren Cloud-to-Cloud-Distanz (Chamfer/Hausdorff), Precision/Recall/F-score,
+Vollstaendigkeit und absolute Genauigkeit nach einer registrierten Referenzmessung geeigneter als der Proxy.
+Die COLMAP-Punktwolke besitzt ausserdem nur eine relative Skala, solange keine Referenz oder Massstab vorliegt.
+
+Fehler
+------

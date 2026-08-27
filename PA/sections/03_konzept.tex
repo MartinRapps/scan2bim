@@ -1,0 +1,205 @@
+\section{Konzept und Pipeline-Idee}
+
+\subsection{Leitprinzip und Datenfluss}
+
+Die Pipeline trennt die Bilddomäne, die semantische Domäne und die
+Geometriedomäne. Der Ablauf ist:
+
+\begin{enumerate}
+  \item Aus dem Rohvideo werden Arbeitsframes erzeugt.
+  \item SAM~3.1 propagiert den Objektprompt und speichert hierarchische
+        Masken, das heißt die unveränderte \texttt{default}-Maske sowie die
+        erodierten Ableitungen \texttt{middle} und \texttt{small}.
+  \item COLMAP schätzt aus unmaskierten Frames ein ursprüngliches
+        Kameramodell und eine sparse Punktwolke.
+  \item Bei verzeichnungsbehafteten Kameramodellen wird eine ideale PINHOLE-
+        Szene erzeugt; die Masken werden mit derselben Abbildung in diese
+        Szene gewarpt, das heißt per Pixel-Neuzuordnung (Nearest Neighbor)
+        auf die undistortierten Bilder übertragen, damit die binäre
+        Maskensemantik erhalten bleibt.
+  \item STS trainiert die objektspezifische Gaussian-Repräsentation.
+  \item Die Hochopazitätskopie der Objekt-Gaussians wird über die gewählte
+        Meshroute in ein Coarse-Mesh überführt.
+  \item DGtal extrahiert daraus eine lokale Centerline; anschließend können
+        B-Spline und GeoJSON erzeugt werden.
+\end{enumerate}
+
+Abbildung~\ref{fig:pa-pipeline-flow} fasst diesen Datenfluss zusammen: Die
+beiden aktuellen Meshrouten A und \texttt{sugar\_coarse} werden explizit
+getrennt dargestellt. Der CloudCompare-Schritt ist als optionaler
+Georeferenzierungszweig enthalten. Für den Testdatensatz existieren
+CloudCompare-Transformationsmatrizen; sie wurden jedoch ohne unabhängige
+Vermessungsreferenz erzeugt und sind daher kein validierter
+PA-Genauigkeitsnachweis. Die Referenzierung ist zunächst rein lokal, das
+heißt ohne Verschiebung in ein globales Koordinatensystem definiert. Das ist
+methodisch unproblematisch: Eine UTM-Referenz lässt sich nachträglich
+herstellen, indem die lokalen Koordinaten um einen frei wählbaren
+UTM-Ankerpunkt versetzt und die vorhandene 4x4-Transformationsmatrix
+anschließend unverändert angewandt wird; Rotation, Maßstab und Form der
+Geometrie bleiben dabei erhalten. Was damit nicht entsteht, ist eine
+unabhängige Genauigkeitsaussage zur absoluten Lage -- diese bleibt der
+Bachelorarbeit vorbehalten.
+
+\begin{figure}[H]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+      node distance=1.35cm and 2.0cm,
+      box/.style={rectangle, draw=blue!65, fill=blue!5, very thick,
+            minimum width=4.4cm, minimum height=0.9cm, align=center,
+            rounded corners, text width=4.2cm},
+      route/.style={rectangle, draw=purple!70, fill=purple!7, very thick,
+            minimum width=4.6cm, minimum height=0.9cm, align=center,
+            rounded corners, text width=4.4cm},
+      decision/.style={diamond, draw=red!65, fill=red!7, very thick,
+            text width=2.7cm, align=center, aspect=2.0},
+      arrow/.style={-{Stealth[scale=1.05]}, thick},
+      container/.style={rectangle, draw, dashed, rounded corners, inner sep=0.35cm}
+]
+      \node[box] (input) {Rohvideo\\Arbeitsframes\\Prompt \texttt{pipe}};
+      \node[box, below=of input] (sam) {\textbf{Container A: SAM 3.1}\\Temporale Segmentierung\\default / middle / small};
+      \node[box, below=of sam] (colmap) {\textbf{Container B: COLMAP}\\Unmaskiertes SfM\\Originales Kameramodell und Sparse-Modell};
+      \node[box, below left=1.55cm and 2.4cm of colmap] (ideal) {Idealbilddomäne\\\texttt{image\_undistorter}\\Maskenwarp mit identischer Abbildung};
+      \node[box, below right=1.55cm and 2.4cm of colmap] (gcp) {Originalmodell\\GCP-/CloudCompare-Zweig\\Matrix optional und in dieser Arbeit nicht validiert};
+      \node[box, below=1.55cm of ideal] (sts) {\textbf{Container C: STS}\\Objekt-ID-Zuordnung\\Objektbezogene Gaussian-Repräsentation};
+      \node[decision, below=1.55cm of sts] (meshroute) {Meshroute};
+      \node[route, below left=1.55cm and 1.7cm of meshroute] (original) {\textbf{Route A: Original-GS}\\Surface-Sampling, Poisson, Decimation\\kein SuGaR-Coarse/Refinement/UV};
+      \node[route, below right=1.55cm and 1.7cm of meshroute] (coarse) {\textbf{SuGaR-Coarse-Vergleich}\\mask-aware Fork, Coarse, optional Refinement/UV};
+      \coordinate (mergebus) at ($(original.south)!0.5!(coarse.south) + (0,-0.55)$);
+      \node[box, below=0.95cm of mergebus] (post) {\textbf{Container E: DGtal/GDAL}\\lokales Mesh $\rightarrow$ Centerline\\B-Spline $\rightarrow$ lokale CSV/GeoJSON};
+      \node[box, below right=1.8cm and 1.8cm of post] (geo) {Optionaler Exportzweig\\4x4-Transformation + Anchor\\UTM/GIS nur mit validierter Matrix};
+
+      \begin{pgfonlayer}{background}
+            \node[container, fill=blue!8, draw=blue!75, fit=(input) (sam)] {};
+            \node[container, fill=orange!8, draw=orange!75, fit=(colmap)] {};
+            \node[container, fill=cyan!8, draw=cyan!75, fit=(ideal) (sts)] {};
+            \node[container, fill=red!8, draw=red!75, fit=(gcp)] {};
+            \node[container, fill=purple!8, draw=purple!75, fit=(meshroute) (original) (coarse)] {};
+            \node[container, fill=teal!8, draw=teal!75, fit=(post) (geo)] {};
+      \end{pgfonlayer}
+
+      \draw[arrow] (input) -- (sam);
+      \draw[arrow] (sam) -- (colmap);
+      \draw[arrow] (colmap) -- (ideal);
+      \draw[arrow] (colmap) -- (gcp);
+      \draw[arrow] (ideal) -- (sts);
+      \draw[arrow] (sts) -- (meshroute);
+      \draw[arrow] (meshroute) -- node[above left] {A} (original);
+      \draw[arrow] (meshroute) -- node[above right] {Vergleich} (coarse);
+      \draw[arrow] (original) |- (post);
+      \draw[arrow] (coarse) |- (post);
+      \draw[arrow] (post) -- (geo);
+      \draw[arrow] (gcp) |- (geo);
+\end{tikzpicture}%
+}
+\caption{Aktualisierter Datenfluss der fünf Container mit Original-GS-
+Produktionsroute, SuGaR-Coarse-Vergleich und optionalem
+Georeferenzierungszweig.}
+\label{fig:pa-pipeline-flow}
+\end{figure}
+
+Das Konzept verfolgt zwei gleichrangige Ziele. Erstens soll ein geführter
+Einzellauf von der Eingabe bis zum Endprodukt ohne manuelle Neuverkabelung der
+Werkzeuge möglich sein. Zweitens müssen teure Stufen kontrolliert wiederholt
+und als Matrix ausgeführt werden können. Jeder Übergang besitzt deshalb
+prüfbare Eingaben und persistente Ausgaben.
+
+\subsection{Domänentrennung als zentraler Datenvertrag}
+
+Die methodische Kernidee ist die Domänentrennung: GCP und SfM bleiben im
+Originalraum, STS und SuGaR arbeiten in einer idealisierten, konsistenten
+Bilddomäne. Dadurch wird vermieden, dass eine Bildverzeichnung nur in den
+Kameraparametern, nicht aber in den Masken berücksichtigt wird.
+
+Bei \texttt{SIMPLE\_RADIAL} und \texttt{OPENCV} wird zuerst ein originales
+COLMAP-Modell auf den Rohframes geschätzt. Der COLMAP-Undistorter
+(\texttt{image\_undistorter}) erzeugt daraus eine separate ideale Szene, indem
+er die verzerrten Rohbilder mithilfe des bereits geschätzten Kameramodells
+resampled: Jedes Pixel wird an seine radiale Position im verzeichnungsfreien
+PINHOLE-Bild neu abgetastet; es wird dabei kein neues Kameramodell geschätzt,
+sondern das gelöste Modell angewandt. Die Masken werden mit der identischen
+Kameramodellabbildung transformiert. Bei \texttt{PINHOLE} wird dieselbe
+Schnittstelle als Pass-through verwendet. Somit sehen STS, Renderer,
+SuGaR-Route und Metrikberechnung stets zueinander passende Pixel- und
+Kamerakoordinaten.
+
+Diese vollständige Domänenkette ist im automatisierten Matrixpfad, im
+restaurierten Smoke-/Replaypfad und im normalen Inline-Vollauf nachgewiesen.
+Nach COLMAP rufen Inline-Vollauf und Matrixrunner denselben Maskenwarp mit
+identischer Abbildungsvorschrift auf, prüfen die Abdeckung der gewarpten
+Masken und übergibt \mbox{\path{data/03_masks_ideal}} an STS und SuGaR. Im
+Replay-Dispatcher gilt dasselbe für alle Läufe, die COLMAP selbst ausführen
+(Start ab \texttt{gcp}, \texttt{sam3} oder \texttt{colmap}); nur Replays ab
+\texttt{sts}, \texttt{sugar} oder \texttt{postprocess} setzen einen von
+vornherein passenden idealen Maskensatz voraus, weil dort keine frische
+COLMAP-Szene erzeugt wird.
+
+\subsection{Semantische Objektkette}
+
+Die SAM-Masken erfüllen mehrere getrennte Funktionen. Sie definieren die
+Objektzuordnung in STS, begrenzen die Auswahl der Ziel-Gaussians und stellen die
+Objektregion für die Bildmetriken bereit. In der SuGaR-Coarse-Vergleichsroute
+begrenzen sie zusätzlich die photometrische Supervision. Diese mehrfache
+Nutzung darf nicht mit einer geometrischen Garantie verwechselt werden: Eine
+binäre Maske beschreibt Bildpixel, während ein räumlich ausgedehnter Gaussian
+und das aus Samples rekonstruierte Mesh zusätzliche Unsicherheiten besitzen.
+
+\subsection{Produktions- und Vergleichsroute}
+
+Für die Projektarbeit wird Variante A als Produktionsroute verwendet. SuGaR-
+Coarse und Refinement bleiben als Vergleichsroute erhalten, sind aber nicht
+notwendig, um die direkte STS-Gaussian-Geometrie zu vermessen. Das Mesh ist ein
+abgeleitetes Produkt; die Gaussian-Wolke bleibt die primäre geometrische
+Hypothese.
+
+Route A führt keinen neuen SuGaR-Splat ein. Sie extrahiert die Oberfläche aus
+der vorbereiteten Original-STS-Gaussian-Wolke. Die Vergleichsroute optimiert
+dieselbe Ausgangslage zunächst mit dem lokalen maskenbewussten SuGaR-Fork und
+kann anschließend ein gebundenes Refinement und UV-Baking ausführen. Die
+Trennung ermöglicht, Änderungen der Gaussian-Geometrie von Änderungen der
+eigentlichen Mesh-Extraktion zu unterscheiden.
+
+\subsection{Ausführungsformen}
+
+Der interaktive Vollauf führt durch Eingabeauswahl und Parameterentscheidungen.
+Vor der Parametrisierung fragt er nach einem Lauf-Preset für die
+Arbeitsvideoauflösung (720p, qHD oder low) und weist dabei die gemessenen
+Gesamtlaufzeiten der Produktionskonfiguration aus (Route A, 5 FPS,
+\texttt{OPENCV}: rund 40 Minuten bei 720p, 34 Minuten bei qHD und 24 Minuten
+bei low, jeweils inklusive SAM~3.1-, COLMAP-, Render- und Archivierungsanteil);
+das Preset dient der bewussten Wahl zwischen Bildauflösung und Rechenaufwand.
+Der Autopilot fragt nach seiner Aktivierung nur noch das Lauf-Preset und den
+Objekt-Prompt ab, übernimmt für alle übrigen Entscheidungen validierte
+Defaults und überspringt den manuellen
+CloudCompare-Breakpoint, wenn keine echte Transformationsmatrix bereitsteht.
+Das Preset legt auch die SAM3-Verarbeitungsbreite fest (720p$\to$1280,
+qHD$\to$960, low$\to$640 Pixel) und damit die Frame-Auflösung der
+Segmentierung. Neben dem Vollprofil existiert das Diagnoseprofil
+\texttt{colmap-stop}: Es dient der SfM-Prüfung (Registrierung, Punktanzahl,
+Reprojektionsfehler) ohne die teuren Trainingsstufen und warpt die Rohmasken
+vor dem Stopp, sodass der Zwischenstand mit einem Replay ab \texttt{sts}
+fortsetzbar bleibt.
+Der Matrixrunner führt deklarierte Kombinationen dateibasiert
+(stdin-unabhängig) nacheinander aus, das heißt er liest die Konfiguration aus
+der TSV-Datei und berührt dabei nicht den Standardinput, den nachgelagerte
+Unterprozesse für eigene Zwecke konsumieren könnten. Er archiviert jeden Lauf
+und setzt den Live-Arbeitsbereich zurück. Diese Modi nutzen dieselben
+fachlichen Pipelinekomponenten, erfüllen aber verschiedene Aufgaben der
+Benutzerführung und Reproduzierbarkeit.
+
+Die Projektarbeit untersucht die CLI-zentrierte Ausführung. Eine vorhandene
+Web-UI und ein tatsächliches Serverdeployment bleiben außerhalb des Scopes.
+Die Containerisierung und die nichtinteraktive Matrix zeigen eine für einen
+späteren Serverbetrieb geeignete Architektur, aber noch keinen validierten
+Produktiv-Rollout.
+
+\subsection{Lokaler Endpunkt und vorbereitete Georeferenzierung}
+
+Die Georeferenzierung ist als nachgelagerter Datenvertrag vorgesehen. Die
+Centerline wird zunächst lokal erzeugt. Erst eine validierte Transformation aus
+GCP-Picking und ein separater Anchor überführen sie in ein UTM-System. Fehlen
+sowohl die Transformationsdatei (\texttt{matrix.txt}) als auch der
+Ankerpunkt (\texttt{anchor.txt}), wendet die Pipeline automatisch eine reine
+Translation auf einen festen Ersatzanker an und kennzeichnet die Ausgaben mit
+dem Suffix \texttt{\_fallback\_georeferenced}. Dieser Fallback dient nur der
+technischen Pipelineprüfung und nicht als Genauigkeitsnachweis.

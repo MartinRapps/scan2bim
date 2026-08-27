@@ -1,0 +1,219 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,left=2.8cm,right=2.3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{pdflscape}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,shapes.geometric}
+\let\tikzpathcommand\path
+\renewcommand{\path}[1]{\nolinkurl{#1}}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=authoryear,sorting=nyt]{biblatex}
+
+\newcommand{\thwsAuthor}{Martin Rapps}
+\newcommand{\thwsMatriculation}{6323014}
+\newcommand{\thwsDegree}{B. Eng. Geovisualisierung}
+\newcommand{\thwsFirstExaminer}{Dr. Markus Müller}
+\newcommand{\thwsSecondExaminer}{Andreas Rupp}
+\newcommand{\thwsSubmissionDate}{08.09.2026}
+
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Anlage -- Dokumentation der KI-Nutzung}
+\fancyhead[R]{Scan-to-BIM-Pipeline}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+
+\begin{document}
+\pagenumbering{Roman}
+\thispagestyle{empty}
+\begin{center}
+	{\large Technische Hochschule Würzburg-Schweinfurt\\
+	Fakultät Kunststofftechnik und Vermessung\par}
+	\vfill
+	{\LARGE\bfseries Anlage zur Projektarbeit\par}
+	\vspace{1.0cm}
+	{\Large\bfseries Dokumentation der KI-Nutzung\par}
+	\vspace{0.6cm}
+	{\large Scan-to-BIM-Pipeline -- KI-gestützte 3D-Rekonstruktion eines linearen Objekts\par}
+	\vfill
+	\begin{tabular}{@{}ll@{}}
+		Vorgelegt von: & \thwsAuthor\\
+		Matrikelnummer: & \thwsMatriculation\\
+		Studiengang: & \thwsDegree\\
+		Erstprüfer/in: & \thwsFirstExaminer\\
+		Zweitprüfer/in: & \thwsSecondExaminer\\
+		Abgabetermin: & \thwsSubmissionDate
+	\end{tabular}
+	\vfill
+	Würzburg, den \thwsSubmissionDate
+\end{center}
+\clearpage
+
+\section*{Hinweis zur Dokumentationsform}
+Auf Grund des Umfangs und der agentischen Arbeitsweise (selbstständige Änderungen über mehrere Dateien, iterative Überarbeitungen) wird die KI-Nutzung nach Bereichen beschrieben und jeweils durch beispielhafte Prompts veranschaulicht. Eine vollständige Auflistung aller Einzel-Prompts ist bei diesem Arbeitsmodus nicht sinnvoll und wurde so mit dem Prüfer abgestimmt.
+
+Die Verantwortung für fachliche Richtigkeit, Eigenständigkeit und kritische Prüfung aller Inhalte liegt beim Verfasser. KI-Ausgaben wurden nicht als wissenschaftliche Quellen zitiert.
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Projektangaben}
+
+\begin{tabular}{@{}ll@{}}
+Projekt: & Scan-to-BIM-Pipeline -- KI-gestützte 3D-Rekonstruktion eines linearen Objekts \\
+Verfasser: & \thwsAuthor\ (\thwsMatriculation) \\
+Zeitraum der KI-Nutzung: & Juni -- August 2026 \\
+Abgabe: & \thwsSubmissionDate \\
+\end{tabular}
+
+\section{Eingesetzte Werkzeuge}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{3.8cm}p{4.2cm}X}
+\toprule
+Werkzeug & Version / Anbieter & Einsatzbereich\\
+\midrule
+\texttt{opencode} (CLI-Agent) & aktuelle Version, verschiedene LLMs je nach Aufgabe & Code-Erstellung, Refactoring, Pipeline-Debugging, Versuchsplanung, Text- und Grafikarbeit\\
+VS Code & aktuelle Version, integrierte KI-Unterstützung & Code-Editierung, Inline-Vorschläge, LaTeX-Bearbeitung\\
+\bottomrule
+\end{tabularx}
+\caption{Übersicht der eingesetzten KI-Werkzeuge.}
+\end{table}
+
+Die Modellwahl innerhalb von \texttt{opencode} erfolgte je nach Aufgabenkomplexität und Kosten -- für einfache Korrekturen schlanke Modelle, für konzeptionelle oder fachliche Fragen leistungsfähigere Modelle.
+
+\textbf{Beispielhafte Modelle:} Hauptsächlich genutzt wurden GPT-5.6 Luna (max), Gemini 3.5 Flash (max), Gemini 3.7 Flash (max), Kimi K3 (max), GLM 5.3 Flash (max) und GPT-5.6 Sol (max).
+
+Alle KI-Ausgaben wurden manuell geprüft, verstanden und verantwortet.
+
+\section{Code-Erstellung / Verbesserung / Refactoring}
+
+\textbf{Worum es ging:} Aufbau und Pflege der Docker-basierten Pipeline (SAM-3.1-Segmentierung, COLMAP, STS, SuGaR-Fork, Centerline-Extraktion), insbesondere die Anpassung der Maskenlogik (Dilatation/Erosion für genau ein Zielobjekt), Fehlerbehandlung in Matrixläufen und die maskenbewusste Erweiterung des SuGaR-Forks.
+
+\textbf{Beispielhafte Prompts:}
+\begin{itemize}
+  \item \enquote{Die SAM-Masken sollen als Hierarchie vorliegen: \texttt{default} unverändert, \texttt{middle} einmal mit einem $5\times5$-Fenster erodiert, \texttt{small} zweifach erodiert, ohne zusätzliche Dilatation. Stelle zusammen mit der promptbasierten Auswahl sicher, dass automatisch genau ein Zielobjekt übrig bleibt. Zeige nur die geänderte Funktion und erkläre die Parameter.}
+  \item \enquote{Der Matrixrunner führt von meiner TSV-Konfiguration nur die erste Variante aus und beendet sich danach. Finde die Ursache und schlage eine Korrektur vor, die alle geplanten Läufe nacheinander ausführt.}
+  \item \enquote{Im SuGaR-Fork soll der Verlust nur innerhalb der Objektmaske gewertet werden. Implementiere einen maskierten Loss mit Normierung über die Maskenpixel und Schutz vor Division durch null.}
+\end{itemize}
+
+\textbf{Prüfung:} Jeder Vorschlag wurde im lokalen Docker-Setup ausgeführt und gegen Manifeste/Logs geprüft; unverstandene Änderungen wurden nicht übernommen.
+
+\section{Allgemeine Überlegungen zum Vorgehen (Sparringspartner)}
+
+\textbf{Worum es ging:} Struktur der Arbeit, Versuchsplanung (Matrixdesign Kameramodell $\times$ FPS $\times$ Auflösung), Bewertung von Varianten (Route A vs.\ SuGaR-Coarse, Tiefenrouten), Interpretation von Metriken.
+
+\textbf{Beispielhafte Prompts:}
+\begin{itemize}
+  \item \enquote{Ich habe die Kameramodelle \texttt{PINHOLE} und \texttt{OPENCV} getestet, beide liefern ähnliche Metriken. Erkläre fachlich, welche Argumente für welchen Standard sprechen und wo die Grenzen dieser Aussage ohne unabhängige Kalibrierung liegen.}
+  \item \enquote{Hilf mir, die Matrixläufe so zu planen, dass ich Kameramodell, FPS und Auflösung getrennt auswerten kann, ohne die Meshroute zu vermischen.}
+\end{itemize}
+
+\textbf{Prüfung:} Vorschläge wurden mit dem Betreuer und dem Zielrahmen abgeglichen; fachliche Entscheidungen (z.\,B.\ Produktionsstandard) blieben eigene Arbeit.
+
+\section{Schreiben und Überarbeiten von Texten in der Projektarbeit}
+
+\textbf{Worum es ging:} Gliederung, Formulierung, Kürzung und LaTeX-Feinschliff (Tabellen, Abbildungen, Literatur, Overfull-Boxen).
+
+\textbf{Beispielhafte Prompts:}
+\begin{itemize}
+  \item \enquote{Dieser Absatz über die Domänentrennung ist zu lang. Gib mir ein Beispiel, wie ich ihn straffen kann, ohne die Kernbegriffe COLMAP, Maskenwarp und ideale Domäne zu verlieren.}
+  \item \enquote{Formuliere diesen Satz wissenschaftlicher und ohne Füllwörter: ,Das flexiblere Modell ist nicht grundsätzlich genauer, weil ...' -- gib zwei Alternativen.}
+  \item \enquote{Die Tabelle \texttt{tab:bildablagen} ist zu breit. Formatiere die Tabelle neu, ohne Inhalt zu verlieren.}
+\end{itemize}
+
+\textbf{Prüfung:} Alle Textvorschläge wurden satzweise gelesen, fachlich geprüft und in eigenen Worten überarbeitet; Zitate und Zahlen wurden gegen Manifeste und Tabellen verifiziert.
+
+\section{Fehleranalyse und Auswertung}
+
+\textbf{Worum es ging:} Diagnose fehlgeschlagener Läufe (leere Masken, SUGAR-Importfehler, COLMAP-Registrierung), Einordnung von Screenshots und Zwischenständen.
+
+\textbf{Beispielhafter Prompt:}
+\begin{itemize}
+  \item \enquote{Hier ein Log-Auszug mit leeren Eval-Masken. Welche Prüfung fehlt, und wo würdest du ein Quality-Gate einbauen? Erkläre den Vorschlag, bevor du Code änderst.}
+\end{itemize}
+
+\textbf{Prüfung:} Ursachen wurden im Code und in den Logs nachvollzogen; Korrekturen wurden erst nach manuellem Test übernommen.
+
+\section{Grafiken und Auswertung}
+
+\textbf{Worum es ging:} Erstellung der Panels (z.\,B.\ \texttt{pa\_panel\_sugar\_iteration}), Metrikplots (STS vs.\ SuGaR, Delta, Laufzeit) und deren konsistente Beschriftung.
+
+\textbf{Beispielhafte Prompts:}
+\begin{itemize}
+  \item \enquote{Das Panel hat 9200er-Labels aus den historischen Dateinamen, soll aber konsistent 9001 zeigen. Schreibe ein Skript, das die Kacheln neu zusammensetzt und nur 9001 ausgibt.}
+  \item \enquote{Lies aus den archivierten \texttt{sts\_masked.json}-Dateien die objektmaskierten Werte PSNR, SSIM und LPIPS mit einem neuen Skript aus und erzeuge daraus eine übersichtliche Grafik je Kameramodell.}
+  \item \enquote{Prüfe alle Metrikgrafiken auf konsistente Farb- und Symbolkodierung und korrigiere sie über alle Grafiken hinweg: \texttt{OPENCV} immer orange, \texttt{SIMPLE\_RADIAL} immer blau, \texttt{PINHOLE} immer grau; je Auflösung ein eigener Formtyp (720p, QHD, low). Die Kodierung muss in jeder Grafik derselben Logik folgen.}
+\end{itemize}
+
+\textbf{Prüfung:} Generierte Grafiken wurden visuell und gegen die Quelldaten (JSON/CSVs) geprüft.
+
+\section{Überprüfung der Abgabe mit einer Prüfer-Persona}
+
+\textbf{Worum es ging:} Strukturierte Endabnahme des Anlagenpakets aus der
+Sicht einer fiktiven Prüfer-Persona (Geovisualisierung/Geoinformatik,
+Computer-Vision-Grundlagen, keine Segmentierungserfahrung, keine Vorkenntnis
+der Arbeit). Ziel: Formales, inhaltliche Widersprüche und nicht auffindbare
+Nachweise finden, bevor die Arbeit abgegeben wird -- absichtlich in kleinen
+Schritten statt einer einzelnen Sammelanfrage.
+
+\textbf{Beispielhafte Prompts:}
+\begin{itemize}
+  \item \enquote{Bevor du die Arbeit liest: Lege eine Datei persona.md an --
+        fiktiver Prüfer (Geovisualisierung, CV-Grundlagen, keine
+        Vorkenntnisse), Prüfmaterial, Regeln gegen Vorwissen (Erwartung vor
+        der Lektüre, Fachbegriffe nur zählen, wenn sie eingeführt wurden) und
+        ein Phasenplan von der Ordnerstruktur bis zum Fazit.}
+  \item \enquote{Prüfe zuerst nur die Ordnerstruktur des Abgabepakets: Was
+        erwarte ich pro Ebene als Prüfer? Notiere Abweichungen als
+        nummerierte Notizzettel, ohne bereits Inhalte zu lesen.}
+  \item \enquote{Lies jetzt nur die Dateien auf der Wurzelebene (Index,
+        KI-Anlage) und danach Formalien und Inhaltsverzeichnis der Arbeit;
+        prüfe Prüfsummen per Stichprobe und vermerke offene Punkte.}
+  \item \enquote{Gehe Kapitel für Kapitel vor: erst die Erwartung an das
+        Kapitel notieren, dann nur den aktuellen Abschnitt lesen; neue
+        Fachbegriffe und Zusagen mitführen und Zahlen gegen die beigelegten
+        CSVs prüfen -- Kurzurteil je Unterkapitel.}
+  \item \enquote{Fasse zum Schluss zusammen: Notizzettel nach Schweregrad,
+        offene Zusagen, Literaturprüfung und eine priorisierte Fixliste zum
+        Abarbeiten.}
+\end{itemize}
+
+\textbf{Prüfung:} Jeder Fund wurde gegen Code, Archive und die beiliegenden
+CSV-Dateien verifiziert, bevor er behoben wurde (u.\,a. Zahlenkorrektur der
+Centerline-Punkte auf den beiliegenden Golden-Run-Lauf, ein
+Zeichenkodierungsfehler im PDF und eine fehlende Container-Beschriftung im
+Ablaufdiagramm). Der vollständige Bericht liegt dem Anlagenband bei.
+
+\section{Eigenständigkeit}
+
+Alle Inhalte wurden fachlich geprüft, vollständig verstanden und können selbstständig vertreten werden. KI-Ausgaben wurden nicht als wissenschaftliche Quellen zitiert. Die Verantwortung für fachliche Richtigkeit und Eigenständigkeit liegt beim Verfasser.
+
+\vfill
+\noindent Würzburg, den \rule{4cm}{0.4pt}\hfill
+\rule{6cm}{0.4pt}\\
+\hfill Unterschrift des/der Studierenden
+
+\end{document}

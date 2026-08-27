@@ -1,0 +1,7 @@
+services:
+  # Opt-in development overlay. Use together with docker-compose.yml whenever
+  # the local, pinned SuGaR fork in third_party/SuGaR should replace the
+  # immutable source bundled into the image.
+  sugar-meshing:
+    volumes:
+      - ./third_party/SuGaR:/opt/sugar

@@ -1,0 +1,736 @@
+{
+  "evaluation_scope": "object_masked_only",
+  "mask_level": "default",
+  "evaluation_frame_count": 30,
+  "evaluation_frames": [
+    "00000.jpg",
+    "00008.jpg",
+    "00016.jpg",
+    "00024.jpg",
+    "00032.jpg",
+    "00040.jpg",
+    "00048.jpg",
+    "00056.jpg",
+    "00064.jpg",
+    "00072.jpg",
+    "00080.jpg",
+    "00088.jpg",
+    "00096.jpg",
+    "00104.jpg",
+    "00112.jpg",
+    "00120.jpg",
+    "00128.jpg",
+    "00136.jpg",
+    "00144.jpg",
+    "00154.jpg",
+    "00162.jpg",
+    "00170.jpg",
+    "00178.jpg",
+    "00186.jpg",
+    "00194.jpg",
+    "00202.jpg",
+    "00210.jpg",
+    "00218.jpg",
+    "00226.jpg",
+    "00234.jpg"
+  ],
+  "psnr_masked": 27.52295762466512,
+  "ssim_masked": 0.8651279290517171,
+  "lpips_masked": 0.1274280404051145,
+  "valid_pixel_count_total": 1108494,
+  "lpips_padding": 16,
+  "lpips_error": null,
+  "duration_seconds": 3.6785072260536253,
+  "per_frame": [
+    {
+      "frame": "00000.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00000.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00000.png",
+      "psnr_masked": 23.44938890338164,
+      "mse_masked": 0.004519195295870304,
+      "ssim_masked": 0.8049413561820984,
+      "lpips_masked": 0.22162432968616486,
+      "valid_pixel_count": 30957,
+      "mask_area_fraction": 0.05976497116678475,
+      "mask_bbox": [
+        0,
+        188,
+        736,
+        264
+      ],
+      "crop_bbox": [
+        0,
+        172,
+        752,
+        280
+      ]
+    },
+    {
+      "frame": "00008.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00001.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00001.png",
+      "psnr_masked": 24.940726014826605,
+      "mse_masked": 0.003205733373761177,
+      "ssim_masked": 0.8766279816627502,
+      "lpips_masked": 0.16632643342018127,
+      "valid_pixel_count": 35274,
+      "mask_area_fraction": 0.06809928587838503,
+      "mask_bbox": [
+        0,
+        218,
+        961,
+        283
+      ],
+      "crop_bbox": [
+        0,
+        202,
+        961,
+        299
+      ]
+    },
+    {
+      "frame": "00016.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00002.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00002.png",
+      "psnr_masked": 24.37729066875797,
+      "mse_masked": 0.003649815684184432,
+      "ssim_masked": 0.8790994882583618,
+      "lpips_masked": 0.15386152267456055,
+      "valid_pixel_count": 35401,
+      "mask_area_fraction": 0.0683444695634379,
+      "mask_bbox": [
+        0,
+        229,
+        961,
+        295
+      ],
+      "crop_bbox": [
+        0,
+        213,
+        961,
+        311
+      ]
+    },
+    {
+      "frame": "00024.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00003.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00003.png",
+      "psnr_masked": 24.653669994134077,
+      "mse_masked": 0.0034247825387865305,
+      "ssim_masked": 0.8809175491333008,
+      "lpips_masked": 0.18365037441253662,
+      "valid_pixel_count": 34001,
+      "mask_area_fraction": 0.06564165728726454,
+      "mask_bbox": [
+        0,
+        251,
+        961,
+        312
+      ],
+      "crop_bbox": [
+        0,
+        235,
+        961,
+        328
+      ]
+    },
+    {
+      "frame": "00032.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00004.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00004.png",
+      "psnr_masked": 26.22680517119997,
+      "mse_masked": 0.0023840726353228092,
+      "ssim_masked": 0.9238007068634033,
+      "lpips_masked": 0.08286625891923904,
+      "valid_pixel_count": 32936,
+      "mask_area_fraction": 0.06358558937717552,
+      "mask_bbox": [
+        0,
+        251,
+        961,
+        350
+      ],
+      "crop_bbox": [
+        0,
+        235,
+        961,
+        366
+      ]
+    },
+    {
+      "frame": "00040.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00005.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00005.png",
+      "psnr_masked": 26.821845199879633,
+      "mse_masked": 0.0020788132678717375,
+      "ssim_masked": 0.9039134383201599,
+      "lpips_masked": 0.03579246252775192,
+      "valid_pixel_count": 34295,
+      "mask_area_fraction": 0.06620924786526095,
+      "mask_bbox": [
+        0,
+        0,
+        961,
+        366
+      ],
+      "crop_bbox": [
+        0,
+        0,
+        961,
+        382
+      ]
+    },
+    {
+      "frame": "00048.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00006.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00006.png",
+      "psnr_masked": 27.284518858543475,
+      "mse_masked": 0.0018687366973608732,
+      "ssim_masked": 0.8685408234596252,
+      "lpips_masked": 0.042896002531051636,
+      "valid_pixel_count": 29569,
+      "mask_area_fraction": 0.0570853258529786,
+      "mask_bbox": [
+        355,
+        0,
+        961,
+        426
+      ],
+      "crop_bbox": [
+        339,
+        0,
+        961,
+        442
+      ]
+    },
+    {
+      "frame": "00056.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00007.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00007.png",
+      "psnr_masked": 28.266871345818608,
+      "mse_masked": 0.0014904343988746405,
+      "ssim_masked": 0.9186294674873352,
+      "lpips_masked": 0.09962785243988037,
+      "valid_pixel_count": 21806,
+      "mask_area_fraction": 0.04209823178159732,
+      "mask_bbox": [
+        380,
+        0,
+        435,
+        539
+      ],
+      "crop_bbox": [
+        364,
+        0,
+        451,
+        539
+      ]
+    },
+    {
+      "frame": "00064.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00008.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00008.png",
+      "psnr_masked": 30.93937236685701,
+      "mse_masked": 0.0008054948411881924,
+      "ssim_masked": 0.9117180705070496,
+      "lpips_masked": 0.11749980598688126,
+      "valid_pixel_count": 18713,
+      "mask_area_fraction": 0.03612694723145147,
+      "mask_bbox": [
+        352,
+        120,
+        410,
+        539
+      ],
+      "crop_bbox": [
+        336,
+        104,
+        426,
+        539
+      ]
+    },
+    {
+      "frame": "00072.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00009.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00009.png",
+      "psnr_masked": 30.831022235483513,
+      "mse_masked": 0.0008258435409516096,
+      "ssim_masked": 0.9146345257759094,
+      "lpips_masked": 0.10446134209632874,
+      "valid_pixel_count": 5808,
+      "mask_area_fraction": 0.011212809785724904,
+      "mask_bbox": [
+        357,
+        402,
+        409,
+        539
+      ],
+      "crop_bbox": [
+        341,
+        386,
+        425,
+        539
+      ]
+    },
+    {
+      "frame": "00080.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00010.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00010.png",
+      "psnr_masked": 24.949110863713884,
+      "mse_masked": 0.0031995500903576612,
+      "ssim_masked": 0.7263807058334351,
+      "lpips_masked": 0.06414356827735901,
+      "valid_pixel_count": 29526,
+      "mask_area_fraction": 0.05700231090449613,
+      "mask_bbox": [
+        310,
+        57,
+        555,
+        539
+      ],
+      "crop_bbox": [
+        294,
+        41,
+        571,
+        539
+      ]
+    },
+    {
+      "frame": "00088.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00011.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00011.png",
+      "psnr_masked": 31.714430641668763,
+      "mse_masked": 0.0006738402298651636,
+      "ssim_masked": 0.9129418134689331,
+      "lpips_masked": 0.1169898509979248,
+      "valid_pixel_count": 36721,
+      "mask_area_fraction": 0.07089283542382992,
+      "mask_bbox": [
+        474,
+        0,
+        606,
+        539
+      ],
+      "crop_bbox": [
+        458,
+        0,
+        622,
+        539
+      ]
+    },
+    {
+      "frame": "00096.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00012.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00012.png",
+      "psnr_masked": 31.575500544979704,
+      "mse_masked": 0.0006957447621971369,
+      "ssim_masked": 0.9408507347106934,
+      "lpips_masked": 0.031169284135103226,
+      "valid_pixel_count": 47101,
+      "mask_area_fraction": 0.0909322578714581,
+      "mask_bbox": [
+        449,
+        0,
+        961,
+        539
+      ],
+      "crop_bbox": [
+        433,
+        0,
+        961,
+        539
+      ]
+    },
+    {
+      "frame": "00104.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00013.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00013.png",
+      "psnr_masked": 29.95065545782984,
+      "mse_masked": 0.001011426793411374,
+      "ssim_masked": 0.9107041954994202,
+      "lpips_masked": 0.04223334416747093,
+      "valid_pixel_count": 33815,
+      "mask_area_fraction": 0.06528256937057293,
+      "mask_bbox": [
+        402,
+        0,
+        961,
+        368
+      ],
+      "crop_bbox": [
+        386,
+        0,
+        961,
+        384
+      ]
+    },
+    {
+      "frame": "00112.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00014.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00014.png",
+      "psnr_masked": 29.409889767525556,
+      "mse_masked": 0.001145542017184198,
+      "ssim_masked": 0.9152486324310303,
+      "lpips_masked": 0.12733030319213867,
+      "valid_pixel_count": 40754,
+      "mask_area_fraction": 0.07867886535940646,
+      "mask_bbox": [
+        85,
+        378,
+        961,
+        451
+      ],
+      "crop_bbox": [
+        69,
+        362,
+        961,
+        467
+      ]
+    },
+    {
+      "frame": "00120.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00015.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00015.png",
+      "psnr_masked": 30.37081209843763,
+      "mse_masked": 0.0009181608911603689,
+      "ssim_masked": 0.9112641215324402,
+      "lpips_masked": 0.1952512264251709,
+      "valid_pixel_count": 41446,
+      "mask_area_fraction": 0.080014826855915,
+      "mask_bbox": [
+        0,
+        302,
+        961,
+        348
+      ],
+      "crop_bbox": [
+        0,
+        286,
+        961,
+        364
+      ]
+    },
+    {
+      "frame": "00128.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00016.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00016.png",
+      "psnr_masked": 30.11354847437902,
+      "mse_masked": 0.0009741933317855,
+      "ssim_masked": 0.9089913368225098,
+      "lpips_masked": 0.16495904326438904,
+      "valid_pixel_count": 41819,
+      "mask_area_fraction": 0.08073493326949548,
+      "mask_bbox": [
+        0,
+        282,
+        961,
+        340
+      ],
+      "crop_bbox": [
+        0,
+        266,
+        961,
+        356
+      ]
+    },
+    {
+      "frame": "00136.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00017.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00017.png",
+      "psnr_masked": 24.815165212288825,
+      "mse_masked": 0.0032997685484588146,
+      "ssim_masked": 0.8472634553909302,
+      "lpips_masked": 0.21756814420223236,
+      "valid_pixel_count": 46543,
+      "mask_area_fraction": 0.0898549941213833,
+      "mask_bbox": [
+        0,
+        297,
+        961,
+        348
+      ],
+      "crop_bbox": [
+        0,
+        281,
+        961,
+        364
+      ]
+    },
+    {
+      "frame": "00144.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00018.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00018.png",
+      "psnr_masked": 13.26430358228869,
+      "mse_masked": 0.047159548848867416,
+      "ssim_masked": 0.285569965839386,
+      "lpips_masked": 0.3142193555831909,
+      "valid_pixel_count": 48717,
+      "mask_area_fraction": 0.09405207547024107,
+      "mask_bbox": [
+        0,
+        309,
+        840,
+        391
+      ],
+      "crop_bbox": [
+        0,
+        293,
+        856,
+        407
+      ]
+    },
+    {
+      "frame": "00154.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00019.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00019.png",
+      "psnr_masked": 20.507070417490937,
+      "mse_masked": 0.008898011408746243,
+      "ssim_masked": 0.7964709401130676,
+      "lpips_masked": 0.05274193733930588,
+      "valid_pixel_count": 52135,
+      "mask_area_fraction": 0.1006507985844986,
+      "mask_bbox": [
+        0,
+        157,
+        953,
+        412
+      ],
+      "crop_bbox": [
+        0,
+        141,
+        961,
+        428
+      ]
+    },
+    {
+      "frame": "00162.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00020.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00020.png",
+      "psnr_masked": 23.718061866239402,
+      "mse_masked": 0.004248091019690037,
+      "ssim_masked": 0.8628491163253784,
+      "lpips_masked": 0.08335909247398376,
+      "valid_pixel_count": 50514,
+      "mask_area_fraction": 0.0975213280847293,
+      "mask_bbox": [
+        0,
+        233,
+        961,
+        419
+      ],
+      "crop_bbox": [
+        0,
+        217,
+        961,
+        435
+      ]
+    },
+    {
+      "frame": "00170.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00021.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00021.png",
+      "psnr_masked": 26.44558197391438,
+      "mse_masked": 0.002266949275508523,
+      "ssim_masked": 0.8973962664604187,
+      "lpips_masked": 0.09635046124458313,
+      "valid_pixel_count": 45652,
+      "mask_area_fraction": 0.08813484716561869,
+      "mask_bbox": [
+        0,
+        198,
+        961,
+        355
+      ],
+      "crop_bbox": [
+        0,
+        182,
+        961,
+        371
+      ]
+    },
+    {
+      "frame": "00178.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00022.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00022.png",
+      "psnr_masked": 31.509597802536288,
+      "mse_masked": 0.0007063829689286649,
+      "ssim_masked": 0.9423778057098389,
+      "lpips_masked": 0.06702739000320435,
+      "valid_pixel_count": 46232,
+      "mask_area_fraction": 0.08925458368003336,
+      "mask_bbox": [
+        0,
+        192,
+        961,
+        377
+      ],
+      "crop_bbox": [
+        0,
+        176,
+        961,
+        393
+      ]
+    },
+    {
+      "frame": "00186.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00023.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00023.png",
+      "psnr_masked": 32.0216543609705,
+      "mse_masked": 0.0006278191576711833,
+      "ssim_masked": 0.9429433941841125,
+      "lpips_masked": 0.08188782632350922,
+      "valid_pixel_count": 32752,
+      "mask_area_fraction": 0.06323036262087846,
+      "mask_bbox": [
+        196,
+        307,
+        961,
+        411
+      ],
+      "crop_bbox": [
+        180,
+        291,
+        961,
+        427
+      ]
+    },
+    {
+      "frame": "00194.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00024.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00024.png",
+      "psnr_masked": 27.177103664927774,
+      "mse_masked": 0.001915532979182899,
+      "ssim_masked": 0.8477548956871033,
+      "lpips_masked": 0.1940331906080246,
+      "valid_pixel_count": 21324,
+      "mask_area_fraction": 0.041167692126514784,
+      "mask_bbox": [
+        357,
+        490,
+        961,
+        539
+      ],
+      "crop_bbox": [
+        341,
+        474,
+        961,
+        539
+      ]
+    },
+    {
+      "frame": "00202.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00025.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00025.png",
+      "psnr_masked": 29.65771768644286,
+      "mse_masked": 0.001082002418115735,
+      "ssim_masked": 0.8903425931930542,
+      "lpips_masked": 0.08766704052686691,
+      "valid_pixel_count": 33784,
+      "mask_area_fraction": 0.06522272138445767,
+      "mask_bbox": [
+        381,
+        0,
+        532,
+        539
+      ],
+      "crop_bbox": [
+        365,
+        0,
+        548,
+        539
+      ]
+    },
+    {
+      "frame": "00210.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00026.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00026.png",
+      "psnr_masked": 35.24984528614256,
+      "mse_masked": 0.00029854889726266265,
+      "ssim_masked": 0.9411025643348694,
+      "lpips_masked": 0.13828428089618683,
+      "valid_pixel_count": 45203,
+      "mask_area_fraction": 0.08726801665704594,
+      "mask_bbox": [
+        386,
+        0,
+        484,
+        539
+      ],
+      "crop_bbox": [
+        370,
+        0,
+        500,
+        539
+      ]
+    },
+    {
+      "frame": "00218.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00027.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00027.png",
+      "psnr_masked": 28.57729049840668,
+      "mse_masked": 0.0013876212760806084,
+      "ssim_masked": 0.8962329626083374,
+      "lpips_masked": 0.11680381745100021,
+      "valid_pixel_count": 37915,
+      "mask_area_fraction": 0.07319794817936634,
+      "mask_bbox": [
+        453,
+        0,
+        566,
+        539
+      ],
+      "crop_bbox": [
+        437,
+        0,
+        582,
+        539
+      ]
+    },
+    {
+      "frame": "00226.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00028.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00028.png",
+      "psnr_masked": 31.965623530432104,
+      "mse_masked": 0.0006359714898280799,
+      "ssim_masked": 0.8892045617103577,
+      "lpips_masked": 0.1934528648853302,
+      "valid_pixel_count": 52611,
+      "mask_area_fraction": 0.10156975475839754,
+      "mask_bbox": [
+        373,
+        0,
+        484,
+        539
+      ],
+      "crop_bbox": [
+        357,
+        0,
+        500,
+        539
+      ]
+    },
+    {
+      "frame": "00234.jpg",
+      "render": "/data/05_3dgs/output/test/ours_7000/renders/00029.png",
+      "ground_truth": "/data/05_3dgs/output/test/ours_7000/gt/00029.png",
+      "psnr_masked": 24.904254250455544,
+      "mse_masked": 0.0032327682711184025,
+      "ssim_masked": 0.8051244020462036,
+      "lpips_masked": 0.22876280546188354,
+      "valid_pixel_count": 45170,
+      "mask_area_fraction": 0.08720430751053614,
+      "mask_bbox": [
+        534,
+        0,
+        629,
+        539
+      ],
+      "crop_bbox": [
+        518,
+        0,
+        645,
+        539
+      ]
+    }
+  ]
+}

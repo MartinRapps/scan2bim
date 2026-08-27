@@ -1,0 +1,140 @@
+\clearpage
+\section{Anhang: Pipeline-Durchlauf in drei Auflösungen}
+\label{app:durchlauf}
+
+Dieser Anhang zeigt die Zwischenstände eines vollständigen Pipeline-Durchlaufs
+für drei Auflösungen desselben Testdatensatzes (5~FPS, OPENCV-Kameramodell).
+Jede Zeile entspricht einer Zwischenstufe der Verarbeitung, jede Spalte einer
+Auflösung: links \texttt{720p}, in der Mitte \texttt{qHD} und rechts
+\texttt{low}. Die Reihenfolge folgt dem Datenfluss der Pipeline. Als Eingabe
+dient das Videomaterial des Alurohr-Referenzdatensatzes; über den Prompt
+\texttt{pipe} wird das Zielobjekt promptbasiert segmentiert. Ab diesem
+Schritt verzweigt der Pfad in die drei Spalten der Auflösungsvarianten.
+
+% Die Querformatseiten erhalten eine eigene Satzvorlage. Dadurch werden die
+% normalen, hochkant gesetzten fancyhdr-Kopf- und Fußzeilen unterdrückt.
+\newcommand{\durchlaufheader}{%
+  \vspace*{-59.5pt}%
+  {\small
+  \noindent Projektarbeit -- Scan-to-BIM-Pipeline\hfill Studienbereich Geo\par
+  \vspace{2pt}\hrule height 0.4pt\vspace{6pt}}%
+  \vspace{59.5pt}}
+\newcommand{\durchlauffooter}{%
+  \par\vspace*{\fill}%
+  \begin{center}\small\thepage\end{center}%
+  \vspace*{-41.2pt}}
+\newcommand{\durchlaufbild}[1]{%
+  \makebox[\hsize][c]{\includegraphics[width=0.95\hsize]{#1}}}
+\newcommand{\durchlaufmasken}[1]{%
+  \begin{minipage}[t]{\hsize}
+  \centering
+  \includegraphics[width=0.95\linewidth]{Screenshots/Pipline_Durchlauf/#1/review_ideal/frame_00000_middle_panel.png}\par\vspace{1pt}%
+  \includegraphics[width=0.95\linewidth]{Screenshots/Pipline_Durchlauf/#1/review_ideal/frame_00080_middle_panel.png}\par\vspace{1pt}%
+  \includegraphics[width=0.95\linewidth]{Screenshots/Pipline_Durchlauf/#1/review_ideal/frame_00160_middle_panel.png}\par\vspace{1pt}%
+  \includegraphics[width=0.95\linewidth]{Screenshots/Pipline_Durchlauf/#1/review_ideal/frame_00239_middle_panel.png}%
+  \end{minipage}}
+
+\begin{landscape}
+\thispagestyle{empty}
+\durchlaufheader
+\small
+\renewcommand{\arraystretch}{1.05}
+\setlength{\tabcolsep}{3pt}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X@{}}
+\toprule
+Zwischenstufe & \textbf{\texttt{720p}} & \textbf{\texttt{qHD}} & \textbf{\texttt{low}}\\
+\midrule
+Masken (Prüfpanels) &
+\durchlaufmasken{720p_Panels} &
+\durchlaufmasken{qhd_panels} &
+\durchlaufmasken{low_panels} \\
+\bottomrule
+\end{tabularx}
+\par\vspace{3pt}
+\noindent\parbox{\linewidth}{\footnotesize\textit{Maskenprüfung bei
+\texttt{720p}, \texttt{qHD} und \texttt{low}. Je Auflösung sind die vier
+Prüfzeitpunkte 00000, 00080, 00160 und 00239 untereinander dargestellt; jedes
+Panel zeigt das Originalbild, die überlagerte \texttt{middle}-Maske und den
+Objektausschnitt.}}
+\durchlauffooter
+\newpage
+
+\thispagestyle{empty}
+\durchlaufheader
+\small
+\renewcommand{\arraystretch}{1.05}
+\setlength{\tabcolsep}{3pt}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X@{}}
+\toprule
+Zwischenstufe & \textbf{\texttt{720p}} & \textbf{\texttt{qHD}} & \textbf{\texttt{low}}\\
+\midrule
+Punktwolken &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Punktwolke_OpenCV_720p.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Punktwolke_OpenCV_qhd.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Punktwolke_OpenCV_low.png} \\
+Punktwolken (Zoom) &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Punktwolke_OpenCV_720p_zoom.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Punktwolke_OpenCV_qhd_zoom.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Punktwolke_OpenCV_low_zoom.png} \\
+\bottomrule
+\end{tabularx}
+\par\vspace{3pt}
+\noindent\parbox{\linewidth}{\footnotesize\textit{COLMAP-Punktwolken und vergrößerte Detailansichten
+bei \texttt{720p}, \texttt{qHD} und \texttt{low}.}}
+\durchlauffooter
+\newpage
+
+\thispagestyle{empty}
+\durchlaufheader
+\small
+\renewcommand{\arraystretch}{1.05}
+\setlength{\tabcolsep}{3pt}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X@{}}
+\toprule
+Zwischenstufe & \textbf{\texttt{720p}} & \textbf{\texttt{qHD}} & \textbf{\texttt{low}}\\
+\midrule
+Splat (Opazität 9999) &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splat_OpenCV_720p_9999opac.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splat_OpenCV_qhd_9999opac.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splat_OpenCV_low_9999opac.png} \\
+Mesh &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splats_to_Mesh_720p.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splats_to_Mesh_qhd.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splats_to_Mesh_low.png} \\
+\bottomrule
+\end{tabularx}
+\par\vspace{3pt}
+\noindent\parbox{\linewidth}{\footnotesize\textit{Splat- und Mesh-Zwischenstände bei
+\texttt{720p}, \texttt{qHD} und \texttt{low}.}}
+\durchlauffooter
+\newpage
+
+\thispagestyle{empty}
+\durchlaufheader
+\small
+\renewcommand{\arraystretch}{1.05}
+\setlength{\tabcolsep}{3pt}
+\noindent
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{2.4cm}>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X@{}}
+\toprule
+Zwischenstufe & \textbf{\texttt{720p}} & \textbf{\texttt{qHD}} & \textbf{\texttt{low}}\\
+\midrule
+Mesh (ohne Nachbearbeitung) &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splats_to_Mesh_720p_ugly.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splats_to_Mesh_qhd_ugly.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Splats_to_Mesh_low_ugly.png} \\
+Centerline &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Centerline_720p.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Centerline_qhd.png} &
+\durchlaufbild{Screenshots/Pipline_Durchlauf/Centerline_low.png} \\
+\bottomrule
+\end{tabularx}
+\par\vspace{3pt}
+\noindent\parbox{\linewidth}{\footnotesize\textit{Unbearbeiteter Mesh-Rohstand und extrahiertes
+Linienelement (Centerline) als Endstufen der Pipeline bei \texttt{720p},
+\texttt{qHD} und \texttt{low}.}}
+\durchlauffooter
+\end{landscape}

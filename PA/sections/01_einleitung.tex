@@ -1,0 +1,88 @@
+\section{Einleitung}
+
+\subsection{Motivation und Problemstellung}
+
+Die Rekonstruktion dünner, linearer Objekte aus Bildsequenzen verbindet mehrere
+schwierige Teilprobleme: Die Kamerabewegung muss stabil geschätzt werden, das
+Objekt muss über die Bilder hinweg konsistent segmentiert werden und die
+objektbezogene 3D-Repräsentation muss für nachgelagerte Geometrieoperationen
+verwendbar sein. Die Projektarbeit untersucht diesen Ablauf zunächst an einem
+kontrollierten Alurohr-Testdatensatz. Die spätere Bachelorarbeit soll die
+Pipeline auf reale Rohr- oder Kabeltrassen und geodätische Referenzen
+übertragen.
+
+\subsection{Zielsetzung und Eigenbeitrag}
+
+Das Ziel der Projektarbeit ist ein technischer Machbarkeitsnachweis. Dazu muss
+die Pipeline vom Video bis zur lokalen Centerline durchlaufen, die zentralen
+Datenverträge müssen überprüfbar sein und die wichtigsten Varianten müssen mit
+reproduzierbaren Parametern verglichen werden. Eine Aussage über die Einhaltung
+einer Toleranz von \(\pm 10\,\mathrm{cm}\) wird für die Projektarbeit nicht
+behauptet, weil dafür noch geeignete GNSS- oder Vermessungsreferenzen fehlen.
+Der Eigenbeitrag liegt in der Integration der heterogenen Komponenten, der
+Trennung von Roh- und Idealbilddomäne (die verzeichnungsbehafteten Rohbilder
+werden in verzeichnungsfreie PINHOLE-Bilder überführt, sodass Masken,
+Kamerageometrie, Splatting und Auswertung in derselben, konsistenten Domäne
+arbeiten), der Definition überprüfbarer Datenverträge (Schnittstellenregeln,
+die festlegen, welche Artefakte in welcher Bilddomäne zueinander passen
+müssen und nach welchen Kriterien eine Stufe als gültig gilt), der
+maskengetriebenen Objekt- und Meshgewinnung sowie der automatisierten
+Durchführung und wissenschaftlichen Interpretation der Tests. STS und SuGaR
+sind dabei genutzte, nicht selbst entworfene Verfahren; der eigene Anteil in
+der Segmentierung liegt in der angepassten Maskenlogik: die Erosionshierarchie
+(default unverändert, middle und small erodiert) sowie die promptbasierte
+Auswahl sorgen dafür, dass automatisch genau ein
+segmentiertes Zielobjekt entsteht. Das offizielle STS-Verfahren geht davon
+verschieden, indem es sämtliche Szenenobjekte automatisch in drei
+Granularitätsstufen erfasst und erst nach der Rekonstruktion eine offene
+Textabfrage ermöglicht; der Objektprompt legt das Ziel hier dagegen bereits
+vor dem Training fest, sodass Mehrfachsegmentierung und Nachabfrage
+entfallen. Die Funktionsweise ist in
+Abschnitt~\ref{sec:grundlagen} beschrieben.
+Der Einsatz von SAM~3.1 verdoppelt zudem die Verarbeitungsgeschwindigkeit für
+Videos mit mittlerer Objektanzahl (16 auf 32 Frames pro Sekunde auf einer
+einzelnen H100-GPU) \parencite{metaSam3}.
+
+\subsection{Forschungsfragen}
+
+Die zentrale Arbeitsfrage lautet:
+\begin{quote}
+Lässt sich eine Docker-orchestrierte, objektbezogene Scan-to-BIM-Pipeline aus
+promptbarer SAM-3.1-Segmentierung, kameramodellbewusstem COLMAP-SfM,
+Segment-then-Splat und meshbasierter Nachverarbeitung für ein lineares
+Testobjekt robust und reproduzierbar bis zu einer lokalen Centerline betreiben?
+\end{quote}
+
+Zur Beantwortung werden vier Unterfragen betrachtet:
+
+\begin{enumerate}
+  \item Welche Bilddomänen, Datenverträge und Quality-Gates sind erforderlich,
+	  damit Masken, Kameras, Eval-Split, Gaussians, Mesh und Centerline
+	  konsistent übergeben werden?
+  \item Wie beeinflussen Kameramodell, zeitliche Abtastung und Bildauflösung
+	  den technischen Pipelineerfolg und die objektmaskierten Bildmetriken?
+  \item Welche der untersuchten Meshrouten -- direkte Original-STS-GS-Route A
+	  oder SuGaR-Coarse -- bewahrt die für die Centerline benötigte
+	  Objektgeometrie im Projektstand geeigneter?
+  \item Inwieweit ermöglichen interaktiver CLI-Betrieb, Replay, Autopilot und
+	  Matrixrunner reproduzierbare Einzel- und Batchläufe?
+\end{enumerate}
+
+\subsection{Abgrenzung und Aufbau}
+
+Die Arbeit konzentriert sich auf Grundlagen, Konzept, Implementierung,
+Funktions- und Vergleichstests sowie die Interpretation der Ergebnisse. Lange
+Installationsanleitungen, vollständige Quellcode-Dokumentation und spätere
+Bachelorarbeitsfragen werden bewusst außerhalb des Haupttextes gehalten. Nicht
+Gegenstand sind eine reale Vermessung einer Kabeltrasse, ein Nachweis von
+$\pm10\,\mathrm{cm}$, eine vollständige Bewertung aller Kameramodelle, eine
+allgemeine Einführung in Computer Vision oder eine Produktionsentscheidung
+allein aus PSNR, SSIM und LPIPS. Die vorhandene Web-UI bleibt ebenfalls
+außerhalb des Untersuchungsumfangs und ist der späteren Bachelorarbeit
+vorbehalten; betrachtet werden CLI, Autopilot, Replay
+und Matrixrunner. Der Aufbau folgt dem Erarbeitungsstand: Kapitel 2 legt die
+Datengrundlage, Kapitel 3 die technischen Grundlagen und Kapitel 4 das
+Konzept; Kapitel 5 beschreibt die Implementierung und Kapitel 6 den
+Versuchsaufbau. Kapitel 7 berichtet die Ergebnisse, Kapitel 8 diskutiert sie
+im Licht der Grenzen und Kapitel 9 zieht das Fazit mit dem Ausblick auf die
+Bachelorarbeit.

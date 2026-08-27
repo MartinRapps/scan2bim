@@ -1,0 +1,427 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1.0cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{statistics}
+\pgfplotsset{compat=1.18}
+\definecolor{srblue}{HTML}{2F6B9A}
+\definecolor{opencvorange}{HTML}{D97706}
+\definecolor{fps2blue}{HTML}{B9D7EA}
+\definecolor{fps5orange}{HTML}{F6C28B}
+\definecolor{stslightgreen}{HTML}{A7D8B1}
+\definecolor{stsstronggreen}{HTML}{208B3A}
+\definecolor{sugarlightpurple}{HTML}{CBB7E8}
+\definecolor{sugarstrongpurple}{HTML}{763A9B}
+\definecolor{stsedge}{HTML}{1D4E89}
+\definecolor{sugaredge}{HTML}{B45309}
+\definecolor{incompletegray}{HTML}{9CA3AF}
+\definecolor{deltared}{HTML}{B91C1C}
+\definecolor{deltagreen}{HTML}{15803D}
+\newcommand{\legendcircle}[1]{\tikz[baseline=-0.6ex]\node[draw=black,fill=#1,circle,minimum size=4.5pt,inner sep=0pt] {};}
+\newcommand{\legendsquare}[1]{\tikz[baseline=-0.6ex]\node[draw=black,fill=#1,rectangle,minimum size=4.5pt,inner sep=0pt] {};}
+\newcommand{\legendtriangle}[1]{\tikz[baseline=-0.6ex]\draw[draw=black,fill=#1,line width=0.4pt] (0,2.3pt)--(-2.3pt,-1.8pt)--(2.3pt,-1.8pt)--cycle;}
+\begin{document}
+\pagestyle{empty}
+\begin{center}
+{\Large\bfseries STS-7000: Verteilung der Einzelansichten}\\[3pt]
+{\small Boxplots und Einzelansichten aus vollständigen Läufen; Farben kodieren das Kameramodell}\\[8pt]
+\begin{tikzpicture}
+\begin{axis}[height=6.6cm,width=0.98\linewidth,enlarge x limits=0.015,xmin=-0.7,ymin=11,ymax=37,xtick=data,xticklabels={{\shortstack{SR/A\\2/720p}},{\shortstack{SR/A\\2/qhd}},{\shortstack{SR/A\\2/low}},{\shortstack{SR/A\\5/720p}},{\shortstack{SR/A\\5/qhd}},{\shortstack{SR/A\\5/low}},{\shortstack{OPENCV/A\\2/720p}},{\shortstack{OPENCV/A\\2/qhd}},{\shortstack{OPENCV/A\\2/low}},{\shortstack{OPENCV/A\\5/720p}},{\shortstack{OPENCV/A\\5/qhd}},{\shortstack{OPENCV/A\\5/low}},{\shortstack{PH/A\\2/720p}},{\shortstack{PH/A\\2/qhd}},{\shortstack{PH/A\\2/low}},{\shortstack{PH/A\\5/720p}},{\shortstack{PH/A\\5/qhd}},{\shortstack{PH/A\\5/low}}},x tick label style={font=\tiny,rotate=55,anchor=east},ylabel style={font=\small},tick label style={font=\scriptsize},ylabel={PSNR (dB) $\uparrow$},grid=major,grid style={gray!20},xtick={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17},boxplot/draw direction=y]
+\draw[fill=srblue!35,draw=srblue] (axis cs:-0.2400,22.33737570) rectangle (axis cs:0.2400,29.41267984);
+\draw[draw=srblue,very thick] (axis cs:-0.2400,27.54645559) -- (axis cs:0.2400,27.54645559);
+\draw[draw=srblue] (axis cs:0.0000,19.92226626) -- (axis cs:0.0000,22.33737570);
+\draw[draw=srblue] (axis cs:0.0000,29.41267984) -- (axis cs:0.0000,31.50344145);
+\draw[draw=srblue] (axis cs:-0.1600,19.92226626) -- (axis cs:0.1600,19.92226626);
+\draw[draw=srblue] (axis cs:-0.1600,31.50344145) -- (axis cs:0.1600,31.50344145);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(-0.17500,22.26344035) (0.03500,25.67633926) (-0.14000,19.92226626) (0.07000,31.50344145) (-0.10500,28.77739645) (0.10500,30.43594075) (-0.07000,29.40678554) (0.14000,22.22533038) (-0.03500,22.36202081) (0.17500,28.89787982) (0.00000,26.31551472) (-0.17500,29.43036276)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:0.7600,25.12232866) rectangle (axis cs:1.2400,30.47185664);
+\draw[draw=srblue,very thick] (axis cs:0.7600,27.92362656) -- (axis cs:1.2400,27.92362656);
+\draw[draw=srblue] (axis cs:1.0000,23.33485032) -- (axis cs:1.0000,25.12232866);
+\draw[draw=srblue] (axis cs:1.0000,30.47185664) -- (axis cs:1.0000,32.13695571);
+\draw[draw=srblue] (axis cs:0.8400,23.33485032) -- (axis cs:1.1600,23.33485032);
+\draw[draw=srblue] (axis cs:0.8400,32.13695571) -- (axis cs:1.1600,32.13695571);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(0.82500,27.03430077) (1.03500,25.51453161) (0.86000,23.94571980) (1.07000,31.66404512) (0.89500,30.18819393) (1.10500,32.13695571) (0.93000,31.32284475) (1.14000,15.71173586) (0.96500,23.33485032) (1.17500,28.07584966) (1.00000,29.72689860) (0.82500,27.77140347)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:1.7600,24.55235297) rectangle (axis cs:2.2400,30.46288090);
+\draw[draw=srblue,very thick] (axis cs:1.7600,28.12105570) -- (axis cs:2.2400,28.12105570);
+\draw[draw=srblue] (axis cs:2.0000,17.64605269) -- (axis cs:2.0000,24.55235297);
+\draw[draw=srblue] (axis cs:2.0000,30.46288090) -- (axis cs:2.0000,32.87438809);
+\draw[draw=srblue] (axis cs:1.8400,17.64605269) -- (axis cs:2.1600,17.64605269);
+\draw[draw=srblue] (axis cs:1.8400,32.87438809) -- (axis cs:2.1600,32.87438809);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(1.82500,28.14759709) (2.03500,24.76293006) (1.86000,23.92062169) (2.07000,31.59993188) (1.89500,29.97541314) (2.10500,32.87438809) (1.93000,31.75927144) (2.14000,17.64605269) (1.96500,23.50043199) (2.17500,28.09451431) (2.00000,30.08386391) (1.82500,28.03455233)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:2.7600,27.75536994) rectangle (axis cs:3.2400,31.03853694);
+\draw[draw=srblue,very thick] (axis cs:2.7600,29.63720609) -- (axis cs:3.2400,29.63720609);
+\draw[draw=srblue] (axis cs:3.0000,23.96907497) -- (axis cs:3.0000,27.75536994);
+\draw[draw=srblue] (axis cs:3.0000,31.03853694) -- (axis cs:3.0000,33.05972177);
+\draw[draw=srblue] (axis cs:2.8400,23.96907497) -- (axis cs:3.1600,23.96907497);
+\draw[draw=srblue] (axis cs:2.8400,33.05972177) -- (axis cs:3.1600,33.05972177);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(2.82500,27.40100210) (3.03500,28.33515163) (2.86000,28.03688871) (3.07000,27.56734282) (2.89500,26.90745927) (3.10500,27.31349672) (2.93000,28.21542282) (3.14000,28.49180266) (2.96500,31.17304610) (3.17500,30.63500945) (3.00000,23.96907497) (2.82500,32.30015583) (3.03500,32.01503699) (2.86000,32.38464972) (3.07000,30.33772190) (2.89500,31.72914877) (3.10500,30.41271071) (2.93000,26.79096801) (3.14000,30.15411150) (2.96500,30.34326993) (3.17500,27.22437906) (3.00000,27.74387807) (2.82500,32.73004727) (3.03500,30.26154084) (2.86000,29.64638115) (3.07000,29.62803103) (2.89500,33.05972177) (3.10500,28.00353403) (2.93000,32.34005137) (3.14000,27.78984556)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:3.7600,26.16025001) rectangle (axis cs:4.2400,31.14627689);
+\draw[draw=srblue,very thick] (axis cs:3.7600,28.45722463) -- (axis cs:4.2400,28.45722463);
+\draw[draw=srblue] (axis cs:4.0000,23.03140463) -- (axis cs:4.0000,26.16025001);
+\draw[draw=srblue] (axis cs:4.0000,31.14627689) -- (axis cs:4.0000,35.41785148);
+\draw[draw=srblue] (axis cs:3.8400,23.03140463) -- (axis cs:4.1600,23.03140463);
+\draw[draw=srblue] (axis cs:3.8400,35.41785148) -- (axis cs:4.1600,35.41785148);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(3.82500,23.32659441) (4.03500,26.51841671) (3.86000,26.13086647) (4.07000,26.24840063) (3.89500,26.43336049) (4.10500,27.63462599) (3.93000,28.01445247) (4.14000,28.84968785) (3.96500,31.06095483) (4.17500,31.17471758) (4.00000,24.25118466) (3.82500,32.85530214) (4.03500,31.43399984) (3.86000,30.51127862) (4.07000,29.58091651) (3.89500,31.72209501) (4.10500,30.38950471) (3.93000,25.78438731) (4.14000,18.08655346) (3.96500,23.03140463) (4.17500,25.82785390) (4.00000,28.53410914) (3.82500,31.86993780) (4.03500,32.58401629) (3.86000,27.27699491) (4.07000,29.50969073) (3.89500,35.41785148) (4.10500,28.38034011) (3.93000,31.62123885) (4.14000,25.67384926)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:4.7600,27.81875824) rectangle (axis cs:5.2400,31.27727773);
+\draw[draw=srblue,very thick] (axis cs:4.7600,30.41768686) -- (axis cs:5.2400,30.41768686);
+\draw[draw=srblue] (axis cs:5.0000,24.87475741) -- (axis cs:5.0000,27.81875824);
+\draw[draw=srblue] (axis cs:5.0000,31.27727773) -- (axis cs:5.0000,33.43853516);
+\draw[draw=srblue] (axis cs:4.8400,24.87475741) -- (axis cs:5.1600,24.87475741);
+\draw[draw=srblue] (axis cs:4.8400,33.43853516) -- (axis cs:5.1600,33.43853516);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(4.82500,27.67805024) (5.03500,28.50869384) (4.86000,28.24088223) (5.07000,27.52718257) (4.89500,26.91540167) (5.10500,28.28780956) (4.93000,30.00965456) (5.14000,29.45198031) (4.96500,30.79836513) (5.17500,31.36832878) (5.00000,24.87475741) (4.82500,33.01409532) (5.03500,32.09725951) (4.86000,32.56159610) (5.07000,30.45414931) (4.89500,32.71675988) (5.10500,30.75220927) (4.93000,27.23251455) (5.14000,30.66095915) (4.96500,30.72848909) (5.17500,26.96551036) (5.00000,27.59224523) (4.82500,33.43853516) (5.03500,30.48962120) (4.86000,31.00412458) (5.07000,30.38122442) (4.89500,33.05412382) (5.10500,28.97449945) (4.93000,32.14048624) (5.14000,27.56405890)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:5.7600,24.17163132) rectangle (axis cs:6.2400,29.09965563);
+\draw[draw=opencvorange,very thick] (axis cs:5.7600,27.02951763) -- (axis cs:6.2400,27.02951763);
+\draw[draw=opencvorange] (axis cs:6.0000,21.24266474) -- (axis cs:6.0000,24.17163132);
+\draw[draw=opencvorange] (axis cs:6.0000,29.09965563) -- (axis cs:6.0000,30.35925146);
+\draw[draw=opencvorange] (axis cs:5.8400,21.24266474) -- (axis cs:6.1600,21.24266474);
+\draw[draw=opencvorange] (axis cs:5.8400,30.35925146) -- (axis cs:6.1600,30.35925146);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(5.82500,24.38866364) (6.03500,26.71499564) (5.86000,23.08966153) (6.07000,30.35925146) (5.89500,29.04295244) (6.10500,27.34403961) (5.93000,30.31908957) (6.14000,21.24266474) (5.96500,23.52053436) (6.17500,28.30530049) (6.00000,26.05780049) (5.82500,29.26976521)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:6.7600,25.85791455) rectangle (axis cs:7.2400,29.84616269);
+\draw[draw=opencvorange,very thick] (axis cs:6.7600,28.19332157) -- (axis cs:7.2400,28.19332157);
+\draw[draw=opencvorange] (axis cs:7.0000,23.04718275) -- (axis cs:7.0000,25.85791455);
+\draw[draw=opencvorange] (axis cs:7.0000,29.84616269) -- (axis cs:7.0000,32.05397968);
+\draw[draw=opencvorange] (axis cs:6.8400,23.04718275) -- (axis cs:7.1600,23.04718275);
+\draw[draw=opencvorange] (axis cs:6.8400,32.05397968) -- (axis cs:7.1600,32.05397968);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(6.82500,27.48117730) (7.03500,26.28094756) (6.86000,23.04718275) (7.07000,30.70868395) (6.89500,29.31367227) (7.10500,32.05397968) (6.93000,30.50708013) (7.14000,18.83637172) (6.96500,24.58881553) (7.17500,28.11397404) (7.00000,29.62585688) (6.82500,28.27266909)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:7.7600,25.36198164) rectangle (axis cs:8.2400,29.85857866);
+\draw[draw=opencvorange,very thick] (axis cs:7.7600,27.72790157) -- (axis cs:8.2400,27.72790157);
+\draw[draw=opencvorange] (axis cs:8.0000,20.55130270) -- (axis cs:8.0000,25.36198164);
+\draw[draw=opencvorange] (axis cs:8.0000,29.85857866) -- (axis cs:8.0000,32.64336645);
+\draw[draw=opencvorange] (axis cs:7.8400,20.55130270) -- (axis cs:8.1600,20.55130270);
+\draw[draw=opencvorange] (axis cs:7.8400,32.64336645) -- (axis cs:8.1600,32.64336645);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(7.82500,27.60748795) (8.03500,25.83491300) (7.86000,23.94318756) (8.07000,31.24471857) (7.89500,28.98923197) (8.10500,32.64336645) (7.93000,31.16076266) (8.14000,20.55130270) (7.96500,23.23233053) (8.17500,27.54076304) (8.00000,29.42451733) (7.82500,27.84831519)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:8.7600,27.96993458) rectangle (axis cs:9.2400,31.31754305);
+\draw[draw=opencvorange,very thick] (axis cs:8.7600,29.99482314) -- (axis cs:9.2400,29.99482314);
+\draw[draw=opencvorange] (axis cs:9.0000,23.73027756) -- (axis cs:9.0000,27.96993458);
+\draw[draw=opencvorange] (axis cs:9.0000,31.31754305) -- (axis cs:9.0000,33.12703327);
+\draw[draw=opencvorange] (axis cs:8.8400,23.73027756) -- (axis cs:9.1600,23.73027756);
+\draw[draw=opencvorange] (axis cs:8.8400,33.12703327) -- (axis cs:9.1600,33.12703327);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(8.82500,27.59650829) (9.03500,28.94478578) (8.86000,27.86679731) (9.07000,28.14148098) (8.89500,26.91104012) (9.10500,28.06885934) (8.93000,28.98285419) (9.14000,28.47681255) (8.96500,30.26025204) (9.17500,30.56477935) (9.00000,23.73027756) (8.82500,31.77879327) (9.03500,32.10183689) (8.86000,32.62343530) (9.07000,30.49389176) (8.89500,32.02347191) (9.10500,31.36232435) (8.93000,27.09551200) (9.14000,30.41289752) (8.96500,30.82579379) (9.17500,27.31816586) (9.00000,29.02488443) (8.82500,33.12703327) (9.03500,31.18319914) (8.86000,30.56600166) (9.07000,29.72939424) (8.89500,33.12550429) (9.10500,26.06576889) (8.93000,32.27733619) (9.14000,27.93695966)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:9.7600,25.28669119) rectangle (axis cs:10.2400,30.95584978);
+\draw[draw=opencvorange,very thick] (axis cs:9.7600,28.27543461) -- (axis cs:10.2400,28.27543461);
+\draw[draw=opencvorange] (axis cs:10.0000,19.84706124) -- (axis cs:10.0000,25.28669119);
+\draw[draw=opencvorange] (axis cs:10.0000,30.95584978) -- (axis cs:10.0000,35.13717131);
+\draw[draw=opencvorange] (axis cs:9.8400,19.84706124) -- (axis cs:10.1600,19.84706124);
+\draw[draw=opencvorange] (axis cs:9.8400,35.13717131) -- (axis cs:10.1600,35.13717131);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(9.82500,22.00152235) (10.03500,25.76080116) (9.86000,25.20260907) (10.07000,25.53893755) (9.89500,26.36061961) (10.10500,27.30331911) (9.93000,28.00613169) (10.14000,28.78259951) (9.96500,30.92482914) (10.17500,30.96618999) (10.00000,25.18180029) (9.82500,32.52101460) (10.03500,31.56664986) (9.86000,30.12696453) (10.07000,29.83545162) (9.89500,31.08594121) (10.10500,29.96549954) (9.93000,24.34145440) (10.14000,13.33201533) (9.96500,19.84706124) (10.17500,23.25291851) (10.00000,26.61451384) (9.82500,31.47924338) (10.03500,32.19513527) (9.86000,27.03024483) (10.07000,29.40356717) (9.89500,35.13717131) (10.10500,28.54473754) (9.93000,31.75464310) (10.14000,24.94884572)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:10.7600,27.44134191) rectangle (axis cs:11.2400,31.66709952);
+\draw[draw=opencvorange,very thick] (axis cs:10.7600,30.31909151) -- (axis cs:11.2400,30.31909151);
+\draw[draw=opencvorange] (axis cs:11.0000,26.31463561) -- (axis cs:11.0000,27.44134191);
+\draw[draw=opencvorange] (axis cs:11.0000,31.66709952) -- (axis cs:11.0000,33.71759880);
+\draw[draw=opencvorange] (axis cs:10.8400,26.31463561) -- (axis cs:11.1600,26.31463561);
+\draw[draw=opencvorange] (axis cs:10.8400,33.71759880) -- (axis cs:11.1600,33.71759880);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(10.82500,27.41869556) (11.03500,28.27512053) (10.86000,27.92281152) (11.07000,26.56964617) (10.89500,26.49310214) (11.10500,26.51731689) (10.93000,30.15774381) (11.14000,28.79533046) (10.96500,30.79012817) (11.17500,31.69462917) (11.00000,26.31463561) (10.82500,33.25658899) (11.03500,32.41620351) (10.86000,32.55929276) (11.07000,29.81094977) (10.89500,32.49780925) (11.10500,31.58451057) (10.93000,27.35052630) (11.14000,30.48043921) (10.96500,30.74520949) (11.17500,26.84896036) (11.00000,27.50928097) (10.82500,33.71759880) (11.03500,31.08335421) (10.86000,31.32773901) (11.07000,30.52886698) (10.89500,33.18538505) (11.10500,29.72257322) (10.93000,32.31293267) (11.14000,27.05141933)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:11.7600,23.43502884) rectangle (axis cs:12.2400,28.91115931);
+\draw[draw=incompletegray,very thick] (axis cs:11.7600,27.25160033) -- (axis cs:12.2400,27.25160033);
+\draw[draw=incompletegray] (axis cs:12.0000,22.32970794) -- (axis cs:12.0000,23.43502884);
+\draw[draw=incompletegray] (axis cs:12.0000,28.91115931) -- (axis cs:12.0000,31.62190241);
+\draw[draw=incompletegray] (axis cs:11.8400,22.32970794) -- (axis cs:12.1600,22.32970794);
+\draw[draw=incompletegray] (axis cs:11.8400,31.62190241) -- (axis cs:12.1600,31.62190241);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(11.82500,23.27528004) (12.03500,26.77440523) (11.86000,23.16007234) (12.07000,29.61300585) (11.89500,27.72879543) (12.10500,31.62190241) (11.93000,29.64253328) (12.14000,23.48827844) (11.96500,22.32970794) (12.17500,28.33347136) (12.00000,26.31071318) (11.82500,28.67721046)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:12.7600,23.55449190) rectangle (axis cs:13.2400,29.31516821);
+\draw[draw=incompletegray,very thick] (axis cs:12.7600,27.43350795) -- (axis cs:13.2400,27.43350795);
+\draw[draw=incompletegray] (axis cs:13.0000,15.20859605) -- (axis cs:13.0000,23.55449190);
+\draw[draw=incompletegray] (axis cs:13.0000,29.31516821) -- (axis cs:13.0000,31.78003356);
+\draw[draw=incompletegray] (axis cs:12.8400,15.20859605) -- (axis cs:13.1600,15.20859605);
+\draw[draw=incompletegray] (axis cs:12.8400,31.78003356) -- (axis cs:13.1600,31.78003356);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(12.82500,23.56107414) (13.03500,23.53474519) (12.86000,24.05146145) (13.07000,30.85461199) (12.89500,28.47972791) (13.10500,31.78003356) (12.93000,30.35353984) (13.14000,15.20859605) (12.96500,21.82763118) (13.17500,27.32184442) (13.00000,28.96904434) (12.82500,27.54517148)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:13.7600,23.75131530) rectangle (axis cs:14.2400,29.52520416);
+\draw[draw=incompletegray,very thick] (axis cs:13.7600,27.51478140) -- (axis cs:14.2400,27.51478140);
+\draw[draw=incompletegray] (axis cs:14.0000,15.23913511) -- (axis cs:14.0000,23.75131530);
+\draw[draw=incompletegray] (axis cs:14.0000,29.52520416) -- (axis cs:14.0000,32.18796350);
+\draw[draw=incompletegray] (axis cs:13.8400,15.23913511) -- (axis cs:14.1600,15.23913511);
+\draw[draw=incompletegray] (axis cs:13.8400,32.18796350) -- (axis cs:14.1600,32.18796350);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(13.82500,23.52971102) (14.03500,23.87843717) (13.86000,23.82518340) (14.07000,30.63358182) (13.89500,28.40459367) (14.10500,32.18796350) (13.93000,30.62457755) (14.14000,15.23913511) (13.96500,23.06349048) (14.17500,27.63794787) (14.00000,29.15874636) (13.82500,27.39161494)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:14.7600,23.83150568) rectangle (axis cs:15.2400,29.36499448);
+\draw[draw=incompletegray,very thick] (axis cs:14.7600,26.92923217) -- (axis cs:15.2400,26.92923217);
+\draw[draw=incompletegray] (axis cs:15.0000,15.85098271) -- (axis cs:15.0000,23.83150568);
+\draw[draw=incompletegray] (axis cs:15.0000,29.36499448) -- (axis cs:15.0000,33.13486395);
+\draw[draw=incompletegray] (axis cs:14.8400,15.85098271) -- (axis cs:15.1600,15.85098271);
+\draw[draw=incompletegray] (axis cs:14.8400,33.13486395) -- (axis cs:15.1600,33.13486395);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(14.82500,23.00384913) (15.03500,22.43721601) (14.86000,23.38949729) (15.07000,24.47452752) (14.89500,25.54624249) (15.10500,26.42035770) (14.93000,26.10235050) (15.14000,28.36266946) (14.96500,29.24008570) (15.17500,28.62970486) (15.00000,23.61716507) (14.82500,31.35288984) (15.03500,25.19110995) (14.86000,31.00499112) (15.07000,29.40663074) (14.89500,29.81282393) (15.10500,28.79510826) (14.93000,21.09819150) (15.14000,12.34800968) (14.96500,15.85098271) (15.17500,19.82752461) (15.00000,25.11583622) (14.82500,31.16635505) (15.03500,29.14133403) (14.86000,27.69068448) (15.07000,29.47451227) (14.89500,33.13486395) (15.10500,25.04324283) (14.93000,32.10437937) (15.14000,27.43810665)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:15.7600,23.83337202) rectangle (axis cs:16.2400,29.32945413);
+\draw[draw=incompletegray,very thick] (axis cs:15.7600,26.41578620) -- (axis cs:16.2400,26.41578620);
+\draw[draw=incompletegray] (axis cs:16.0000,16.66838637) -- (axis cs:16.0000,23.83337202);
+\draw[draw=incompletegray] (axis cs:16.0000,29.32945413) -- (axis cs:16.0000,34.85680147);
+\draw[draw=incompletegray] (axis cs:15.8400,16.66838637) -- (axis cs:16.1600,16.66838637);
+\draw[draw=incompletegray] (axis cs:15.8400,34.85680147) -- (axis cs:16.1600,34.85680147);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(15.82500,22.04291440) (16.03500,23.57534430) (15.86000,23.42476889) (16.07000,21.89512803) (15.89500,24.82299652) (16.10500,25.17963720) (15.93000,26.73695938) (16.14000,28.95730711) (15.96500,28.89250438) (16.17500,28.73668694) (16.00000,24.60745517) (15.82500,32.12492426) (16.03500,30.85393433) (15.86000,29.42851402) (16.07000,29.35061410) (15.89500,26.09461303) (16.10500,29.09510716) (15.93000,23.04820512) (16.14000,12.99185137) (15.96500,16.66838637) (16.17500,19.97147904) (16.00000,25.34406707) (15.82500,30.51291380) (16.03500,30.19160229) (15.86000,25.81748974) (16.07000,29.26597424) (15.89500,34.85680147) (16.10500,28.96213315) (15.93000,31.26337004) (16.14000,24.73594524)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:16.7600,24.42711665) rectangle (axis cs:17.2400,30.14548595);
+\draw[draw=incompletegray,very thick] (axis cs:16.7600,28.87977602) -- (axis cs:17.2400,28.87977602);
+\draw[draw=incompletegray] (axis cs:17.0000,19.68804832) -- (axis cs:17.0000,24.42711665);
+\draw[draw=incompletegray] (axis cs:17.0000,30.14548595) -- (axis cs:17.0000,32.73807887);
+\draw[draw=incompletegray] (axis cs:16.8400,19.68804832) -- (axis cs:17.1600,19.68804832);
+\draw[draw=incompletegray] (axis cs:16.8400,32.73807887) -- (axis cs:17.1600,32.73807887);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(16.82500,19.68804832) (17.03500,20.87781246) (16.86000,24.09082853) (17.07000,23.24788262) (16.89500,25.55265032) (17.10500,26.52108647) (16.93000,28.20806182) (17.14000,29.14566427) (16.96500,28.98798305) (17.17500,29.03336631) (17.00000,25.43598099) (16.82500,31.96051282) (17.03500,32.32972385) (16.86000,30.71739510) (17.07000,30.16084765) (16.89500,30.45092713) (17.10500,28.77156899) (16.93000,23.36630963) (17.14000,12.03449743) (16.96500,14.65424146) (17.17500,22.49549403) (17.00000,25.76219616) (16.82500,32.52707047) (17.03500,29.83746544) (16.86000,29.54953013) (17.07000,30.09940084) (16.89500,32.73807887) (17.10500,29.18079492) (16.93000,31.75926613) (17.14000,27.27755293)};
+\end{axis}
+\end{tikzpicture}
+\par\vspace{3pt}
+\begin{tikzpicture}
+\begin{axis}[height=6.6cm,width=0.98\linewidth,enlarge x limits=0.015,xmin=-0.7,ymin=0.13,ymax=1.0,xtick=data,xticklabels={{\shortstack{SR/A\\2/720p}},{\shortstack{SR/A\\2/qhd}},{\shortstack{SR/A\\2/low}},{\shortstack{SR/A\\5/720p}},{\shortstack{SR/A\\5/qhd}},{\shortstack{SR/A\\5/low}},{\shortstack{OPENCV/A\\2/720p}},{\shortstack{OPENCV/A\\2/qhd}},{\shortstack{OPENCV/A\\2/low}},{\shortstack{OPENCV/A\\5/720p}},{\shortstack{OPENCV/A\\5/qhd}},{\shortstack{OPENCV/A\\5/low}},{\shortstack{PH/A\\2/720p}},{\shortstack{PH/A\\2/qhd}},{\shortstack{PH/A\\2/low}},{\shortstack{PH/A\\5/720p}},{\shortstack{PH/A\\5/qhd}},{\shortstack{PH/A\\5/low}}},x tick label style={font=\tiny,rotate=55,anchor=east},ylabel style={font=\small},tick label style={font=\scriptsize},ylabel={SSIM $\uparrow$},grid=major,grid style={gray!20},xtick={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17},boxplot/draw direction=y]
+\draw[fill=srblue!35,draw=srblue] (axis cs:-0.2400,0.79891817) rectangle (axis cs:0.2400,0.87396255);
+\draw[draw=srblue,very thick] (axis cs:-0.2400,0.85323894) -- (axis cs:0.2400,0.85323894);
+\draw[draw=srblue] (axis cs:0.0000,0.72020036) -- (axis cs:0.0000,0.79891817);
+\draw[draw=srblue] (axis cs:0.0000,0.87396255) -- (axis cs:0.0000,0.90821791);
+\draw[draw=srblue] (axis cs:-0.1600,0.72020036) -- (axis cs:0.1600,0.72020036);
+\draw[draw=srblue] (axis cs:-0.1600,0.90821791) -- (axis cs:0.1600,0.90821791);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(-0.17500,0.78846431) (0.03500,0.88328212) (-0.14000,0.80240279) (0.07000,0.86409283) (-0.10500,0.87237978) (0.10500,0.90821791) (-0.07000,0.87871087) (0.14000,0.72020036) (-0.03500,0.78841960) (0.17500,0.85141146) (0.00000,0.83742654) (-0.17500,0.85506642)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:0.7600,0.85314357) rectangle (axis cs:1.2400,0.90221564);
+\draw[draw=srblue,very thick] (axis cs:0.7600,0.88281769) -- (axis cs:1.2400,0.88281769);
+\draw[draw=srblue] (axis cs:1.0000,0.83223820) -- (axis cs:1.0000,0.85314357);
+\draw[draw=srblue] (axis cs:1.0000,0.90221564) -- (axis cs:1.0000,0.92941070);
+\draw[draw=srblue] (axis cs:0.8400,0.83223820) -- (axis cs:1.1600,0.83223820);
+\draw[draw=srblue] (axis cs:0.8400,0.92941070) -- (axis cs:1.1600,0.92941070);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(0.82500,0.91268319) (1.03500,0.89872646) (0.86000,0.85102427) (1.07000,0.87918496) (0.89500,0.88280541) (1.10500,0.92941070) (0.93000,0.91486394) (1.14000,0.39967814) (0.96500,0.85385001) (1.17500,0.88770807) (1.00000,0.88282996) (0.82500,0.83223820)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:1.7600,0.87542620) rectangle (axis cs:2.2400,0.92848232);
+\draw[draw=srblue,very thick] (axis cs:1.7600,0.89205658) -- (axis cs:2.2400,0.89205658);
+\draw[draw=srblue] (axis cs:2.0000,0.81087816) -- (axis cs:2.0000,0.87542620);
+\draw[draw=srblue] (axis cs:2.0000,0.92848232) -- (axis cs:2.0000,0.95052606);
+\draw[draw=srblue] (axis cs:1.8400,0.81087816) -- (axis cs:2.1600,0.81087816);
+\draw[draw=srblue] (axis cs:1.8400,0.95052606) -- (axis cs:2.1600,0.95052606);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(1.82500,0.94495529) (2.03500,0.92299134) (1.86000,0.86687702) (2.07000,0.88813353) (1.89500,0.89150101) (2.10500,0.95052606) (1.93000,0.94799221) (2.14000,0.46447524) (1.96500,0.89261216) (2.17500,0.90902746) (2.00000,0.87827593) (1.82500,0.81087816)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:2.7600,0.88923828) rectangle (axis cs:3.2400,0.91621891);
+\draw[draw=srblue,very thick] (axis cs:2.7600,0.90220383) -- (axis cs:3.2400,0.90220383);
+\draw[draw=srblue] (axis cs:3.0000,0.86081320) -- (axis cs:3.0000,0.88923828);
+\draw[draw=srblue] (axis cs:3.0000,0.91621891) -- (axis cs:3.0000,0.92880017);
+\draw[draw=srblue] (axis cs:2.8400,0.86081320) -- (axis cs:3.1600,0.86081320);
+\draw[draw=srblue] (axis cs:2.8400,0.92880017) -- (axis cs:3.1600,0.92880017);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(2.82500,0.88798016) (3.03500,0.91752940) (2.86000,0.89301264) (3.07000,0.90128106) (2.89500,0.92247415) (3.10500,0.88588887) (2.93000,0.84763473) (3.14000,0.91178149) (2.96500,0.91692472) (3.17500,0.90333509) (3.00000,0.75146937) (2.82500,0.90021265) (3.03500,0.92880017) (2.86000,0.91347504) (3.07000,0.92536795) (2.89500,0.90312660) (3.10500,0.88609177) (2.93000,0.86729872) (3.14000,0.91410148) (2.96500,0.89722973) (3.17500,0.91826552) (3.00000,0.91015196) (2.82500,0.92552441) (3.03500,0.91359717) (2.86000,0.89777094) (3.07000,0.89647502) (2.89500,0.92014992) (3.10500,0.88453066) (2.93000,0.89776373) (3.14000,0.86081320)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:3.7600,0.87780033) rectangle (axis cs:4.2400,0.92221408);
+\draw[draw=srblue,very thick] (axis cs:3.7600,0.90406039) -- (axis cs:4.2400,0.90406039);
+\draw[draw=srblue] (axis cs:4.0000,0.81882381) -- (axis cs:4.0000,0.87780033);
+\draw[draw=srblue] (axis cs:4.0000,0.92221408) -- (axis cs:4.0000,0.94619989);
+\draw[draw=srblue] (axis cs:3.8400,0.81882381) -- (axis cs:4.1600,0.81882381);
+\draw[draw=srblue] (axis cs:3.8400,0.94619989) -- (axis cs:4.1600,0.94619989);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(3.82500,0.82673508) (4.03500,0.89935797) (3.86000,0.90281302) (4.07000,0.89838451) (3.89500,0.93788135) (4.10500,0.90530777) (3.93000,0.87126034) (4.14000,0.91868693) (3.96500,0.92444938) (4.17500,0.92480618) (4.00000,0.71584439) (3.82500,0.91588724) (4.03500,0.93902117) (3.86000,0.90654898) (4.07000,0.92127401) (3.89500,0.92252743) (4.10500,0.91710228) (3.93000,0.86393070) (4.14000,0.63325548) (3.96500,0.87472141) (4.17500,0.89285851) (4.00000,0.91978383) (3.82500,0.94415969) (4.03500,0.94619989) (3.86000,0.85153967) (4.07000,0.88742882) (3.89500,0.93810809) (4.10500,0.89068609) (3.93000,0.88703710) (4.14000,0.81882381)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:4.7600,0.93017612) rectangle (axis cs:5.2400,0.95161130);
+\draw[draw=srblue,very thick] (axis cs:4.7600,0.94251910) -- (axis cs:5.2400,0.94251910);
+\draw[draw=srblue] (axis cs:5.0000,0.90354949) -- (axis cs:5.0000,0.93017612);
+\draw[draw=srblue] (axis cs:5.0000,0.95161130) -- (axis cs:5.0000,0.96231109);
+\draw[draw=srblue] (axis cs:4.8400,0.90354949) -- (axis cs:5.1600,0.90354949);
+\draw[draw=srblue] (axis cs:4.8400,0.96231109) -- (axis cs:5.1600,0.96231109);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(4.82500,0.94143093) (5.03500,0.95886391) (4.86000,0.95298183) (5.07000,0.94749969) (4.89500,0.96231109) (5.10500,0.94262862) (4.93000,0.93167597) (5.14000,0.94535840) (4.96500,0.93504697) (5.17500,0.94081509) (5.00000,0.73796445) (4.82500,0.91939712) (5.03500,0.94153947) (4.86000,0.93809569) (5.07000,0.96009642) (4.89500,0.95504552) (5.10500,0.95530003) (4.93000,0.92967618) (5.14000,0.94713181) (4.96500,0.94240957) (5.17500,0.94452399) (5.00000,0.94314820) (4.82500,0.96170324) (5.03500,0.95909965) (4.86000,0.94464821) (5.07000,0.91189253) (4.89500,0.92846584) (5.10500,0.90354949) (4.93000,0.90736634) (5.14000,0.83875418)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:5.7600,0.81837983) rectangle (axis cs:6.2400,0.85994861);
+\draw[draw=opencvorange,very thick] (axis cs:5.7600,0.84120131) -- (axis cs:6.2400,0.84120131);
+\draw[draw=opencvorange] (axis cs:6.0000,0.80850661) -- (axis cs:6.0000,0.81837983);
+\draw[draw=opencvorange] (axis cs:6.0000,0.85994861) -- (axis cs:6.0000,0.89915103);
+\draw[draw=opencvorange] (axis cs:5.8400,0.80850661) -- (axis cs:6.1600,0.80850661);
+\draw[draw=opencvorange] (axis cs:5.8400,0.89915103) -- (axis cs:6.1600,0.89915103);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(5.82500,0.82247871) (6.03500,0.89666659) (5.86000,0.80850661) (6.07000,0.83664978) (5.89500,0.85101599) (6.10500,0.89915103) (5.93000,0.88051301) (6.14000,0.72967905) (5.96500,0.81386268) (6.17500,0.84575284) (6.00000,0.81988555) (5.82500,0.85309380)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:6.7600,0.84912023) rectangle (axis cs:7.2400,0.89894848);
+\draw[draw=opencvorange,very thick] (axis cs:6.7600,0.86983916) -- (axis cs:7.2400,0.86983916);
+\draw[draw=opencvorange] (axis cs:7.0000,0.83056617) -- (axis cs:7.0000,0.84912023);
+\draw[draw=opencvorange] (axis cs:7.0000,0.89894848) -- (axis cs:7.0000,0.92947882);
+\draw[draw=opencvorange] (axis cs:6.8400,0.83056617) -- (axis cs:7.1600,0.83056617);
+\draw[draw=opencvorange] (axis cs:6.8400,0.92947882) -- (axis cs:7.1600,0.92947882);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(6.82500,0.90499377) (7.03500,0.89827532) (6.86000,0.83278120) (7.07000,0.86600679) (6.89500,0.85456657) (7.10500,0.92947882) (6.93000,0.90096796) (7.14000,0.54951423) (6.96500,0.86046576) (7.17500,0.88087237) (7.00000,0.87367153) (6.82500,0.83056617)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:7.7600,0.86463478) rectangle (axis cs:8.2400,0.92815194);
+\draw[draw=opencvorange,very thick] (axis cs:7.7600,0.87785855) -- (axis cs:8.2400,0.87785855);
+\draw[draw=opencvorange] (axis cs:8.0000,0.81722265) -- (axis cs:8.0000,0.86463478);
+\draw[draw=opencvorange] (axis cs:8.0000,0.92815194) -- (axis cs:8.0000,0.94688815);
+\draw[draw=opencvorange] (axis cs:7.8400,0.81722265) -- (axis cs:8.1600,0.81722265);
+\draw[draw=opencvorange] (axis cs:7.8400,0.94688815) -- (axis cs:8.1600,0.94688815);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(7.82500,0.93798709) (8.03500,0.92508149) (7.86000,0.86671519) (8.07000,0.88197660) (7.89500,0.85839355) (8.10500,0.94688815) (7.93000,0.93736327) (8.14000,0.63259667) (7.96500,0.87374049) (8.17500,0.89356929) (8.00000,0.87107819) (7.82500,0.81722265)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:8.7600,0.89885351) rectangle (axis cs:9.2400,0.92325698);
+\draw[draw=opencvorange,very thick] (axis cs:8.7600,0.90530699) -- (axis cs:9.2400,0.90530699);
+\draw[draw=opencvorange] (axis cs:9.0000,0.87310010) -- (axis cs:9.0000,0.89885351);
+\draw[draw=opencvorange] (axis cs:9.0000,0.92325698) -- (axis cs:9.0000,0.93594718);
+\draw[draw=opencvorange] (axis cs:8.8400,0.87310010) -- (axis cs:9.1600,0.87310010);
+\draw[draw=opencvorange] (axis cs:8.8400,0.93594718) -- (axis cs:9.1600,0.93594718);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(8.82500,0.89950788) (9.03500,0.92933238) (8.86000,0.90506411) (9.07000,0.91107994) (8.89500,0.93594718) (9.10500,0.89999992) (8.93000,0.86196589) (9.14000,0.91392934) (8.96500,0.89740139) (9.17500,0.87310010) (9.00000,0.73972338) (8.82500,0.90309453) (9.03500,0.93195891) (8.86000,0.92037660) (9.07000,0.93034565) (8.89500,0.91388708) (9.10500,0.90547472) (8.93000,0.89278400) (9.14000,0.92211592) (8.96500,0.90181631) (9.17500,0.92396992) (9.00000,0.92363733) (8.82500,0.93128735) (9.03500,0.92530489) (8.86000,0.90513927) (9.07000,0.89863539) (8.89500,0.92100054) (9.10500,0.88109690) (8.93000,0.90082628) (9.14000,0.85946685)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:9.7600,0.86110097) rectangle (axis cs:10.2400,0.91744667);
+\draw[draw=opencvorange,very thick] (axis cs:9.7600,0.89475387) -- (axis cs:10.2400,0.89475387);
+\draw[draw=opencvorange] (axis cs:10.0000,0.78968936) -- (axis cs:10.0000,0.86110097);
+\draw[draw=opencvorange] (axis cs:10.0000,0.91744667) -- (axis cs:10.0000,0.94143075);
+\draw[draw=opencvorange] (axis cs:9.8400,0.78968936) -- (axis cs:10.1600,0.78968936);
+\draw[draw=opencvorange] (axis cs:9.8400,0.94143075) -- (axis cs:10.1600,0.94143075);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(9.82500,0.78968936) (10.03500,0.88538319) (9.86000,0.87881136) (10.07000,0.87779808) (9.89500,0.93145567) (10.10500,0.90424109) (9.93000,0.87273228) (10.14000,0.91785610) (9.96500,0.91127688) (10.17500,0.91621840) (10.00000,0.74381506) (9.82500,0.91057813) (10.03500,0.94023371) (9.86000,0.90902609) (10.07000,0.92057323) (9.89500,0.91852105) (10.10500,0.90806866) (9.93000,0.84676844) (10.14000,0.30046159) (9.96500,0.77427459) (10.17500,0.85722387) (10.00000,0.90083736) (9.82500,0.94143075) (10.03500,0.94141418) (9.86000,0.85232300) (10.07000,0.88621658) (9.89500,0.93656898) (10.10500,0.88867038) (9.93000,0.88704973) (10.14000,0.82086974)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:10.7600,0.93016963) rectangle (axis cs:11.2400,0.94907686);
+\draw[draw=opencvorange,very thick] (axis cs:10.7600,0.94328442) -- (axis cs:11.2400,0.94328442);
+\draw[draw=opencvorange] (axis cs:11.0000,0.90687996) -- (axis cs:11.0000,0.93016963);
+\draw[draw=opencvorange] (axis cs:11.0000,0.94907686) -- (axis cs:11.0000,0.96354711);
+\draw[draw=opencvorange] (axis cs:10.8400,0.90687996) -- (axis cs:11.1600,0.90687996);
+\draw[draw=opencvorange] (axis cs:10.8400,0.96354711) -- (axis cs:11.1600,0.96354711);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(10.82500,0.93135941) (11.03500,0.95173323) (10.86000,0.94944042) (11.07000,0.94338793) (10.89500,0.96093565) (11.10500,0.92977303) (10.93000,0.93619847) (11.14000,0.94212973) (10.96500,0.93758231) (11.17500,0.94420797) (11.00000,0.76093566) (10.82500,0.92965460) (11.03500,0.94798619) (10.86000,0.94412750) (11.07000,0.95817518) (10.89500,0.95654339) (11.10500,0.95699233) (10.93000,0.92838335) (11.14000,0.94526923) (10.96500,0.94696921) (11.17500,0.94222075) (11.00000,0.94318092) (10.82500,0.96354711) (11.03500,0.95901340) (10.86000,0.94431031) (11.07000,0.91763699) (10.89500,0.93203664) (11.10500,0.90687996) (10.93000,0.90819860) (11.14000,0.84061998)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:11.7600,0.81555872) rectangle (axis cs:12.2400,0.84769672);
+\draw[draw=incompletegray,very thick] (axis cs:11.7600,0.81907484) -- (axis cs:12.2400,0.81907484);
+\draw[draw=incompletegray] (axis cs:12.0000,0.76816279) -- (axis cs:12.0000,0.81555872);
+\draw[draw=incompletegray] (axis cs:12.0000,0.84769672) -- (axis cs:12.0000,0.86596113);
+\draw[draw=incompletegray] (axis cs:11.8400,0.76816279) -- (axis cs:12.1600,0.76816279);
+\draw[draw=incompletegray] (axis cs:11.8400,0.86596113) -- (axis cs:12.1600,0.86596113);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(11.82500,0.76816279) (12.03500,0.90215433) (11.86000,0.80717695) (12.07000,0.81835264) (11.89500,0.81950766) (12.10500,0.90541893) (11.93000,0.86596113) (12.14000,0.78435051) (11.96500,0.81853002) (12.17500,0.83569479) (12.00000,0.81864202) (11.82500,0.84160858)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:12.7600,0.81711604) rectangle (axis cs:13.2400,0.85798474);
+\draw[draw=incompletegray,very thick] (axis cs:12.7600,0.83537981) -- (axis cs:13.2400,0.83537981);
+\draw[draw=incompletegray] (axis cs:13.0000,0.78376359) -- (axis cs:13.0000,0.81711604);
+\draw[draw=incompletegray] (axis cs:13.0000,0.85798474) -- (axis cs:13.0000,0.90169370);
+\draw[draw=incompletegray] (axis cs:12.8400,0.78376359) -- (axis cs:13.1600,0.78376359);
+\draw[draw=incompletegray] (axis cs:12.8400,0.90169370) -- (axis cs:13.1600,0.90169370);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(12.82500,0.79505688) (13.03500,0.86490542) (12.86000,0.82620925) (13.07000,0.83933336) (12.89500,0.83142626) (13.10500,0.92384553) (12.93000,0.90169370) (13.14000,0.23587994) (12.96500,0.78376359) (13.17500,0.85395694) (13.00000,0.85567784) (12.82500,0.82446909)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:13.7600,0.85373260) rectangle (axis cs:14.2400,0.90017278);
+\draw[draw=incompletegray,very thick] (axis cs:13.7600,0.86466640) -- (axis cs:14.2400,0.86466640);
+\draw[draw=incompletegray] (axis cs:14.0000,0.80532503) -- (axis cs:14.0000,0.85373260);
+\draw[draw=incompletegray] (axis cs:14.0000,0.90017278) -- (axis cs:14.0000,0.93785763);
+\draw[draw=incompletegray] (axis cs:13.8400,0.80532503) -- (axis cs:14.1600,0.80532503);
+\draw[draw=incompletegray] (axis cs:13.8400,0.93785763) -- (axis cs:14.1600,0.93785763);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(13.82500,0.85977238) (14.03500,0.90804654) (13.86000,0.86258161) (14.07000,0.86293226) (13.89500,0.83561325) (14.10500,0.93785763) (13.93000,0.92852241) (14.14000,0.30716640) (13.96500,0.86956769) (14.17500,0.89754820) (14.00000,0.86640054) (13.82500,0.80532503)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:14.7600,0.82396905) rectangle (axis cs:15.2400,0.88394712);
+\draw[draw=incompletegray,very thick] (axis cs:14.7600,0.84363681) -- (axis cs:15.2400,0.84363681);
+\draw[draw=incompletegray] (axis cs:15.0000,0.74262744) -- (axis cs:15.0000,0.82396905);
+\draw[draw=incompletegray] (axis cs:15.0000,0.88394712) -- (axis cs:15.0000,0.91786832);
+\draw[draw=incompletegray] (axis cs:14.8400,0.74262744) -- (axis cs:15.1600,0.74262744);
+\draw[draw=incompletegray] (axis cs:14.8400,0.91786832) -- (axis cs:15.1600,0.91786832);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(14.82500,0.68545330) (15.03500,0.82548857) (14.86000,0.82346255) (15.07000,0.82862717) (14.89500,0.88424075) (15.10500,0.85422695) (14.93000,0.78724533) (15.14000,0.88951212) (14.96500,0.87398976) (15.17500,0.83994055) (15.00000,0.72405624) (14.82500,0.88190377) (15.03500,0.84241325) (14.86000,0.89997977) (15.07000,0.89568484) (14.89500,0.86709994) (15.10500,0.83897460) (14.93000,0.75009608) (15.14000,0.32894564) (14.96500,0.47181505) (15.17500,0.74262744) (15.00000,0.84486037) (14.82500,0.89404523) (15.03500,0.88477278) (14.86000,0.84095520) (15.07000,0.88306624) (14.89500,0.91786832) (15.10500,0.85347986) (14.93000,0.89206797) (15.14000,0.84218979)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:15.7600,0.81944068) rectangle (axis cs:16.2400,0.89679377);
+\draw[draw=incompletegray,very thick] (axis cs:15.7600,0.86419582) -- (axis cs:16.2400,0.86419582);
+\draw[draw=incompletegray] (axis cs:16.0000,0.70942366) -- (axis cs:16.0000,0.81944068);
+\draw[draw=incompletegray] (axis cs:16.0000,0.89679377) -- (axis cs:16.0000,0.93187869);
+\draw[draw=incompletegray] (axis cs:15.8400,0.70942366) -- (axis cs:16.1600,0.70942366);
+\draw[draw=incompletegray] (axis cs:15.8400,0.93187869) -- (axis cs:16.1600,0.93187869);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(15.82500,0.68011642) (16.03500,0.84664237) (15.86000,0.84337437) (16.07000,0.81885922) (15.89500,0.89821231) (16.10500,0.86202788) (15.93000,0.82357162) (16.14000,0.89826584) (15.96500,0.87771475) (16.17500,0.85574073) (16.00000,0.70942366) (15.82500,0.89515918) (16.03500,0.92841685) (15.86000,0.89733863) (16.07000,0.90709609) (15.89500,0.85403723) (16.10500,0.86949277) (15.93000,0.80957788) (16.14000,0.31283340) (15.96500,0.61197150) (16.17500,0.75151086) (16.00000,0.86636376) (15.82500,0.92508209) (16.03500,0.91591185) (15.86000,0.82118505) (16.07000,0.86856645) (15.89500,0.93187869) (16.10500,0.88128847) (15.93000,0.87621456) (16.14000,0.79602629)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:16.7600,0.85998136) rectangle (axis cs:17.2400,0.92536606);
+\draw[draw=incompletegray,very thick] (axis cs:16.7600,0.90007579) -- (axis cs:17.2400,0.90007579);
+\draw[draw=incompletegray] (axis cs:17.0000,0.79637659) -- (axis cs:17.0000,0.85998136);
+\draw[draw=incompletegray] (axis cs:17.0000,0.92536606) -- (axis cs:17.0000,0.94949466);
+\draw[draw=incompletegray] (axis cs:16.8400,0.79637659) -- (axis cs:17.1600,0.79637659);
+\draw[draw=incompletegray] (axis cs:16.8400,0.94949466) -- (axis cs:17.1600,0.94949466);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(16.82500,0.67682254) (17.03500,0.80422217) (16.86000,0.89963657) (17.07000,0.89375359) (16.89500,0.94113928) (17.10500,0.91474378) (16.93000,0.89874470) (17.14000,0.92886907) (16.96500,0.90051502) (17.17500,0.89383411) (17.00000,0.72714317) (16.82500,0.90637743) (17.03500,0.93927336) (16.86000,0.92664838) (17.07000,0.94605190) (16.89500,0.92776030) (17.10500,0.91923624) (16.93000,0.85042340) (17.14000,0.16046219) (16.96500,0.34543973) (17.17500,0.82207584) (17.00000,0.91147530) (16.82500,0.94949466) (17.03500,0.94398117) (16.86000,0.92151910) (17.07000,0.89957750) (16.89500,0.91767442) (17.10500,0.88865525) (16.93000,0.89442903) (17.14000,0.79637659)};
+\end{axis}
+\end{tikzpicture}
+\par\vspace{3pt}
+\begin{tikzpicture}
+\begin{axis}[height=6.6cm,width=0.98\linewidth,enlarge x limits=0.015,xmin=-0.7,ymin=0.0,ymax=0.41,xtick=data,xticklabels={{\shortstack{SR/A\\2/720p}},{\shortstack{SR/A\\2/qhd}},{\shortstack{SR/A\\2/low}},{\shortstack{SR/A\\5/720p}},{\shortstack{SR/A\\5/qhd}},{\shortstack{SR/A\\5/low}},{\shortstack{OPENCV/A\\2/720p}},{\shortstack{OPENCV/A\\2/qhd}},{\shortstack{OPENCV/A\\2/low}},{\shortstack{OPENCV/A\\5/720p}},{\shortstack{OPENCV/A\\5/qhd}},{\shortstack{OPENCV/A\\5/low}},{\shortstack{PH/A\\2/720p}},{\shortstack{PH/A\\2/qhd}},{\shortstack{PH/A\\2/low}},{\shortstack{PH/A\\5/720p}},{\shortstack{PH/A\\5/qhd}},{\shortstack{PH/A\\5/low}}},x tick label style={font=\tiny,rotate=55,anchor=east},ylabel style={font=\small},tick label style={font=\scriptsize},ylabel={LPIPS $\downarrow$},grid=major,grid style={gray!20},scaled y ticks=false,ytick={0.00,0.05,0.10,0.15,0.20,0.25,0.30,0.35,0.40},yticklabels={{0,00},{0,05},{0,10},{0,15},{0,20},{0,25},{0,30},{0,35},{0,40}},xtick={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17},boxplot/draw direction=y]
+\draw[fill=srblue!35,draw=srblue] (axis cs:-0.2400,0.07327271) rectangle (axis cs:0.2400,0.17723434);
+\draw[draw=srblue,very thick] (axis cs:-0.2400,0.09519080) -- (axis cs:0.2400,0.09519080);
+\draw[draw=srblue] (axis cs:0.0000,0.04019566) -- (axis cs:0.0000,0.07327271);
+\draw[draw=srblue] (axis cs:0.0000,0.17723434) -- (axis cs:0.0000,0.24336787);
+\draw[draw=srblue] (axis cs:-0.1600,0.04019566) -- (axis cs:0.1600,0.04019566);
+\draw[draw=srblue] (axis cs:-0.1600,0.24336787) -- (axis cs:0.1600,0.24336787);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(-0.17500,0.22533539) (0.03500,0.09148254) (-0.14000,0.04019566) (0.07000,0.14886454) (-0.10500,0.04692204) (0.10500,0.04366765) (-0.07000,0.17414202) (0.14000,0.24336787) (-0.03500,0.08593774) (0.17500,0.08205626) (0.00000,0.09889907) (-0.17500,0.18651131)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:0.7600,0.03492738) rectangle (axis cs:1.2400,0.14468189);
+\draw[draw=srblue,very thick] (axis cs:0.7600,0.06540123) -- (axis cs:1.2400,0.06540123);
+\draw[draw=srblue] (axis cs:1.0000,0.02812831) -- (axis cs:1.0000,0.03492738);
+\draw[draw=srblue] (axis cs:1.0000,0.14468189) -- (axis cs:1.0000,0.26438189);
+\draw[draw=srblue] (axis cs:0.8400,0.02812831) -- (axis cs:1.1600,0.02812831);
+\draw[draw=srblue] (axis cs:0.8400,0.26438189) -- (axis cs:1.1600,0.26438189);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(0.82500,0.15547499) (1.03500,0.02812831) (0.86000,0.03340951) (1.07000,0.12324627) (0.89500,0.03515783) (1.10500,0.04033315) (0.93000,0.14108419) (1.14000,0.26438189) (0.96500,0.07491139) (1.17500,0.03423605) (1.00000,0.05589107) (0.82500,0.21095282)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:1.7600,0.03424346) rectangle (axis cs:2.2400,0.11712707);
+\draw[draw=srblue,very thick] (axis cs:1.7600,0.08560087) -- (axis cs:2.2400,0.08560087);
+\draw[draw=srblue] (axis cs:2.0000,0.02577093) -- (axis cs:2.0000,0.03424346);
+\draw[draw=srblue] (axis cs:2.0000,0.11712707) -- (axis cs:2.0000,0.22873043);
+\draw[draw=srblue] (axis cs:1.8400,0.02577093) -- (axis cs:2.1600,0.02577093);
+\draw[draw=srblue] (axis cs:1.8400,0.22873043) -- (axis cs:2.1600,0.22873043);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(1.82500,0.12358962) (2.03500,0.05836441) (1.86000,0.03527934) (2.07000,0.11283733) (1.89500,0.02577093) (2.10500,0.03113579) (1.93000,0.11497289) (2.14000,0.22873043) (1.96500,0.03659080) (2.17500,0.02791156) (2.00000,0.11411367) (1.82500,0.16202718)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:2.7600,0.07219100) rectangle (axis cs:3.2400,0.16655421);
+\draw[draw=srblue,very thick] (axis cs:2.7600,0.11874144) -- (axis cs:3.2400,0.11874144);
+\draw[draw=srblue] (axis cs:3.0000,0.03517323) -- (axis cs:3.0000,0.07219100);
+\draw[draw=srblue] (axis cs:3.0000,0.16655421) -- (axis cs:3.0000,0.22846022);
+\draw[draw=srblue] (axis cs:2.8400,0.03517323) -- (axis cs:3.1600,0.03517323);
+\draw[draw=srblue] (axis cs:2.8400,0.22846022) -- (axis cs:3.1600,0.22846022);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(2.82500,0.15897086) (3.03500,0.16688758) (2.86000,0.13941109) (3.07000,0.16130766) (2.89500,0.07915004) (3.10500,0.03517323) (2.93000,0.04234955) (3.14000,0.08076476) (2.96500,0.13950266) (3.17500,0.11096464) (3.00000,0.07249450) (2.82500,0.13276899) (3.03500,0.04102162) (2.86000,0.03911531) (3.07000,0.11674719) (2.89500,0.18494004) (3.10500,0.21082196) (2.93000,0.22846022) (3.14000,0.17975336) (2.96500,0.09769374) (3.17500,0.07208984) (3.00000,0.06317736) (2.82500,0.07135741) (3.03500,0.07647656) (2.86000,0.12073569) (3.07000,0.06195468) (2.89500,0.16555408) (3.10500,0.20335189) (2.93000,0.20557319) (3.14000,0.21306908)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:3.7600,0.07720669) rectangle (axis cs:4.2400,0.15829272);
+\draw[draw=srblue,very thick] (axis cs:3.7600,0.11267398) -- (axis cs:4.2400,0.11267398);
+\draw[draw=srblue] (axis cs:4.0000,0.03229240) -- (axis cs:4.0000,0.07720669);
+\draw[draw=srblue] (axis cs:4.0000,0.15829272) -- (axis cs:4.0000,0.24895056);
+\draw[draw=srblue] (axis cs:3.8400,0.03229240) -- (axis cs:4.1600,0.03229240);
+\draw[draw=srblue] (axis cs:3.8400,0.24895056) -- (axis cs:4.1600,0.24895056);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(3.82500,0.22142228) (4.03500,0.15521812) (3.86000,0.14211753) (4.07000,0.15931758) (3.89500,0.08077903) (4.10500,0.03273053) (3.93000,0.04038324) (4.14000,0.10442144) (3.96500,0.11391403) (4.17500,0.09311768) (4.00000,0.06441022) (3.82500,0.11143392) (4.03500,0.03229240) (3.86000,0.03980432) (4.07000,0.12145402) (3.89500,0.17532702) (4.10500,0.14874174) (3.93000,0.20150492) (4.14000,0.24895056) (3.96500,0.04144708) (4.17500,0.07620457) (4.00000,0.08380488) (3.82500,0.06169388) (4.03500,0.08021306) (3.86000,0.18553299) (4.07000,0.08861884) (3.89500,0.14390750) (4.10500,0.11612766) (3.93000,0.19097577) (4.14000,0.22095305)};
+\draw[fill=srblue!35,draw=srblue] (axis cs:4.7600,0.04980426) rectangle (axis cs:5.2400,0.11338810);
+\draw[draw=srblue,very thick] (axis cs:4.7600,0.08222709) -- (axis cs:5.2400,0.08222709);
+\draw[draw=srblue] (axis cs:5.0000,0.02160352) -- (axis cs:5.0000,0.04980426);
+\draw[draw=srblue] (axis cs:5.0000,0.11338810) -- (axis cs:5.0000,0.14685208);
+\draw[draw=srblue] (axis cs:4.8400,0.02160352) -- (axis cs:5.1600,0.02160352);
+\draw[draw=srblue] (axis cs:4.8400,0.14685208) -- (axis cs:5.1600,0.14685208);
+\addplot[only marks,mark=*,mark size=0.65pt,color=srblue!80!black,opacity=0.45] coordinates {(4.82500,0.09813283) (5.03500,0.10018261) (4.86000,0.09566505) (5.07000,0.11366470) (4.89500,0.06505200) (5.10500,0.02621048) (4.93000,0.02952126) (5.14000,0.07411341) (4.96500,0.09031973) (5.17500,0.07424329) (5.00000,0.05387955) (4.82500,0.09240007) (5.03500,0.02160352) (4.86000,0.03070027) (5.07000,0.09021088) (4.89500,0.13113467) (5.10500,0.12770790) (4.93000,0.13664149) (5.14000,0.12088810) (4.96500,0.06964797) (5.17500,0.06327763) (5.00000,0.04849471) (4.82500,0.04344469) (5.03500,0.03914160) (4.86000,0.02862783) (5.07000,0.05373289) (4.89500,0.11255831) (5.10500,0.12432534) (4.93000,0.14685208) (5.14000,0.13685685)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:5.7600,0.07749947) rectangle (axis cs:6.2400,0.18647460);
+\draw[draw=opencvorange,very thick] (axis cs:5.7600,0.09841763) -- (axis cs:6.2400,0.09841763);
+\draw[draw=opencvorange] (axis cs:6.0000,0.03901754) -- (axis cs:6.0000,0.07749947);
+\draw[draw=opencvorange] (axis cs:6.0000,0.18647460) -- (axis cs:6.0000,0.22863749);
+\draw[draw=opencvorange] (axis cs:5.8400,0.03901754) -- (axis cs:6.1600,0.03901754);
+\draw[draw=opencvorange] (axis cs:5.8400,0.22863749) -- (axis cs:6.1600,0.22863749);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(5.82500,0.21276489) (6.03500,0.08827429) (5.86000,0.03901754) (6.07000,0.15888798) (5.89500,0.05076877) (6.10500,0.04393864) (5.93000,0.18496130) (6.14000,0.22863749) (5.96500,0.08757871) (6.17500,0.08640970) (6.00000,0.10856098) (5.82500,0.19101450)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:6.7600,0.04124899) rectangle (axis cs:7.2400,0.16740650);
+\draw[draw=opencvorange,very thick] (axis cs:6.7600,0.06998131) -- (axis cs:7.2400,0.06998131);
+\draw[draw=opencvorange] (axis cs:7.0000,0.03331461) -- (axis cs:7.0000,0.04124899);
+\draw[draw=opencvorange] (axis cs:7.0000,0.16740650) -- (axis cs:7.0000,0.23784141);
+\draw[draw=opencvorange] (axis cs:6.8400,0.03331461) -- (axis cs:7.1600,0.03331461);
+\draw[draw=opencvorange] (axis cs:6.8400,0.23784141) -- (axis cs:7.1600,0.23784141);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(6.82500,0.17314407) (7.03500,0.03331461) (6.86000,0.04033794) (7.07000,0.13016704) (6.89500,0.04220705) (7.10500,0.04155267) (6.93000,0.16549398) (7.14000,0.23784141) (6.96500,0.08116400) (7.17500,0.03588915) (7.00000,0.05879863) (6.82500,0.20328765)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:7.7600,0.03628329) rectangle (axis cs:8.2400,0.13389711);
+\draw[draw=opencvorange,very thick] (axis cs:7.7600,0.08808884) -- (axis cs:8.2400,0.08808884);
+\draw[draw=opencvorange] (axis cs:8.0000,0.03096925) -- (axis cs:8.0000,0.03628329);
+\draw[draw=opencvorange] (axis cs:8.0000,0.13389711) -- (axis cs:8.0000,0.21383736);
+\draw[draw=opencvorange] (axis cs:7.8400,0.03096925) -- (axis cs:8.1600,0.03096925);
+\draw[draw=opencvorange] (axis cs:7.8400,0.21383736) -- (axis cs:8.1600,0.21383736);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(7.82500,0.13733888) (8.03500,0.05827890) (7.86000,0.03665780) (8.07000,0.13274986) (7.89500,0.03096925) (8.10500,0.03515977) (7.93000,0.12204233) (8.14000,0.21383736) (7.96500,0.03671309) (8.17500,0.03430722) (8.00000,0.11789878) (7.82500,0.18044151)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:8.7600,0.06899400) rectangle (axis cs:9.2400,0.15584948);
+\draw[draw=opencvorange,very thick] (axis cs:8.7600,0.12106510) -- (axis cs:9.2400,0.12106510);
+\draw[draw=opencvorange] (axis cs:9.0000,0.03250270) -- (axis cs:9.0000,0.06899400);
+\draw[draw=opencvorange] (axis cs:9.0000,0.15584948) -- (axis cs:9.0000,0.21772835);
+\draw[draw=opencvorange] (axis cs:8.8400,0.03250270) -- (axis cs:9.1600,0.03250270);
+\draw[draw=opencvorange] (axis cs:8.8400,0.21772835) -- (axis cs:9.1600,0.21772835);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(8.82500,0.14506269) (9.03500,0.14894581) (8.86000,0.12230444) (9.07000,0.14508915) (8.89500,0.07753102) (9.10500,0.03250270) (8.93000,0.03822134) (9.14000,0.08250804) (8.96500,0.15181309) (9.17500,0.15431237) (9.00000,0.07356180) (8.82500,0.12878944) (9.03500,0.03579132) (8.86000,0.03576364) (9.07000,0.10005991) (8.89500,0.18065649) (9.10500,0.17693654) (8.93000,0.19293875) (9.14000,0.15636185) (8.96500,0.09810144) (9.17500,0.07459036) (9.00000,0.05572759) (8.82500,0.06697358) (9.03500,0.06747140) (8.86000,0.11982577) (9.07000,0.06172965) (8.89500,0.16477686) (9.10500,0.19571480) (8.93000,0.19672677) (9.14000,0.21772835)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:9.7600,0.08313930) rectangle (axis cs:10.2400,0.17482729);
+\draw[draw=opencvorange,very thick] (axis cs:9.7600,0.11529533) -- (axis cs:10.2400,0.11529533);
+\draw[draw=opencvorange] (axis cs:10.0000,0.03203192) -- (axis cs:10.0000,0.08313930);
+\draw[draw=opencvorange] (axis cs:10.0000,0.17482729) -- (axis cs:10.0000,0.31040990);
+\draw[draw=opencvorange] (axis cs:9.8400,0.03203192) -- (axis cs:10.1600,0.03203192);
+\draw[draw=opencvorange] (axis cs:9.8400,0.31040990) -- (axis cs:10.1600,0.31040990);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(9.82500,0.22780666) (10.03500,0.16622719) (9.86000,0.15698084) (10.07000,0.18690626) (9.89500,0.08157489) (10.10500,0.03419012) (9.93000,0.03952821) (10.14000,0.11307585) (9.96500,0.11190323) (10.17500,0.10273767) (10.00000,0.06399666) (9.82500,0.11751480) (10.03500,0.03203192) (9.86000,0.04355721) (10.07000,0.12207996) (9.89500,0.17550519) (10.10500,0.17279357) (9.93000,0.23058839) (10.14000,0.31040990) (9.96500,0.05607173) (10.17500,0.08783255) (10.00000,0.09271652) (9.82500,0.06827614) (10.03500,0.08888023) (9.86000,0.18799689) (10.07000,0.08891207) (9.89500,0.14671504) (10.10500,0.12176968) (9.93000,0.19555563) (10.14000,0.22128144)};
+\draw[fill=opencvorange!35,draw=opencvorange] (axis cs:10.7600,0.04831159) rectangle (axis cs:11.2400,0.11885690);
+\draw[draw=opencvorange,very thick] (axis cs:10.7600,0.08660887) -- (axis cs:11.2400,0.08660887);
+\draw[draw=opencvorange] (axis cs:11.0000,0.02239552) -- (axis cs:11.0000,0.04831159);
+\draw[draw=opencvorange] (axis cs:11.0000,0.11885690) -- (axis cs:11.0000,0.14695428);
+\draw[draw=opencvorange] (axis cs:10.8400,0.02239552) -- (axis cs:11.1600,0.02239552);
+\draw[draw=opencvorange] (axis cs:10.8400,0.14695428) -- (axis cs:11.1600,0.14695428);
+\addplot[only marks,mark=*,mark size=0.65pt,color=opencvorange!80!black,opacity=0.45] coordinates {(10.82500,0.11032863) (11.03500,0.11896231) (10.86000,0.10530470) (11.07000,0.12529747) (10.89500,0.05946340) (11.10500,0.02719054) (10.93000,0.02900571) (11.14000,0.07257113) (10.96500,0.09758350) (11.17500,0.08502212) (11.00000,0.04755516) (10.82500,0.09169647) (11.03500,0.02239552) (10.86000,0.02849463) (11.07000,0.08819561) (10.89500,0.12195931) (11.10500,0.11917918) (10.93000,0.12999135) (11.14000,0.11802337) (10.96500,0.06455208) (11.17500,0.06022929) (11.00000,0.05058088) (10.82500,0.03896234) (11.03500,0.03895956) (10.86000,0.02750047) (11.07000,0.06133940) (10.89500,0.11854066) (11.10500,0.12740892) (10.93000,0.14085703) (11.14000,0.14695428)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:11.7600,0.07742072) rectangle (axis cs:12.2400,0.18635831);
+\draw[draw=incompletegray,very thick] (axis cs:11.7600,0.09876820) -- (axis cs:12.2400,0.09876820);
+\draw[draw=incompletegray] (axis cs:12.0000,0.04027613) -- (axis cs:12.0000,0.07742072);
+\draw[draw=incompletegray] (axis cs:12.0000,0.18635831) -- (axis cs:12.0000,0.26173866);
+\draw[draw=incompletegray] (axis cs:11.8400,0.04027613) -- (axis cs:12.1600,0.04027613);
+\draw[draw=incompletegray] (axis cs:11.8400,0.26173866) -- (axis cs:12.1600,0.26173866);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(11.82500,0.26173866) (12.03500,0.08696248) (11.86000,0.04027613) (12.07000,0.16143088) (11.89500,0.05151702) (12.10500,0.04393195) (11.93000,0.18360753) (12.14000,0.22647759) (11.96500,0.08793081) (12.17500,0.08605529) (12.00000,0.10960560) (11.82500,0.19461066)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:12.7600,0.04322581) rectangle (axis cs:13.2400,0.16513267);
+\draw[draw=incompletegray,very thick] (axis cs:12.7600,0.07660978) -- (axis cs:13.2400,0.07660978);
+\draw[draw=incompletegray] (axis cs:13.0000,0.04102188) -- (axis cs:13.0000,0.04322581);
+\draw[draw=incompletegray] (axis cs:13.0000,0.16513267) -- (axis cs:13.0000,0.30947775);
+\draw[draw=incompletegray] (axis cs:12.8400,0.04102188) -- (axis cs:13.1600,0.04102188);
+\draw[draw=incompletegray] (axis cs:12.8400,0.30947775) -- (axis cs:13.1600,0.30947775);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(12.82500,0.24621266) (13.03500,0.04222032) (12.86000,0.04271788) (13.07000,0.14550823) (12.89500,0.04569387) (13.10500,0.04339512) (12.93000,0.14999627) (13.14000,0.30947775) (12.96500,0.09320968) (13.17500,0.04102188) (13.00000,0.06000987) (12.82500,0.21054189)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:13.7600,0.04142131) rectangle (axis cs:14.2400,0.16620729);
+\draw[draw=incompletegray,very thick] (axis cs:13.7600,0.09979399) -- (axis cs:14.2400,0.09979399);
+\draw[draw=incompletegray] (axis cs:14.0000,0.03601782) -- (axis cs:14.0000,0.04142131);
+\draw[draw=incompletegray] (axis cs:14.0000,0.16620729) -- (axis cs:14.0000,0.30457994);
+\draw[draw=incompletegray] (axis cs:13.8400,0.03601782) -- (axis cs:14.1600,0.03601782);
+\draw[draw=incompletegray] (axis cs:13.8400,0.30457994) -- (axis cs:14.1600,0.30457994);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(13.82500,0.19421938) (14.03500,0.08147806) (13.86000,0.04469606) (14.07000,0.16038595) (13.89500,0.03706902) (14.10500,0.03803401) (13.93000,0.13808802) (14.14000,0.30457994) (13.96500,0.04255041) (14.17500,0.03601782) (14.00000,0.11810991) (13.82500,0.18367130)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:14.7600,0.09162173) rectangle (axis cs:15.2400,0.20693498);
+\draw[draw=incompletegray,very thick] (axis cs:14.7600,0.16620926) -- (axis cs:15.2400,0.16620926);
+\draw[draw=incompletegray] (axis cs:15.0000,0.02225595) -- (axis cs:15.0000,0.09162173);
+\draw[draw=incompletegray] (axis cs:15.0000,0.20693498) -- (axis cs:15.0000,0.31448114);
+\draw[draw=incompletegray] (axis cs:14.8400,0.02225595) -- (axis cs:15.1600,0.02225595);
+\draw[draw=incompletegray] (axis cs:14.8400,0.31448114) -- (axis cs:15.1600,0.31448114);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(14.82500,0.27715540) (15.03500,0.26204205) (14.86000,0.19250725) (15.07000,0.19075394) (14.89500,0.10933745) (15.10500,0.03979418) (14.93000,0.05168427) (15.14000,0.02225595) (14.96500,0.17202573) (15.17500,0.16720197) (15.00000,0.08168224) (14.82500,0.14594348) (15.03500,0.05848859) (14.86000,0.04433330) (15.07000,0.14069025) (14.89500,0.22062969) (15.10500,0.23289949) (14.93000,0.31448114) (15.14000,0.38163921) (14.96500,0.19579262) (15.17500,0.11606228) (15.00000,0.08963419) (14.82500,0.09758432) (15.03500,0.10142712) (14.86000,0.17854914) (15.07000,0.07314316) (14.89500,0.16521655) (15.10500,0.20845975) (14.93000,0.20236069) (15.14000,0.22871321)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:15.7600,0.08994183) rectangle (axis cs:16.2400,0.20267764);
+\draw[draw=incompletegray,very thick] (axis cs:15.7600,0.13472074) -- (axis cs:16.2400,0.13472074);
+\draw[draw=incompletegray] (axis cs:16.0000,0.03595643) -- (axis cs:16.0000,0.08994183);
+\draw[draw=incompletegray] (axis cs:16.0000,0.20267764) -- (axis cs:16.0000,0.33077818);
+\draw[draw=incompletegray] (axis cs:15.8400,0.03595643) -- (axis cs:16.1600,0.03595643);
+\draw[draw=incompletegray] (axis cs:15.8400,0.33077818) -- (axis cs:16.1600,0.33077818);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(15.82500,0.27465609) (16.03500,0.19794795) (15.86000,0.18575996) (16.07000,0.20881617) (15.89500,0.10344510) (16.10500,0.04344989) (15.93000,0.05531894) (16.14000,0.08494517) (15.96500,0.15078697) (16.17500,0.16075736) (16.00000,0.07817091) (15.82500,0.13438220) (16.03500,0.03595643) (15.86000,0.04694995) (16.07000,0.13505927) (15.89500,0.22848548) (16.10500,0.20425421) (15.93000,0.26263630) (16.14000,0.33077818) (15.96500,0.07921282) (16.17500,0.11635403) (16.00000,0.11613671) (15.82500,0.08544074) (16.03500,0.10479208) (15.86000,0.21095057) (16.07000,0.10955230) (15.89500,0.15218298) (16.10500,0.12527514) (15.93000,0.19776198) (16.14000,0.23938435)};
+\draw[fill=incompletegray!35,draw=incompletegray] (axis cs:16.7600,0.05999096) rectangle (axis cs:17.2400,0.16315698);
+\draw[draw=incompletegray,very thick] (axis cs:16.7600,0.11946404) -- (axis cs:17.2400,0.11946404);
+\draw[draw=incompletegray] (axis cs:17.0000,0.01832497) -- (axis cs:17.0000,0.05999096);
+\draw[draw=incompletegray] (axis cs:17.0000,0.16315698) -- (axis cs:17.0000,0.26260251);
+\draw[draw=incompletegray] (axis cs:16.8400,0.01832497) -- (axis cs:17.1600,0.01832497);
+\draw[draw=incompletegray] (axis cs:16.8400,0.26260251) -- (axis cs:17.1600,0.26260251);
+\addplot[only marks,mark=*,mark size=0.65pt,color=incompletegray!80!black,opacity=0.45] coordinates {(16.82500,0.26260251) (17.03500,0.22088683) (16.86000,0.15929241) (17.07000,0.17678785) (16.89500,0.07531059) (17.10500,0.04105068) (16.93000,0.04337811) (17.14000,0.01832497) (16.96500,0.13148841) (17.17500,0.13734084) (17.00000,0.06504032) (16.82500,0.11192924) (17.03500,0.02931327) (16.86000,0.03989280) (17.07000,0.10955259) (16.89500,0.15017532) (17.10500,0.16444516) (16.93000,0.19772828) (17.14000,0.35532910) (16.96500,0.17858037) (17.17500,0.09366009) (17.00000,0.07123837) (16.82500,0.05830783) (17.03500,0.05407052) (16.86000,0.04152600) (17.07000,0.07183149) (16.89500,0.12699884) (17.10500,0.15561503) (16.93000,0.15809372) (17.14000,0.17445037)};
+\end{axis}
+\end{tikzpicture}
+\par\vspace{3pt}
+\vspace{3pt}
+\begin{minipage}{0.98\linewidth}\scriptsize Jeder Punkt ist eine einzelne Evaluationsansicht aus \texttt{per\_frame} und liegt bewusst auf der zentralen x-Kategorie der zugehörigen Box; die Box zeigt Quartile und robuste 1,5-IQR-Whisker. Die STS-Boxplots enthalten nur vollständige Original-GS-A-Routen; die SuGaR-Boxplots enthalten alle zwölf vollständigen Coarse-Läufe. Die x-Beschriftung kodiert Kamera, FPS und Auflösung; es gibt deshalb keine separate Kamera-Legende. Unterschiedliche Auflösungen bleiben als separate Konfigurationen gekennzeichnet und werden nicht zu einer globalen Rangliste zusammengefasst.\end{minipage}
+\end{center}
+\end{document}

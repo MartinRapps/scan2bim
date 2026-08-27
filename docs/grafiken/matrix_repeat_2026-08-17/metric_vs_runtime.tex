@@ -1,0 +1,140 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1.0cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{statistics}
+\pgfplotsset{compat=1.18}
+\definecolor{srblue}{HTML}{2F6B9A}
+\definecolor{opencvorange}{HTML}{D97706}
+\definecolor{fps2blue}{HTML}{B9D7EA}
+\definecolor{fps5orange}{HTML}{F6C28B}
+\definecolor{stslightgreen}{HTML}{A7D8B1}
+\definecolor{stsstronggreen}{HTML}{208B3A}
+\definecolor{sugarlightpurple}{HTML}{CBB7E8}
+\definecolor{sugarstrongpurple}{HTML}{763A9B}
+\definecolor{stsedge}{HTML}{1D4E89}
+\definecolor{sugaredge}{HTML}{B45309}
+\definecolor{incompletegray}{HTML}{9CA3AF}
+\definecolor{deltared}{HTML}{B91C1C}
+\definecolor{deltagreen}{HTML}{15803D}
+\newcommand{\legendcircle}[1]{\tikz[baseline=-0.6ex]\node[draw=black,fill=#1,circle,minimum size=4.5pt,inner sep=0pt] {};}
+\newcommand{\legendsquare}[1]{\tikz[baseline=-0.6ex]\node[draw=black,fill=#1,rectangle,minimum size=4.5pt,inner sep=0pt] {};}
+\newcommand{\legendtriangle}[1]{\tikz[baseline=-0.6ex]\draw[draw=black,fill=#1,line width=0.4pt] (0,2.3pt)--(-2.3pt,-1.8pt)--(2.3pt,-1.8pt)--cycle;}
+\newcommand{\legendbordercircle}[1]{\tikz[baseline=-0.6ex]\node[draw=#1,fill=white,circle,minimum size=4.5pt,inner sep=0pt,line width=0.8pt] {};}
+\begin{document}
+\pagestyle{empty}
+\begin{center}
+{\Large\bfseries Bildmetriken im Verhältnis zur Laufzeit}\\[3pt]
+{\small Explorative Darstellung; Laufzeit = archivierte Pipeline-Segmentzeit STS→Postprocess}\\[8pt]
+\begin{tabular}{@{}ll@{\hspace{0.8cm}}ll@{\hspace{0.8cm}}ll@{}}
+\legendcircle{stsstronggreen} & Farbe: STS (grün) & \legendcircle{sugarstrongpurple} & Farbe: SuGaR-Coarse (lila) & & \\
+\legendcircle{stslightgreen} & Intensität: 2 FPS (blass) & \legendcircle{stsstronggreen} & Intensität: 5 FPS (kräftig) & & \\
+\legendcircle{white} & 720p / Kreis & \legendsquare{white} & QHD / Quadrat & \legendtriangle{white} & Low / Dreieck\\
+\legendbordercircle{srblue} & Rand: SR (blau) & \legendbordercircle{opencvorange} & Rand: OPENCV (orange) & \legendbordercircle{incompletegray} & Rand: PINHOLE (grau)\\
+\end{tabular}\par\vspace{8pt}
+\begin{tikzpicture}
+\begin{axis}[width=0.98\linewidth,height=5.7cm,xlabel={Archivierte Laufzeit STS→Postprocess (min)},ylabel={PSNR (dB) $\uparrow$},xmin=15,xmax=40,xtick={15,20,25,30,35,40},ymin=20,ymax=31,grid=major]
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(30.450000,26.43472655)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(23.416667,27.20227747)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(16.633333,27.53329738)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(33.283333,29.43136269)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(26.200000,28.32448623)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(18.416667,29.84945226)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(31.183333,26.63789327)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(25.400000,27.40253424)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(19.133333,27.50174141)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(32.316667,29.62055506)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(26.433333,27.63374775)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(18.133333,29.83129335)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(32.083333,26.74628133)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(26.666667,26.12395680)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(21.416667,26.29791524)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(34.950000,26.20737476)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(29.866667,26.31498760)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(23.400000,26.88207464)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(34.400000,21.64427790)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(26.433333,21.78840496)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(19.216667,21.97335241)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(37.300000,21.22287166)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(29.650000,21.38360296)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(21.516667,21.77501791)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(35.400000,21.63745354)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(28.400000,21.88344588)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(21.866667,21.76046466)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(36.666667,21.12845480)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(29.833333,21.30810001)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(20.983333,21.91248076)};
+\end{axis}\end{tikzpicture}\par\vspace{2pt}
+\begin{tikzpicture}
+\begin{axis}[width=0.98\linewidth,height=5.7cm,xlabel={Archivierte Laufzeit STS→Postprocess (min)},ylabel={SSIM $\uparrow$},xmin=15,xmax=40,xtick={15,20,25,30,35,40},ymin=0.68,ymax=1.0,grid=major]
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(30.450000,0.83750625)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(23.416667,0.84375028)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(16.633333,0.86402045)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(33.283333,0.89666861)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(26.200000,0.88654737)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(18.416667,0.93094735)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(31.183333,0.83810464)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(25.400000,0.84851337)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(19.133333,0.87021772)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(32.316667,0.90197567)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(26.433333,0.86567958)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(18.133333,0.93198098)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(32.083333,0.83213003)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(26.666667,0.79468482)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(21.416667,0.82844450)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(34.950000,0.81296965)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(29.866667,0.82779669)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(23.400000,0.84487853)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(34.400000,0.75282135)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(26.433333,0.74466826)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(19.216667,0.73409179)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(37.300000,0.77829448)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(29.650000,0.76856131)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(21.516667,0.76947999)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(35.400000,0.74278970)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(28.400000,0.74503899)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(21.866667,0.72157909)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(36.666667,0.77870085)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(29.833333,0.76224984)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(20.983333,0.77217281)};
+\end{axis}\end{tikzpicture}\par\vspace{2pt}
+\begin{tikzpicture}
+\begin{axis}[width=0.98\linewidth,height=5.7cm,xlabel={Archivierte Laufzeit STS→Postprocess (min)},ylabel={LPIPS $\downarrow$},xmin=15,xmax=40,xtick={15,20,25,30,35,40},ymin=0.05,ymax=0.2,grid=major]
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(30.450000,0.12228184)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(23.416667,0.09976729)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=srblue,line width=0.6pt}] coordinates {(16.633333,0.08927700)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(33.283333,0.12238796)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(26.200000,0.11922733)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=srblue,line width=0.6pt}] coordinates {(18.416667,0.08130772)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(31.183333,0.12340123)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(25.400000,0.10359985)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=opencvorange,line width=0.6pt}] coordinates {(19.133333,0.09469956)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(32.316667,0.11661723)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(26.433333,0.12818055)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=opencvorange,line width=0.6pt}] coordinates {(18.133333,0.08247017)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(32.083333,0.12784538)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(26.666667,0.11916712)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stslightgreen,draw=incompletegray,line width=0.6pt}] coordinates {(21.416667,0.11490832)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(34.950000,0.15874962)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(29.866667,0.14865334)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=stsstronggreen,draw=incompletegray,line width=0.6pt}] coordinates {(23.400000,0.12247473)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(34.400000,0.15446549)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(26.433333,0.12877836)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=srblue,line width=0.6pt}] coordinates {(19.216667,0.12619065)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(37.300000,0.15125681)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(29.650000,0.15200617)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=srblue,line width=0.6pt}] coordinates {(21.516667,0.12447236)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(35.400000,0.15680037)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(28.400000,0.12855165)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarlightpurple,draw=opencvorange,line width=0.6pt}] coordinates {(21.866667,0.12652283)};
+\addplot[only marks,mark=*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(36.666667,0.15150809)};
+\addplot[only marks,mark=square*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(29.833333,0.15912115)};
+\addplot[only marks,mark=triangle*,mark size=2.2pt,mark options={fill=sugarstrongpurple,draw=opencvorange,line width=0.6pt}] coordinates {(20.983333,0.12632000)};
+\end{axis}\end{tikzpicture}\par\vspace{2pt}
+\vspace{3pt}
+\begin{minipage}{0.98\linewidth}\scriptsize Die x-Achse zeigt die vollständige Dauer des archivierten Pipeline-Laufs zwischen Start und Ende in \texttt{run.md}; ältere Berichte ohne Start/Ende verwenden ersatzweise die Summe ihrer aufgezeichneten Schritte. SAM3/COLMAP sind nur enthalten, sofern sie innerhalb dieses archivierten Laufs lagen. Die Darstellung ist explorativ und kein Geometrie-Qualitätsranking.\end{minipage}
+\end{center}
+\end{document}

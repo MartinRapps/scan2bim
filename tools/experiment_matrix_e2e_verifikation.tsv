@@ -1,0 +1,10 @@
+# id                 camera_model   mesh_mode      coarse_iterations refinement_time
+# E2E-Verifikationsmatrix (Produktionskonfiguration, 5 FPS):
+#   exakt ein Varianteneintrag (opencv_a / Route A); der Runner-Loop ergibt
+#   daraus automatisch 720p, qhd und low bei 5 FPS = die drei Lauf-Presets.
+#   Zweck: gemessene GESAMTlaufzeiten (SAM3 + COLMAP + Warp + STS->Post +
+#   Render/Archiv) fuer die Preset-Anzeige und die PA-Zahlenangaben.
+#   Start: MATRIX_BATCH_ID=matrix_e2e_verifikation_<datum> \
+#          MATRIX_CONFIG=tools/experiment_matrix_e2e_verifikation.tsv \
+#          ./tools/run_experiment_matrix.sh --fps 5
+opencv_a             OPENCV         original_gs    -                  medium

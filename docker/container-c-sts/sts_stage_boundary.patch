@@ -1,0 +1,6 @@
+diff --git a/train.py b/train.py
+--- a/train.py
++++ b/train.py
+@@ -122,1 +122,1 @@
+-        elif iteration >= opt.stage1_iters and iteration < opt.stage1_iters + opt.stage2_iters: # only render small and middle objects
++        elif iteration > opt.stage1_iters and iteration <= opt.stage1_iters + opt.stage2_iters: # only render small and middle objects

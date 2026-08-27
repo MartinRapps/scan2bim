@@ -1,0 +1,44 @@
+\documentclass[a4paper,landscape]{article}
+\usepackage[margin=1.15cm]{geometry}
+\usepackage[table]{xcolor}
+\usepackage{booktabs,tabularx,array,makecell}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\definecolor{bestgreen}{HTML}{C6EFCE}
+\definecolor{goodgreen}{HTML}{E2F0D9}
+\definecolor{midyellow}{HTML}{FFF2CC}
+\definecolor{lowred}{HTML}{F4CCCC}
+\definecolor{failred}{HTML}{F4CCCC}
+\definecolor{incompleteorange}{HTML}{FCE4D6}
+\definecolor{missinggray}{HTML}{E7E6E6}
+\definecolor{neutral}{HTML}{F2F2F2}
+\definecolor{darkgray}{HTML}{666666}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+\renewcommand{\arraystretch}{1.32}
+\begin{document}
+\pagestyle{empty}
+\begin{center}
+{\Large\bfseries Matrixstatus}\\[3pt]
+{\small Archivstatus einschließlich der sechs historischen SIMPLE-RADIAL-A-Versuche}\\[10pt]
+\begin{tabularx}{0.98\linewidth}{>{\raggedright\arraybackslash}p{7.1cm}YY}
+\toprule
+\textbf{Konfiguration / Auflösung} & \multicolumn{1}{c}{\textbf{2 FPS}} & \multicolumn{1}{c}{\textbf{5 FPS}}\\
+\midrule
+SIMPLE\textsubscript{RADIAL} / A$^{*}$ / 720p & \cellcolor{bestgreen}\textbf{OK} & \cellcolor{bestgreen}\textbf{OK} \\
+SIMPLE\textsubscript{RADIAL} / A$^{*}$ / QHD & \cellcolor{failred}\textbf{FAIL} & \cellcolor{bestgreen}\textbf{OK} \\
+SIMPLE\textsubscript{RADIAL} / A$^{*}$ / Low & \cellcolor{failred}\textbf{FAIL} & \cellcolor{bestgreen}\textbf{OK} \\
+SIMPLE\textsubscript{RADIAL} / SuGaR / 720p & \cellcolor{failred}\textbf{FAIL} & \cellcolor{failred}\textbf{FAIL} \\
+SIMPLE\textsubscript{RADIAL} / SuGaR / QHD & \cellcolor{failred}\textbf{FAIL} & \cellcolor{failred}\textbf{FAIL} \\
+SIMPLE\textsubscript{RADIAL} / SuGaR / Low & \cellcolor{failred}\textbf{FAIL} & \cellcolor{failred}\textbf{FAIL} \\
+PINHOLE / A / 720p & \cellcolor{bestgreen}\textbf{OK} & \cellcolor{bestgreen}\textbf{OK} \\
+PINHOLE / A / QHD & \cellcolor{bestgreen}\textbf{OK} & \cellcolor{bestgreen}\textbf{OK} \\
+PINHOLE / A / Low & \cellcolor{bestgreen}\textbf{OK} & \cellcolor{bestgreen}\textbf{OK} \\
+OPENCV / A / 720p & \cellcolor{bestgreen}\textbf{OK} & \cellcolor{bestgreen}\textbf{OK} \\
+OPENCV / A / QHD & \cellcolor{bestgreen}\textbf{OK} & \cellcolor{bestgreen}\textbf{OK} \\
+OPENCV / A / Low & \cellcolor{bestgreen}\textbf{OK} & \cellcolor{bestgreen}\textbf{OK} \\
+\bottomrule
+\end{tabularx}
+\vspace{7pt}
+\begin{minipage}{0.98\linewidth}\scriptsize OK = Matrixlauf einschließlich Postprocess abgeschlossen. FAIL = Lauf nicht vollständig abgeschlossen. $^{*}$ bezeichnet die sechs historischen A-Läufe aus dem vorherigen Batch.\end{minipage}
+\end{center}
+\end{document}

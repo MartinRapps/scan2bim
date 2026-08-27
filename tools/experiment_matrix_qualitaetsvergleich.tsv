@@ -1,0 +1,9 @@
+# id                 camera_model   mesh_mode      coarse_iterations refinement_time
+# Qualitaetsvergleich fuer die PA-Screenshots (5 FPS):
+#   720p in allen drei Kameramodellen (Route A),
+#   qhd und low nur OPENCV (Route A),
+#   einmal 720p OPENCV mit SuGaR-Coarse.
+opencv_a             OPENCV         original_gs    -                  medium
+simple_radial_a      SIMPLE_RADIAL   original_gs    -                  medium
+pinhole_a            PINHOLE         original_gs    -                  medium
+opencv_sugar         OPENCV         sugar_coarse   9000               medium

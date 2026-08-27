@@ -1,0 +1,92 @@
+\section{Datengrundlage und Anwendungsrahmen}
+\label{sec:datengrundlage}
+
+\subsection{Alurohr als kontrollierter Testdatensatz}
+
+Die Projektarbeit verwendet eine etwa 48 Sekunden lange Videosequenz eines
+Alurohrs als kontrollierten Labordatensatz. Das Rohr repräsentiert ein dünnes,
+lineares Objekt, dessen Bildfläche sich mit Kameraposition, Blickwinkel und
+Auflösung deutlich verändert. Der Datensatz dient nicht als maßstäblicher
+Ersatz für ein im Baugraben liegendes Kabel. Er ermöglicht jedoch, die
+Datenübergaben und Fehlerfälle einer vollständigen Rekonstruktionskette unter
+wiederholbaren Bedingungen zu untersuchen.
+
+\subsection{Aufnahmekamera und Videoeinstellungen}
+
+Die Videosequenz wurde durchgehend mit der Hauptkamera (1x-Weitwinkelkamera)
+des Google Pixel 8 Pro aufgenommen. Diese Kamera besitzt laut
+Herstellerangaben einen 50-MP-Sensor mit einer Blende von $f/1{,}68$, einem
+Sichtfeld von etwa $82^\circ$ und einer Sensorgröße von $1/1{,}31$ Zoll;
+Google weist für die Weitwinkelkamera außerdem optische und elektronische
+Bildstabilisierung aus \parencite{googlePixel8ProSpecs}. Die Aufnahme erfolgte
+mit der OpenCamera-App. OpenCamera unterstützt eine Belichtungssperre sowie
+die Auswahl der Videoauflösung; die automatische Bildausrichtung (Auto-Level)
+ist eine separate, optionale Funktion \parencite{openCameraHelp}.
+
+Für den verwendeten Datensatz waren die Belichtung fest eingestellt, die
+Auflösung auf $1920\times1080$ Pixel (Full HD) gesetzt und die automatische
+Bildlagenkorrektur beziehungsweise nachträgliche Bildausrichtung deaktiviert.
+Die Rohdatei \mbox{\path{data/01_raw/Alurohr_THWS.mp4}} ist ein H.264-Video mit
+$1920\times1080$ Pixeln, nominal 30 FPS, 1441 Bildern und einer Dauer von rund
+48 Sekunden. Die späteren 5- beziehungsweise 2-FPS-
+Profile sowie die Zielauflösungen 720p, qHD und Low sind daraus abgeleitete
+Pipeline-Arbeitsprofile und keine zusätzlichen Kameraaufnahmen.
+
+Die Bezeichnung \enquote{unverfälschtes Video} ist dabei auf die fehlende zusätzliche
+App-seitige Bildausrichtung und die festgehaltene Belichtung zu beziehen. Die
+Aufnahme ist kein Rohsensordatensatz: Das Pixel verarbeitet das Signal bereits
+über seine interne Bildverarbeitung und speichert hier ein H.264-Video.
+Insbesondere lässt sich aus der Datei allein nicht sicher nachweisen, ob die
+vom Gerät bereitgestellte optische beziehungsweise elektronische
+Videostabilisierung vollständig deaktiviert war. Die vorliegende Arbeit behauptet daher keine
+vollständig unverarbeitete Sensoraufnahme, sondern dokumentiert ein unter
+festgelegten Aufnahmeparametern erzeugtes Rohvideo für die nachgelagerte
+Pipeline.
+
+Der Segmentierungsprompt lautet \texttt{pipe}. Die in der Projektarbeit
+untersuchten Profilvarianten aus zwei zeitlichen Abtastungen (2 und 5 FPS) und
+drei räumlichen Auflösungen ($1280\times720$, $960\times540$ und
+$640\times360$ Pixel) sind in Kapitel~\ref{sec:versuchsaufbau} zusammengefasst;
+für den Datensatz genügt hier der Hinweis, dass ein Lauf bei 5 FPS rund 240
+Frames und bei 2 FPS rund 96 Frames umfasst. Ein Lauf verwendet in allen
+Verarbeitungsstufen denselben Frame-Satz, sodass Bildnamen, Masken, Kameras
+und feste Evaluationsansichten innerhalb eines Laufs konsistent bleiben.
+
+\subsection{Scope des linearen Einobjektfalls}
+
+Die Centerline-Nachverarbeitung ist bewusst auf ein einzelnes lineares Objekt
+begrenzt. Verzweigte Leitungsnetze erfordern eine zusätzliche Trennung echter
+Abzweigungen von Skelettartefakten. Gerade auf dünnwandigen und verrauschten
+Meshes kann die Skelettierung Medialflächen\footnote{Medialflächen sind
+zweidimensionale, flächige Skelettbereiche: Sie entstehen, wenn von einem
+inneren Punkt mehrere Punkte der Objektoberfläche gleich weit entfernt sind
+(zum Beispiel bei flachen oder dünnwandigen Strukturen). Für eine
+Linientrasse sind sie nicht direkt verwertbar und müssen auf ihren
+Durchmesserpfad reduziert werden.\label{fn:medialflaechen}} und zahlreiche
+kurze Stachel-Äste erzeugen. Der produktive \texttt{single}-Modus reduziert
+deshalb die größte zusammenhängende Skelettkomponente auf ihren
+Durchmesserpfad.
+
+Produkte der vorliegenden Arbeit sind die lokale Centerline und der Grad-10-B-Spline. Auch die
+STS-Gaussians und das Mesh sind wichtige Produkte, besonders weil sie später
+georeferenziert und beispielsweise in der ESRI-Suite verwendet werden können.
+Masken und COLMAP-Modell sind dagegen notwendige und diagnostisch wichtige
+Zwischenprodukte. Die GeoJSON-Dateien werden ebenfalls erzeugt, aber wegen der
+noch fehlenden unabhängigen Transformations- und Vermessungsreferenz nicht als
+global genaue Endprodukte bewertet.
+
+\subsection{Referenzlage und Aussagegrenzen}
+
+Für den aktuellen Testdatensatz liegt keine unabhängig eingemessene
+GNSS-Referenzkurve vor. Vorhandene GCP-Dateien sind Approximationen der
+Wirklichkeit; sie wurden ausschließlich erstellt und verwendet, um die
+Transformation selbst zu testen. Fehlt eine validierte
+4x4-Ähnlichkeitstransformation, kann die Pipeline einen explizit bezeichneten
+Translation-Fallback ausführen. Dieser prüft den Exportpfad, aber weder Rotation
+und Maßstab noch Lage- und Höhengenauigkeit.
+
+Daraus folgt die zentrale Abgrenzung: Die vorliegende Arbeit bewertet Funktionsfähigkeit,
+Robustheit, Reproduzierbarkeit, objektmaskierte Ansichtsqualität und relative
+Unterschiede zwischen Meshrouten. Ein Nachweis der später angestrebten
+Toleranz von $\pm10\,\mathrm{cm}$ ist erst mit realen GCP-/GNSS-Messungen,
+einer validierten Transformation und geometrischen Vergleichsmetriken möglich.

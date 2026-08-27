@@ -1,0 +1,7 @@
+# Wiederholungsmatrix der bereits geprüften Kombinationen
+# id                              camera_model    mesh_mode      coarse_iterations  refinement_time
+simple_radial_a_repeat           SIMPLE_RADIAL   original_gs    -                   medium
+pinhole_a_repeat                 PINHOLE         original_gs    -                   medium
+opencv_a_repeat                  OPENCV          original_gs    -                   medium
+simple_radial_sugar_repeat       SIMPLE_RADIAL   sugar_coarse   9000                medium
+opencv_sugar_repeat              OPENCV          sugar_coarse   9000                medium

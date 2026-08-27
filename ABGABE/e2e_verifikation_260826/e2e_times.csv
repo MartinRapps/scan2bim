@@ -1,0 +1,4 @@
+experiment,head_s,run_s,tail_s,wall_s,compute_s,gaps_over_5min_s,timestamps
+5fps / 720p,469,1943,52,2425,2425,1857,2741
+5fps / qhd,437,1584,44,2032,2032,1517,2742
+5fps / low,327,1091,,1426,1426,1050,2740

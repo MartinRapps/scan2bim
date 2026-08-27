@@ -1,0 +1,54 @@
+\section{Anhang: Matrix-Status und Auswertungsregeln}
+
+Die Matrix ist ein kontrollierter Screening-Versuch, kein vollständiger
+Vermessungsnachweis. Die historische STS-Auswertung umfasst den Batch
+\texttt{matrix\_full\_pipe} und den Folge-Batch \texttt{matrix\_rest}
+\parencite{matrixRestResults}. Die sechs A-Läufe des ersten Batches werden als
+bereits ausgeführte Referenz markiert; im Folge-Batch wurden PINHOLE und
+OPENCV als Original-GS-Ablationen bei 2 und 5 FPS sowie drei Auflösungen
+getestet. Die SuGaR-Coarse-Auswertung steht als separate, inzwischen
+abgeschlossene Folgematrix \texttt{matrix\_sugar\_followup\_12} daneben; ihre
+Ergebnistabellen und Grafiken liegen im Haupttext
+(Abschnitt~\ref{sec:sugar-folgepruefung}).
+
+Die sechs historischen SuGaR-Coarse-Läufe des Batches
+\texttt{matrix\_rest} besitzen teilweise eine STS-Baseline-Metrik, sind aber
+wegen des damaligen technischen Importfehlers im SuGaR-Render-Helfer nicht als
+erfolgreiche SuGaR-Ergebnisse zu werten. Die Statusauswertung trennt daher
+technische Vollständigkeit und vorhandene Zwischenmetriken.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrrr}
+\toprule
+Batch & Versuche & vollständig erfolgreich & unvollständig\\
+\midrule
+matrix\_full\_pipe & 6 & 4 & 2\\
+matrix\_rest & 18 & 12 & 6\\
+Gesamt & 24 & 16 & 8\\
+\bottomrule
+\end{tabular}
+\caption{Status der für die vorliegende Arbeit zusammengeführten Matrixbatches.}
+\label{tab:matrix-status}
+\end{table}
+
+Die vollständigen Status-, Metrik- und Laufzeitdaten der einzelnen Läufe
+liegen in den digitalen Anlagen unter
+\path{docs/grafiken/matrix_repeat_2026-08-17/}
+beziehungsweise in den Run-Archiven; sie werden nicht zusätzlich im PDF
+dupliziert.
+
+\subsection*{Regeln für die Auswertung}
+
+\begin{itemize}
+  \item \path{sts_masked.json} ist die STS-Baseline vor dem separaten
+	  SuGaR-Rendering und kein SuGaR-Ergebnis.
+  \item Ein Average wird nur gebildet, wenn 2-FPS- und 5-FPS-Lauf derselben
+	  Konfiguration vollständig erfolgreich sind.
+  \item Fehlgeschlagene Läufe bleiben im Statusbericht und erhalten keinen
+	  künstlich schlechten Metrikwert.
+  \item Bildmetriken werden nur innerhalb nichtleerer Objektmasken berechnet.
+  \item Native Auflösungen sind wegen Downsampling nicht unmittelbar als
+	  Geometriequalität vergleichbar.
+\end{itemize}

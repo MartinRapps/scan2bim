@@ -1,0 +1,33 @@
+# Daten & Cache (Schwerlast via Cloud/USB, siehe data/README.md)
+data/**
+!data/README.md
+!data/**/
+!data/**/.gitkeep
+hf_cache/
+
+# Build-Artefakte
+PA/build/
+build/
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.bcf
+*.run.xml
+*.blg
+*.synctex.gz
+texput.log
+
+# SuGaR-Laufdaten im Fork (nur Quelle ist Teil des Repos)
+third_party/SuGaR/data/
+third_party/SuGaR/output/
+
+# Umfeld
+.env
+.env.*.local
+__pycache__/
+.vscode/

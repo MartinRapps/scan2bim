@@ -1,0 +1,199 @@
+# Scan-to-BIM Lauf
+
+- **Run-ID:** `Alurohr_THWS_20260820_124655`
+- **Input:** `data/01_raw/Alurohr_THWS.mp4`
+- **Start Lauf:** `2026-08-20T12:46:55+0200`
+- **Host UID/GID:** `190290584/190200513`
+- **Git Commit:** `77b77c3`
+- **SuGaR Commit:** `a0fc37b`
+- **Logdatei:** `data/10_runs/Alurohr_THWS_20260820_124655/run.log`
+
+## Einstellungen
+
+- **AUTOPILOT:** `true`
+- **RUN_RESOLUTION:** `(nicht gesetzt)`
+- **FRAME_PROFILE_SCOPE:** `all`
+- **SELECTED_VIDEO:** `(nicht gesetzt)`
+- **TEXT_PROMPT:** `(nicht gesetzt)`
+- **SAM3_FRAME_MAX_SIDE:** `960`
+- **SAM3_FRAME_STEP:** `(nicht gesetzt)`
+- **COLMAP_CAMERA_MODEL:** `OPENCV`
+- **COLMAP_MAX_FEATURES:** `4096`
+- **COLMAP_SEQUENTIAL_OVERLAP:** `15`
+- **COLMAP_GUIDED_MATCHING:** `0`
+- **COLMAP_SIFT_PEAK_THRESHOLD:** `0.003`
+- **ITERATIONS:** `7000`
+- **STAGE2_ITERS:** `5000`
+- **ON_THE_FLY:** `(nicht gesetzt)`
+- **FILTER_MIN_OPACITY:** `0.01`
+- **FILTER_BLACK_THRESHOLD:** `0.08`
+- **SUGAR_INPUT_ALPHA:** `0.999999`
+- **SUGAR_MESH_MODE:** `original_gs`
+- **REGULARIZATION:** `dn_consistency`
+- **COARSE_ITERATIONS:** `-`
+- **MESH_VERTICES:** `200000`
+- **SURFACE_SAMPLE_COUNT:** `5000000`
+- **SURFACE_LEVEL:** `(nicht gesetzt)`
+- **POISSON_DEPTH:** `(nicht gesetzt)`
+- **VERTICES_DENSITY_QUANTILE:** `(nicht gesetzt)`
+- **PROJECT_MESH_ON_SURFACE_POINTS:** `(nicht gesetzt)`
+- **LOW_OPACITY_GAUSSIAN_THRESHOLD:** `(nicht gesetzt)`
+- **SURFACE_SAMPLE_SEED:** `42`
+- **INCLUDE_BACKGROUND_MESH:** `(nicht gesetzt)`
+- **USE_GAUSSIAN_DEPTH:** `(nicht gesetzt)`
+- **REFINEMENT_TIME:** `medium`
+- **MASK_LEVEL:** `default`
+- **MASK_DILATION_PX:** `0`
+- **NORMAL_MASK_LEVEL:** `middle`
+- **TEXTURE_MASK_LEVEL:** `default`
+- **TEXTURE_MASK_DILATION_PX:** `0`
+- **STOP_AFTER_COARSE_MESH:** `0`
+- **RUN_CONSENSUS_CROP:** `0`
+- **SUGAR_RUN_TAG:** `matrix_matrix_qualitaetsvergleich_20260818_5fps_qhd_opencv_a`
+- **SUGAR_MESH_EXPORT_NAME:** `matrix_matrix_qualitaetsvergleich_20260818_5fps_qhd_opencv_a`
+- **STS_IMAGES_DIR:** `/data/04_sfm/undistorted/images`
+- **STS_SFM_DIR:** `/data/04_sfm/undistorted`
+- **STS_MASKS_DIR:** `/data/03_masks`
+- **EVAL_FRAMES_PATH:** `/data/05_3dgs/eval_frames.txt`
+- **SUGAR_EVAL_FRAMES_PATH:** `/data/05_3dgs/eval_frames.txt`
+- **MATRIX_BATCH_ID:** `matrix_qualitaetsvergleich_20260818`
+- **MATRIX_RESOLUTION_ID:** `qhd`
+- **MATRIX_VARIANT:** `opencv_a`
+- **CENTERLINE_MODE:** `single`
+- **VOXEL_SIZE:** `0.1`
+- **MIN_PATH_LENGTH:** `0.75`
+- **BSPLINE_DEGREE:** `10`
+- **BSPLINE_SAMPLES_PER_SEGMENT:** `4`
+- **SEGMENT_CORNERS:** `0`
+- **GEOJSON_SRS:** `EPSG:25832`
+- **FALLBACK_ANCHOR:** `567028.563,5516784.082,177`
+- **AUTOPILOT:** `true`
+- **RUN_RESOLUTION:** `(nicht gesetzt)`
+- **FRAME_PROFILE_SCOPE:** `all`
+- **SELECTED_VIDEO:** `(nicht gesetzt)`
+- **TEXT_PROMPT:** `(nicht gesetzt)`
+- **SAM3_FRAME_MAX_SIDE:** `960`
+- **SAM3_FRAME_STEP:** `(nicht gesetzt)`
+- **COLMAP_CAMERA_MODEL:** `OPENCV`
+- **COLMAP_MAX_FEATURES:** `4096`
+- **COLMAP_SEQUENTIAL_OVERLAP:** `15`
+- **COLMAP_GUIDED_MATCHING:** `0`
+- **COLMAP_SIFT_PEAK_THRESHOLD:** `0.003`
+- **ITERATIONS:** `7000`
+- **STAGE2_ITERS:** `5000`
+- **ON_THE_FLY:** `(nicht gesetzt)`
+- **FILTER_MIN_OPACITY:** `0.01`
+- **FILTER_BLACK_THRESHOLD:** `0.08`
+- **SUGAR_INPUT_ALPHA:** `0.999999`
+- **SUGAR_MESH_MODE:** `original_gs`
+- **REGULARIZATION:** `dn_consistency`
+- **COARSE_ITERATIONS:** `-`
+- **MESH_VERTICES:** `200000`
+- **SURFACE_SAMPLE_COUNT:** `5000000`
+- **SURFACE_LEVEL:** `(nicht gesetzt)`
+- **POISSON_DEPTH:** `(nicht gesetzt)`
+- **VERTICES_DENSITY_QUANTILE:** `(nicht gesetzt)`
+- **PROJECT_MESH_ON_SURFACE_POINTS:** `(nicht gesetzt)`
+- **LOW_OPACITY_GAUSSIAN_THRESHOLD:** `(nicht gesetzt)`
+- **SURFACE_SAMPLE_SEED:** `42`
+- **INCLUDE_BACKGROUND_MESH:** `(nicht gesetzt)`
+- **USE_GAUSSIAN_DEPTH:** `(nicht gesetzt)`
+- **REFINEMENT_TIME:** `medium`
+- **MASK_LEVEL:** `default`
+- **MASK_DILATION_PX:** `0`
+- **NORMAL_MASK_LEVEL:** `middle`
+- **TEXTURE_MASK_LEVEL:** `default`
+- **TEXTURE_MASK_DILATION_PX:** `0`
+- **STOP_AFTER_COARSE_MESH:** `0`
+- **RUN_CONSENSUS_CROP:** `0`
+- **SUGAR_RUN_TAG:** `matrix_matrix_qualitaetsvergleich_20260818_5fps_qhd_opencv_a`
+- **SUGAR_MESH_EXPORT_NAME:** `matrix_matrix_qualitaetsvergleich_20260818_5fps_qhd_opencv_a`
+- **STS_IMAGES_DIR:** `/data/04_sfm/undistorted/images`
+- **STS_SFM_DIR:** `/data/04_sfm/undistorted`
+- **STS_MASKS_DIR:** `/data/03_masks`
+- **EVAL_FRAMES_PATH:** `/data/05_3dgs/eval_frames.txt`
+- **SUGAR_EVAL_FRAMES_PATH:** `/data/05_3dgs/eval_frames.txt`
+- **MATRIX_BATCH_ID:** `matrix_qualitaetsvergleich_20260818`
+- **MATRIX_RESOLUTION_ID:** `qhd`
+- **MATRIX_VARIANT:** `opencv_a`
+- **CENTERLINE_MODE:** `single`
+- **VOXEL_SIZE:** `0.1`
+- **MIN_PATH_LENGTH:** `0.75`
+- **BSPLINE_DEGREE:** `10`
+- **BSPLINE_SAMPLES_PER_SEGMENT:** `4`
+- **SEGMENT_CORNERS:** `0`
+- **GEOJSON_SRS:** `EPSG:25832`
+- **FALLBACK_ANCHOR:** `567028.563,5516784.082,177`
+- **AUTOPILOT:** `true`
+- **RUN_RESOLUTION:** `(nicht gesetzt)`
+- **FRAME_PROFILE_SCOPE:** `all`
+- **SELECTED_VIDEO:** `(nicht gesetzt)`
+- **TEXT_PROMPT:** `(nicht gesetzt)`
+- **SAM3_FRAME_MAX_SIDE:** `960`
+- **SAM3_FRAME_STEP:** `(nicht gesetzt)`
+- **COLMAP_CAMERA_MODEL:** `OPENCV`
+- **COLMAP_MAX_FEATURES:** `4096`
+- **COLMAP_SEQUENTIAL_OVERLAP:** `15`
+- **COLMAP_GUIDED_MATCHING:** `0`
+- **COLMAP_SIFT_PEAK_THRESHOLD:** `0.003`
+- **ITERATIONS:** `7000`
+- **STAGE2_ITERS:** `5000`
+- **ON_THE_FLY:** `(nicht gesetzt)`
+- **FILTER_MIN_OPACITY:** `0.01`
+- **FILTER_BLACK_THRESHOLD:** `0.08`
+- **SUGAR_INPUT_ALPHA:** `0.999999`
+- **SUGAR_MESH_MODE:** `original_gs`
+- **REGULARIZATION:** `dn_consistency`
+- **COARSE_ITERATIONS:** `(nicht gesetzt)`
+- **MESH_VERTICES:** `200000`
+- **SURFACE_SAMPLE_COUNT:** `5000000`
+- **SURFACE_LEVEL:** `(nicht gesetzt)`
+- **POISSON_DEPTH:** `(nicht gesetzt)`
+- **VERTICES_DENSITY_QUANTILE:** `(nicht gesetzt)`
+- **PROJECT_MESH_ON_SURFACE_POINTS:** `(nicht gesetzt)`
+- **LOW_OPACITY_GAUSSIAN_THRESHOLD:** `(nicht gesetzt)`
+- **SURFACE_SAMPLE_SEED:** `42`
+- **INCLUDE_BACKGROUND_MESH:** `(nicht gesetzt)`
+- **USE_GAUSSIAN_DEPTH:** `(nicht gesetzt)`
+- **REFINEMENT_TIME:** `medium`
+- **MASK_LEVEL:** `default`
+- **MASK_DILATION_PX:** `0`
+- **NORMAL_MASK_LEVEL:** `middle`
+- **TEXTURE_MASK_LEVEL:** `default`
+- **TEXTURE_MASK_DILATION_PX:** `0`
+- **STOP_AFTER_COARSE_MESH:** `0`
+- **RUN_CONSENSUS_CROP:** `0`
+- **SUGAR_RUN_TAG:** `matrix_matrix_qualitaetsvergleich_20260818_5fps_qhd_opencv_a`
+- **SUGAR_MESH_EXPORT_NAME:** `matrix_matrix_qualitaetsvergleich_20260818_5fps_qhd_opencv_a`
+- **STS_IMAGES_DIR:** `/data/04_sfm/undistorted/images`
+- **STS_SFM_DIR:** `/data/04_sfm/undistorted`
+- **STS_MASKS_DIR:** `/data/03_masks`
+- **EVAL_FRAMES_PATH:** `/data/05_3dgs/eval_frames.txt`
+- **SUGAR_EVAL_FRAMES_PATH:** `/data/05_3dgs/eval_frames.txt`
+- **MATRIX_BATCH_ID:** `matrix_qualitaetsvergleich_20260818`
+- **MATRIX_RESOLUTION_ID:** `qhd`
+- **MATRIX_VARIANT:** `opencv_a`
+- **CENTERLINE_MODE:** `single`
+- **VOXEL_SIZE:** `0.1`
+- **MIN_PATH_LENGTH:** `0.75`
+- **BSPLINE_DEGREE:** `10`
+- **BSPLINE_SAMPLES_PER_SEGMENT:** `4`
+- **SEGMENT_CORNERS:** `0`
+- **GEOJSON_SRS:** `EPSG:25832`
+- **FALLBACK_ANCHOR:** `567028.563,5516784.082,177`
+
+## Schritte
+
+| Schritt | Start | Ende | Dauer (s) | Status |
+|---|---|---|---:|---|
+| STS-Workspace und Initialisierung | 2026-08-20T12:46:55+0200 | 2026-08-20T12:47:05+0200 | 10 | OK |
+| STS-Training | 2026-08-20T12:47:05+0200 | 2026-08-20T13:12:40+0200 | 1535 | OK |
+| STS-Objektfilterung und SuGaR-Eingang | 2026-08-20T13:12:40+0200 | 2026-08-20T13:12:43+0200 | 3 | OK |
+| SuGaR-Meshing | 2026-08-20T13:12:43+0200 | 2026-08-20T13:13:42+0200 | 59 | OK |
+| Centerline und Georeferenzierung | 2026-08-20T13:13:42+0200 | 2026-08-20T13:13:44+0200 | 2 | OK |
+
+## Abschluss
+
+- **Ende Lauf:** `2026-08-20T13:13:44+0200`
+- **Status:** `SUCCESS`
+- **Exit-Code:** `0`

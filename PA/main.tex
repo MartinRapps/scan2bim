@@ -1,0 +1,222 @@
+% =====================================================================
+% ARBEITSFASSUNG (Kopie) – Fertigstellung der PA auf Branch pa-fertigstellung
+% Diese Kopie wird von den To-dos (Umsetzungsplan_ToDos.md) geändert.
+% Das Original unter PA/main.tex bleibt bis zum Abschluss unverändert.
+% Pfade sind hier eine Ebene tiefer angepasst (../../ etc.).
+% =====================================================================
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,left=2.8cm,right=2.3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{pdflscape}
+\usepackage{fancyhdr}
+\usepackage{xurl}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,fit,backgrounds,shapes.geometric,calc}
+% TikZ defines \path as a drawing command. Outside diagrams the report uses
+% the same notation for breakable file paths; map it to url-style rendering.
+\let\tikzpathcommand\path
+\renewcommand{\path}[1]{\nolinkurl{#1}}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=authoryear,sorting=nyt]{biblatex}
+
+% Vor Abgabe mit den offiziellen Angaben ersetzen.
+\newcommand{\thwsAuthor}{Martin Rapps}
+\newcommand{\thwsMatriculation}{6323014}
+\newcommand{\thwsDegree}{B. Eng. Geovisualisierung}
+\newcommand{\thwsFirstExaminer}{Dr. Markus Müller}
+\newcommand{\thwsSecondExaminer}{Andreas Rupp}
+\newcommand{\thwsSubmissionDate}{08.09.2026}
+
+\addbibresource{references.bib}
+% URLs in the bibliography are allowed to use a little extra stretch locally;
+% this avoids suppressing useful line-break diagnostics in the main text.
+\AtBeginBibliography{\sloppy}
+\graphicspath{{figures/}{../docs/grafiken/verwendet_verbessert/}{../docs/grafiken/matrix_repeat_2026-08-17/}}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\setlist{itemsep=2pt,topsep=4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Projektarbeit -- Scan-to-BIM-Pipeline}
+\fancyhead[R]{Studienbereich Geo}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+
+% Fuer eine kompakte PA koennen die optionalen Anhaenge hier deaktiviert werden.
+\newif\ifincludeappendices
+\includeappendicestrue
+
+% Anonymisierte Fassung: via main_anonym.tex (\ANONYMVERSION)
+\newif\ifanonym
+\ifdefined\ANONYMVERSION\anonymtrue\else\anonymfalse\fi
+
+\begin{document}
+\pagenumbering{Roman}
+\thispagestyle{empty}
+\begin{center}
+	{\large Technische Hochschule Würzburg-Schweinfurt\\
+	Fakultät Kunststofftechnik und Vermessung\par}
+	\vfill
+	{\LARGE\bfseries Projektarbeit\par}
+	\vspace{1.2cm}
+	{\Large\bfseries KI-gestützte 3D-Rekonstruktion eines linearen Objekts\par}
+	\vspace{0.4cm}
+	{\large Konzeption, Robustheitsprüfung und geometrieerhaltende
+	Meshgewinnung in einer Docker-basierten Scan-to-BIM-Pipeline\par}
+	\vfill
+	\begin{tabular}{@{}ll@{}}
+		\ifanonym Studiengang: & \thwsDegree\\
+		\else Vorgelegt von: & \thwsAuthor\\
+		Matrikelnummer: & \thwsMatriculation\\
+		Studiengang: & \thwsDegree\\
+		\fi
+		Erstprüfer/in: & \thwsFirstExaminer\\
+		Zweitprüfer/in: & \thwsSecondExaminer\\
+		Abgabetermin: & \thwsSubmissionDate
+	\end{tabular}
+	\vfill
+	Würzburg, den \thwsSubmissionDate
+\end{center}
+\clearpage
+
+\section*{Erklärung zur Projektarbeit}
+Hiermit versichere ich, dass ich die vorliegende Arbeit eigenständig verfasst
+und keine anderen als die angegebenen Quellen und Hilfsmittel verwendet habe.
+
+Alle übernommenen Inhalte sowie mit Unterstützung von KI generierten Inhalte
+wurden entsprechend den anerkannten wissenschaftlichen Grundsätzen oder
+entsprechend der Regelungen zur Kennzeichnung von KI-Inhalten kenntlich
+gemacht. Ausgenommen von der Kenntlichmachung sind orthografische oder
+grammatikalische Korrekturen, Übersetzungen sowie nicht-sinnverändernde
+Verbesserungen von Formulierungen. Ich bin mir bewusst, dass mit KI generierte
+Texte keine Garantie für die Qualität von Inhalten und Text bieten. Daher
+erkläre ich, dass ich KI-Werkzeuge lediglich als Hilfsmittel genutzt habe, die
+von KI generierten Inhalte kritisch überprüft habe und mein eigenständiger
+kognitiver sowie kreativer Einfluss in dieser Arbeit überwiegt. Ich versichere,
+dass ich die Inhalte meiner Arbeit vollständig verstanden habe und
+selbstständig vertreten kann.
+
+Ich versichere, dass ich ausschließlich KI-Werkzeuge verwendet habe, deren
+Nutzung vom Prüfer oder der Prüferin als Hilfsmittel zugelassen wurden.
+
+\vfill
+\noindent Würzburg, den \rule{4cm}{0.4pt}\hfill
+\rule{6cm}{0.4pt}\\
+\hfill Unterschrift des/der Studierenden
+\clearpage
+\ifanonym\else
+\section*{Einwilligung zur Überprüfung einer Arbeit mit der
+Plagiaterkennungssoftware PlagAware}
+
+\vspace{0.5em}
+\noindent\begin{tabular}{@{}p{2.2cm}p{4.4cm}p{1.8cm}l@{}}
+Name: & Rapps & Vorname: & Martin\\[0.4em]
+Matr.Nr.: & 6323014 & & \\[0.4em]
+Adresse: & \dotfill & & \\[0.4em]
+eMail: & \dotfill & Studiengang: & B.\,Eng.\ Geovisualisierung\\
+\end{tabular}
+
+\vspace{0.4em}
+\noindent\begin{tabular}{@{}p{2.2cm}p{10.8cm}@{}}
+Titel der Arbeit: & KI-gestützte 3D-Rekonstruktion eines linearen Objekts --
+Konzeption, Robustheitsprüfung und geometrieerhaltende Meshgewinnung in einer
+Docker-basierten Scan-to-BIM-Pipeline\\
+\end{tabular}
+
+\vspace{0.8em}
+Die THWS überprüft Prüfungsarbeiten (Studien-, Projekt-, Bachelor- und
+Masterarbeiten) mit Hilfe der Plagiaterkennungssoftware PlagAware. Die zu
+überprüfenden Arbeiten werden an den Dienst der Software übermittelt, dort auf
+Übereinstimmung mit externen Quellen untersucht und zum Zwecke des Abgleichs
+mit zukünftig zu überprüfenden Arbeiten gespeichert. Die befristete Speicherung
+der Arbeit in der Datenbank sowie die Weitergabe der persönlichen Daten im
+Rahmen der Plagiatsprüfung ist nur mit Einwilligung zulässig.
+
+\vspace{0.4em}
+\noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{Mit der
+Unterschrift erkläre ich meine Einwilligung, dass
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt]
+  \item die von mir vorgelegte und verfasste Arbeit zum Zwecke der Überprüfung
+        auf Plagiate hin an PlagAware übermittelt und vorübergehend (5~Jahre)
+        in der von PlagAware geführten Datenbank gespeichert wird;
+  \item meine persönlichen Daten (Vorname, Name, studentische eMail-Adresse)
+        zusammen mit dem Text digital gespeichert und verwendet werden. Diese
+        Daten sind nur meinen Prüferinnen und/oder Prüfern zugänglich.
+\end{itemize}}}
+
+\vspace{0.4em}
+{\small\textit{Hinweis: Diese Einwilligung ist freiwillig. Sie haben die
+Möglichkeit, die Erklärung abzulehnen. Durch die Verweigerung der Einwilligung
+kann bei Entfernung der persönlichen Angaben und Wahrung der
+urheberrechtlichen Vorgaben die Plagiatsprüfung nicht verhindert werden. Die
+Einwilligung zur Speicherung und Verwendung der persönlichen Daten kann
+jederzeit gegenüber der Fakultät mit Wirkung für die Zukunft widerrufen
+werden.}}
+
+\vfill
+\noindent Ort, Datum: \dotfill\hfill Unterschrift: \dotfill
+\fi
+\section*{Kurzfassung}
+Diese Projektarbeit untersucht die Machbarkeit einer Docker-basierten Pipeline zur
+objektbezogenen Rekonstruktion eines linearen Testobjekts. Der Workflow verbindet
+SAM~3.1 für die temporale 2D-Segmentierung, COLMAP für die Kamerageometrie,
+Segment-then-Splat für objektspezifische 3D-Gaussians, SuGaR beziehungsweise eine
+geometrieerhaltende Original-GS-Meshroute und DGtal für die Centerline-Extraktion.
+Für den Testdatensatz ist die Kette vollständig nachgewiesen: 240 von 240 Bildern
+wurden registriert; alle zwölf SuGaR-Coarse-Folgeläufe, neun erfolgreiche Autopilot-Volläufe
+und der Qualitätsvergleichsbatch ohne Fehlerfall sind mit Manifeststatus
+\texttt{success} archiviert. Für die
+Produktionskonfiguration (OPENCV, 5~FPS, 720p, Route A) werden 29,62\,dB
+objektmaskierte PSNR erreicht; die Nachweise stammen aus archivierten Matrix-,
+Replay- und Autopilotläufen. Der Schwerpunkt liegt auf der technischen
+Funktionsfähigkeit, der sauberen Trennung von Bilddomänen und der reproduzierbaren
+Auswertung. Die Arbeit ist ein Machbarkeitsnachweis für die spätere
+Bachelorarbeit; ein geodätischer Genauigkeitsnachweis für reale Rohr- oder
+Kabeltrassen ist nicht Gegenstand.
+\clearpage
+
+\tableofcontents
+\listoffigures
+\listoftables
+\clearpage
+\pagenumbering{arabic}
+
+\input{sections/01_einleitung}
+\input{sections/02_datengrundlage}
+\input{sections/02_grundlagen}
+\input{sections/03_konzept}
+\input{sections/04_implementierung}
+\input{sections/05_versuchsaufbau}
+\input{sections/06_ergebnisse}
+\input{sections/07_diskussion}
+\input{sections/08_fazit}
+
+% Literatur vor dem Anhangsteil (Zielrahmen §3); LoF/LoT bleiben vorne (D4 offen).
+\printbibliography[heading=bibintoc,title={Literatur und Referenzen}]
+
+\ifincludeappendices
+\appendix
+\input{appendices/appendix_colmap}
+\input{appendices/appendix_matrix}
+\input{appendices/appendix_durchlauf}
+\input{appendices/appendix_robustheit}
+\input{appendices/appendix_repro}
+\input{appendices/appendix_anlagenindex}
+\input{appendices/appendix_ki}
+\fi
+
+\end{document}

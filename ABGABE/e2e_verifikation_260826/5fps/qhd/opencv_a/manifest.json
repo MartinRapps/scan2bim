@@ -1,0 +1,12 @@
+{
+  "batch_id": "matrix_e2e_verifikation_260826",
+  "status": "success",
+  "resolution_id": "qhd",
+    "fps": 5,
+  "variant": "opencv_a",
+  "camera_model": "OPENCV",
+  "mesh_mode": "original_gs",
+  "message": "completed",
+  "evaluation_scope": "object_masked_only",
+  "full_frame_metrics": false
+}

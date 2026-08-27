@@ -1,0 +1,14 @@
+{
+  "frames_dir": "/data/02_frames",
+  "masks_dir": "/data/03_masks",
+  "mask_name": "middle",
+  "total_frames": 240,
+  "nonempty_frames": 240,
+  "empty_frames": 0,
+  "missing_masks": 0,
+  "empty_fraction": 0.0,
+  "max_empty_fraction": 0.3,
+  "status": "ok",
+  "empty_frame_names": [],
+  "missing_mask_names": []
+}

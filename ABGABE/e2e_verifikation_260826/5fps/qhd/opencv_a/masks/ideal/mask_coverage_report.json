@@ -1,0 +1,17 @@
+{
+  "frames_dir": "/data/04_sfm/undistorted/images",
+  "masks_dir": "/data/10_runs/matrix_e2e_verifikation_260826/5fps/qhd/opencv_a/masks/ideal",
+  "mask_name": "middle",
+  "total_frames": 240,
+  "nonempty_frames": 238,
+  "empty_frames": 2,
+  "missing_masks": 0,
+  "empty_fraction": 0.008333333333333333,
+  "max_empty_fraction": 0.3,
+  "status": "ok",
+  "empty_frame_names": [
+    "00145.jpg",
+    "00146.jpg"
+  ],
+  "missing_mask_names": []
+}

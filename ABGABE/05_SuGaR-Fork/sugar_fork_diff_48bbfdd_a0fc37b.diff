@@ -1,0 +1,464 @@
+diff --git a/extract_mesh.py b/extract_mesh.py
+index 9d2d2d7..b7519c7 100644
+--- a/extract_mesh.py
++++ b/extract_mesh.py
+@@ -31,6 +31,12 @@ if __name__ == "__main__":
+                         help='Remove mesh vertices below this Poisson-density quantile; use 0 to disable.')
+     parser.add_argument('--low-opacity-gaussian-threshold', type=float, default=0.5,
+                         help='Discard coarse Gaussians with sigmoid opacity at or below this value before surface sampling.')
++    parser.add_argument('--surface-sample-seed', type=int, default=None,
++                        help='Optional seed for reproducible camera-based surface sampling.')
++    parser.add_argument('--include-background-mesh', type=str2bool, default=True,
++                        help='Include the separately reconstructed background mesh in the exported mesh.')
++    parser.add_argument('--use-gaussian-depth', type=str2bool, default=False,
++                        help='Use the Gaussian rasterizer depth directly instead of the projected diamond-mesh z-buffer.')
+     
+     parser.add_argument('-o', '--mesh_output_dir',
+                         type=str, default=None, 
+@@ -59,6 +65,8 @@ if __name__ == "__main__":
+         parser.error('--vertices-density-quantile must be in the interval [0, 1).')
+     if not 0.0 <= args.low_opacity_gaussian_threshold < 1.0:
+         parser.error('--low-opacity-gaussian-threshold must be in the interval [0, 1).')
++    if args.surface_sample_seed is not None and args.surface_sample_seed < 0:
++        parser.error('--surface-sample-seed must be non-negative.')
+     
+     # Call function
+     extract_mesh_from_coarse_sugar(args)
+diff --git a/gaussian_splatting/scene/dataset_readers.py b/gaussian_splatting/scene/dataset_readers.py
+index 2a6f904..2036929 100644
+--- a/gaussian_splatting/scene/dataset_readers.py
++++ b/gaussian_splatting/scene/dataset_readers.py
+@@ -10,6 +10,7 @@
+ #
+ 
+ import os
++import re
+ import sys
+ from PIL import Image
+ from typing import NamedTuple
+@@ -23,6 +24,31 @@ from plyfile import PlyData, PlyElement
+ from utils.sh_utils import SH2RGB
+ from scene.gaussian_model import BasicPointCloud
+ 
++
++def _normalize_frame_stem(name):
++    return os.path.splitext(os.path.basename(str(name).strip()))[0]
++
++
++def _trailing_frame_id(name):
++    match = re.search(r"(\d+)$", _normalize_frame_stem(name))
++    return int(match.group(1)) if match else None
++
++
++def _resolve_fixed_eval_camera_names(camera_names, eval_names):
++    normalized_camera_names = {_normalize_frame_stem(name) for name in camera_names}
++    exact_matches = normalized_camera_names.intersection(eval_names)
++    if exact_matches:
++        return exact_matches, "normalized basename/stem"
++
++    eval_frame_ids = {
++        frame_id for name in eval_names if (frame_id := _trailing_frame_id(name)) is not None
++    }
++    numeric_matches = {
++        name for name in normalized_camera_names
++        if (frame_id := _trailing_frame_id(name)) is not None and frame_id in eval_frame_ids
++    }
++    return numeric_matches, "trailing numeric frame id"
++
+ class CameraInfo(NamedTuple):
+     uid: int
+     R: np.array
+@@ -145,7 +171,57 @@ def readColmapSceneInfo(path, images, eval, llffhold=8):
+     cam_infos_unsorted = readColmapCameras(cam_extrinsics=cam_extrinsics, cam_intrinsics=cam_intrinsics, images_folder=os.path.join(path, reading_dir))
+     cam_infos = sorted(cam_infos_unsorted.copy(), key = lambda x : x.image_name)
+ 
+-    if eval:
++    fixed_eval_path = os.environ.get("SUGAR_EVAL_FRAMES_PATH") or os.environ.get("EVAL_FRAMES_PATH")
++    fixed_eval_names = set()
++    if fixed_eval_path:
++        if not os.path.isfile(fixed_eval_path):
++            raise FileNotFoundError(
++                f"Fixed evaluation split does not exist: {fixed_eval_path}"
++            )
++        with open(fixed_eval_path, encoding="utf-8") as handle:
++            fixed_eval_names = {
++                _normalize_frame_stem(line)
++                for line in handle
++                if line.strip()
++            }
++        if not fixed_eval_names:
++            raise ValueError(f"Fixed evaluation split is empty: {fixed_eval_path}")
++
++    if eval and fixed_eval_names:
++        fixed_eval_camera_names, match_mode = _resolve_fixed_eval_camera_names(
++            [camera.image_name for camera in cam_infos], fixed_eval_names
++        )
++        print(
++            "Fixed evaluation split: "
++            f"{len(fixed_eval_names)} entries, {len(cam_infos)} cameras, "
++            f"{len(fixed_eval_camera_names)} matched ({match_mode}) "
++            f"from {fixed_eval_path}"
++        )
++        if len(fixed_eval_camera_names) != len(fixed_eval_names):
++            raise ValueError(
++                "The fixed evaluation split contains images that are not "
++                "available in the COLMAP camera set: "
++                f"{len(fixed_eval_names) - len(fixed_eval_camera_names)} "
++                f"unmatched of {len(fixed_eval_names)}. Check {fixed_eval_path}."
++            )
++        train_cam_infos = [
++            c for c in cam_infos if _normalize_frame_stem(c.image_name) not in fixed_eval_camera_names
++        ]
++        test_cam_infos = [
++            c for c in cam_infos if _normalize_frame_stem(c.image_name) in fixed_eval_camera_names
++        ]
++        if not test_cam_infos:
++            available_names = [camera.image_name for camera in cam_infos[:5]]
++            raise ValueError(
++                "The fixed evaluation split did not match any Gaussian camera "
++                f"name. Expected stems such as {available_names}; check {fixed_eval_path}."
++            )
++        if not train_cam_infos:
++            raise ValueError(
++                "The fixed evaluation split contains every Gaussian camera, "
++                f"leaving no training cameras: {fixed_eval_path}."
++            )
++    elif eval:
+         train_cam_infos = [c for idx, c in enumerate(cam_infos) if idx % llffhold != 0]
+         test_cam_infos = [c for idx, c in enumerate(cam_infos) if idx % llffhold == 0]
+     else:
+diff --git a/sugar_extractors/coarse_mesh.py b/sugar_extractors/coarse_mesh.py
+index 29064fe..8e6dc75 100644
+--- a/sugar_extractors/coarse_mesh.py
++++ b/sugar_extractors/coarse_mesh.py
+@@ -11,6 +11,39 @@ from sugar_utils.spherical_harmonics import SH2RGB
+ 
+ from rich.console import Console
+ 
++
++def poisson_mesh_or_none(point_cloud, depth, label, console):
++    """Run Poisson only when a point cloud has usable oriented normals."""
++    point_count = len(point_cloud.points)
++    if point_count < 3:
++        console.print(
++            f"[WARNING] Skipping {label} Poisson reconstruction: "
++            f"only {point_count} point(s) remain."
++        )
++        return None, None
++
++    if not point_cloud.has_normals():
++        point_cloud.estimate_normals()
++    normals = np.asarray(point_cloud.normals)
++    if normals.shape != (point_count, 3) or not np.isfinite(normals).all():
++        console.print(
++            f"[WARNING] Skipping {label} Poisson reconstruction: "
++            "point cloud has no valid normals."
++        )
++        return None, None
++
++    try:
++        return o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(
++            point_cloud, depth=depth
++        )
++    except RuntimeError as error:
++        console.print(
++            f"[WARNING] Skipping {label} Poisson reconstruction after Open3D "
++            f"rejected the point cloud: {error}"
++        )
++        return None, None
++
++
+ def extract_mesh_from_coarse_sugar(args):
+     CONSOLE = Console(width=120)
+     
+@@ -24,7 +57,12 @@ def extract_mesh_from_coarse_sugar(args):
+ 
+     # Surface level extraction parameters
+     n_total_points = getattr(args, 'surface_sample_count', 10_000_000)
+-    use_gaussian_depth_for_surface_levels = False  # False until now
++    surface_sample_seed = getattr(args, 'surface_sample_seed', None)
++    include_background_mesh = getattr(args, 'include_background_mesh', True)
++    # The official route derives the z-buffer from the projected Gaussian
++    # diamond mesh. A diagnostic can instead use the Gaussian rasterizer's
++    # depth directly; this keeps the two surface-sampling hypotheses separate.
++    use_gaussian_depth_for_surface_levels = getattr(args, 'use_gaussian_depth', False)
+     surface_level_triangle_scale = 2.  # 2.
+     # surface_level_triangle_scale = -2 * np.log(surface_level)
+     surface_level_primitive_types = 'diamond'  # 'diamond'
+@@ -113,6 +151,8 @@ def extract_mesh_from_coarse_sugar(args):
+     CONSOLE.print("Mesh output path:", mesh_output_dir)
+     CONSOLE.print("Surface levels:", surface_levels)
+     CONSOLE.print("Surface sample count:", n_total_points)
++    CONSOLE.print("Surface sample seed:", surface_sample_seed if surface_sample_seed is not None else "None")
++    CONSOLE.print("Include background mesh:", include_background_mesh)
+     CONSOLE.print("Low-opacity Gaussian threshold:", low_opacity_gaussian_pruning_threshold)
+     CONSOLE.print("Decimation targets:", decimation_targets)
+     CONSOLE.print("Project mesh on surface points:", project_mesh_on_surface_points)
+@@ -184,6 +224,11 @@ def extract_mesh_from_coarse_sugar(args):
+             )
+         sugar.load_state_dict(checkpoint['state_dict'])
+     sugar.eval()
++
++    surface_sample_generator = None
++    if surface_sample_seed is not None:
++        surface_sample_generator = torch.Generator(device=sugar.device)
++        surface_sample_generator.manual_seed(surface_sample_seed)
+     
+     CONSOLE.print("Coarse model loaded.")
+     CONSOLE.print("Coarse model parameters:")
+@@ -289,7 +334,8 @@ def extract_mesh_from_coarse_sugar(args):
+                                 return_gaussian_idx=True,
+                                 return_normals=True,
+                                 compute_flat_normals=flat_surface_level_normals,
+-                                use_gaussian_depth=use_gaussian_depth_for_surface_levels,)
++                                use_gaussian_depth=use_gaussian_depth_for_surface_levels,
++                                sampling_generator=surface_sample_generator,)
+                         else:
+                             frame_surface_level_outputs = sugar.compute_level_surface_points_from_camera_efficient(
+                                 cam_idx=cam_idx,
+@@ -323,7 +369,11 @@ def extract_mesh_from_coarse_sugar(args):
+                             img_surface_view_directions = torch.nn.functional.normalize(cameras_to_use.p3d_cameras[cam_idx].get_camera_center() - img_surface_points)
+                             img_surface_pix_to_gaussians = surface_gaussian_idx.view(-1)
+                             
+-                            idx = torch.randperm(len(img_surface_points), device=sugar.device)[:n_pts_per_frame]
++                            idx = torch.randperm(
++                                len(img_surface_points),
++                                device=sugar.device,
++                                generator=surface_sample_generator,
++                            )[:n_pts_per_frame]
+                             
+                             surface_levels_outputs[surface_level]['points'] = torch.cat([surface_levels_outputs[surface_level]['points'], img_surface_points[idx]], dim=0)
+                             surface_levels_outputs[surface_level]['colors'] = torch.cat([surface_levels_outputs[surface_level]['colors'], img_surface_colors[idx]], dim=0)
+@@ -391,10 +441,11 @@ def extract_mesh_from_coarse_sugar(args):
+                     CONSOLE.print("Finished computing points, colors and normals.")
+ 
+                     CONSOLE.print("Now computing mesh...")
+-                    o3d_fg_mesh, o3d_fg_densities = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(
+-                        fg_pcd, depth=poisson_depth) #, width=0, scale=1.1, linear_fit=False)  # depth=10 should be the default value? 11 is good to (but it starts to make a big number of triangles)
++                    o3d_fg_mesh, o3d_fg_densities = poisson_mesh_or_none(
++                        fg_pcd, poisson_depth, "foreground", CONSOLE
++                    )
+ 
+-                    if vertices_density_quantile > 0.:
++                    if vertices_density_quantile > 0. and o3d_fg_mesh is not None:
+                         CONSOLE.print("Removing vertices with low densities...")
+                         vertices_to_remove = o3d_fg_densities < np.quantile(o3d_fg_densities, vertices_density_quantile)
+                         o3d_fg_mesh.remove_vertices_by_mask(vertices_to_remove)
+@@ -404,7 +455,10 @@ def extract_mesh_from_coarse_sugar(args):
+                 
+                 # ---Compute background mesh---
+                 CONSOLE.print("\n-----Background mesh-----")
+-                if bg_points.shape[0] > 0:
++                if not include_background_mesh:
++                    CONSOLE.print("[INFO] Background mesh disabled.")
++                    o3d_bg_mesh = None
++                elif bg_points.shape[0] > 0:
+                     CONSOLE.print("Computing points, colors and normals...")
+                     bg_pcd = o3d.geometry.PointCloud()
+                     bg_pcd.points = o3d.utility.Vector3dVector(bg_points.double().cpu().numpy())
+@@ -419,10 +473,11 @@ def extract_mesh_from_coarse_sugar(args):
+                     CONSOLE.print("Finished computing points, colors and normals.")
+ 
+                     CONSOLE.print("Now computing mesh...")
+-                    o3d_bg_mesh, o3d_bg_densities = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(
+-                        bg_pcd, depth=poisson_depth) #, width=0, scale=1.1, linear_fit=False)  # depth=10 should be the default value? 11 is good to (but it starts to make a big number of triangles)
++                    o3d_bg_mesh, o3d_bg_densities = poisson_mesh_or_none(
++                        bg_pcd, poisson_depth, "background", CONSOLE
++                    )
+ 
+-                    if vertices_density_quantile > 0.:
++                    if vertices_density_quantile > 0. and o3d_bg_mesh is not None:
+                         CONSOLE.print("Removing vertices with low densities...")
+                         vertices_to_remove = o3d_bg_densities < np.quantile(o3d_bg_densities, vertices_density_quantile)
+                         o3d_bg_mesh.remove_vertices_by_mask(vertices_to_remove)
+@@ -791,4 +846,4 @@ def extract_mesh_from_coarse_sugar(args):
+         CONSOLE.print("Mesh saved at", sugar_mesh_path)
+         all_sugar_mesh_paths.append(sugar_mesh_path)
+         
+-    return all_sugar_mesh_paths
+\ No newline at end of file
++    return all_sugar_mesh_paths
+diff --git a/sugar_scene/cameras.py b/sugar_scene/cameras.py
+index c6f8afe..af1343f 100644
+--- a/sugar_scene/cameras.py
++++ b/sugar_scene/cameras.py
+@@ -438,6 +438,9 @@ class CamerasWrapper:
+             camera_type (_type_): _description_
+         """
+ 
++        if not gs_cameras:
++            raise ValueError("CamerasWrapper requires at least one camera")
++
+         self.gs_cameras = gs_cameras
+         
+         self._p3d_cameras = p3d_cameras
+diff --git a/sugar_scene/gs_model.py b/sugar_scene/gs_model.py
+index bcf4d80..3da287a 100644
+--- a/sugar_scene/gs_model.py
++++ b/sugar_scene/gs_model.py
+@@ -1,6 +1,7 @@
+ import sys
+ sys.path.append('./gaussian_splatting')
+ import os
++import re
+ import torch
+ import plotly.graph_objs as go
+ from gaussian_splatting.scene.gaussian_model import GaussianModel
+@@ -68,6 +69,31 @@ class OptimizationParams():
+         self.densify_grad_threshold = 0.0002
+ 
+ 
++def _normalize_frame_stem(name):
++    return os.path.splitext(os.path.basename(str(name).strip()))[0]
++
++
++def _trailing_frame_id(name):
++    match = re.search(r"(\d+)$", _normalize_frame_stem(name))
++    return int(match.group(1)) if match else None
++
++
++def _resolve_fixed_eval_camera_names(camera_names, eval_names):
++    normalized_camera_names = {_normalize_frame_stem(name) for name in camera_names}
++    exact_matches = normalized_camera_names.intersection(eval_names)
++    if exact_matches:
++        return exact_matches, "normalized basename/stem"
++
++    eval_frame_ids = {
++        frame_id for name in eval_names if (frame_id := _trailing_frame_id(name)) is not None
++    }
++    numeric_matches = {
++        name for name in normalized_camera_names
++        if (frame_id := _trailing_frame_id(name)) is not None and frame_id in eval_frame_ids
++    }
++    return numeric_matches, "trailing numeric frame id"
++
++
+ class GaussianSplattingWrapper:
+     """Class to wrap original Gaussian Splatting models and facilitates both usage and integration with PyTorch3D.
+     """
+@@ -137,14 +163,66 @@ class GaussianSplattingWrapper:
+             remove_indices=remove_camera_indices,
+             )
+         
++        fixed_eval_path = os.environ.get("SUGAR_EVAL_FRAMES_PATH") or os.environ.get("EVAL_FRAMES_PATH")
++        fixed_eval_names = set()
++        if fixed_eval_path:
++            if not os.path.isfile(fixed_eval_path):
++                raise FileNotFoundError(
++                    f"Fixed evaluation split does not exist: {fixed_eval_path}"
++                )
++            with open(fixed_eval_path, encoding="utf-8") as handle:
++                fixed_eval_names = {
++                    _normalize_frame_stem(line)
++                    for line in handle
++                    if line.strip()
++                }
++            if not fixed_eval_names:
++                raise ValueError(f"Fixed evaluation split is empty: {fixed_eval_path}")
++
++        fixed_eval_camera_names = set()
++        fixed_eval_match_mode = "not used"
++        if fixed_eval_names:
++            fixed_eval_camera_names, fixed_eval_match_mode = _resolve_fixed_eval_camera_names(
++                [cam.image_name for cam in cam_list], fixed_eval_names
++            )
++            print(
++                "SuGaR fixed evaluation split: "
++                f"{len(fixed_eval_names)} entries, {len(cam_list)} cameras, "
++                f"{len(fixed_eval_camera_names)} matched "
++                f"({fixed_eval_match_mode}) from {fixed_eval_path}"
++            )
++            if len(fixed_eval_camera_names) != len(fixed_eval_names):
++                raise ValueError(
++                    "The fixed evaluation split contains cameras that are not "
++                    "available after SuGaR camera filtering: "
++                    f"{len(fixed_eval_names) - len(fixed_eval_camera_names)} "
++                    f"unmatched of {len(fixed_eval_names)}. Check {fixed_eval_path}."
++                )
++
+         if eval_split:
+             self.cam_list = []
+             self.test_cam_list = []
+             for i, cam in enumerate(cam_list):
+-                if i % eval_split_interval == 0:
++                if fixed_eval_names:
++                    is_test = _normalize_frame_stem(cam.image_name) in fixed_eval_camera_names
++                else:
++                    is_test = i % eval_split_interval == 0
++                if is_test:
+                     self.test_cam_list.append(cam)
+                 else:
+                     self.cam_list.append(cam)
++            if fixed_eval_names and not self.test_cam_list:
++                available_names = [cam.image_name for cam in cam_list[:5]]
++                raise ValueError(
++                    "The fixed evaluation split did not match any SuGaR camera "
++                    f"name. Expected stems such as {available_names}; "
++                    f"check {fixed_eval_path}."
++                )
++            if fixed_eval_names and not self.cam_list:
++                raise ValueError(
++                    "The fixed evaluation split contains every available SuGaR "
++                    f"camera, leaving no training cameras: {fixed_eval_path}."
++                )
+             # test_ns_cameras = convert_camera_from_gs_to_nerfstudio(self.test_cam_list)
+             # self.test_cameras = NeRFCameras.from_ns_cameras(test_ns_cameras)
+             self.test_cameras = CamerasWrapper(self.test_cam_list)
+diff --git a/sugar_scene/sugar_model.py b/sugar_scene/sugar_model.py
+index ae5d17d..921f410 100644
+--- a/sugar_scene/sugar_model.py
++++ b/sugar_scene/sugar_model.py
+@@ -1903,6 +1903,7 @@ class SuGaR(nn.Module):
+         compute_intersection_for_flat_gaussian=False,  # Should be False
+         use_gaussian_depth=False,  # False until now. TODO: Test with True
+         just_use_depth_as_level=False, # Should be False
++        sampling_generator=None,
+         ):
+         # Remember to reset neighbors and update texture features before calling this function
+         if nerf_cameras is None:
+@@ -1994,7 +1995,14 @@ class SuGaR(nn.Module):
+             ndc_points_idx = torch.arange(n_surface_points)
+         else:
+             n_surface_points = min(n_surface_points, ndc_points.shape[1])
+-            ndc_points_idx = torch.randperm(ndc_points.shape[1])[:n_surface_points]
++            if sampling_generator is None:
++                ndc_points_idx = torch.randperm(ndc_points.shape[1])[:n_surface_points]
++            else:
++                ndc_points_idx = torch.randperm(
++                    ndc_points.shape[1],
++                    device=self.device,
++                    generator=sampling_generator,
++                )[:n_surface_points]
+             ndc_points = ndc_points[:, ndc_points_idx]
+         all_world_points = fov_cameras.unproject_points(ndc_points, scaled_depth_input=False).view(-1, 3)
+         
+diff --git a/train.py b/train.py
+index 99146f6..866a820 100644
+--- a/train.py
++++ b/train.py
+@@ -35,7 +35,7 @@ if __name__ == "__main__":
+                         help='(Required) Type of regularization to use for coarse SuGaR. Can be "sdf", "density" or "dn_consistency". ' 
+                         'We recommend using "dn_consistency" for the best mesh quality.')
+     parser.add_argument('--coarse-iterations', type=int, default=None,
+-                        help='Optional coarse iterations for dn_consistency; defaults to the local 15,000-iteration profile.')
++                        help='Optional final coarse counter for dn_consistency; c9000 is the segmented-object default, values above 9000 additionally activate DN/SDF terms.')
+     
+     # Extract mesh
+     parser.add_argument('-l', '--surface_level', type=float, default=0.3, 
+@@ -156,8 +156,8 @@ if __name__ == "__main__":
+     # Parse arguments
+     args = parser.parse_args()
+     if args.coarse_iterations is not None:
+-        if args.coarse_iterations <= 9_000:
+-            parser.error('--coarse-iterations must exceed 9000 because dn_consistency starts afterward.')
++        if args.coarse_iterations <= 6_999:
++            parser.error('--coarse-iterations must exceed the loaded STS counter 6999.')
+         if args.regularization_type != 'dn_consistency':
+             parser.error('--coarse-iterations is currently supported only with dn_consistency.')
+     if args.surface_sample_count < 1:
+@@ -306,4 +306,3 @@ if __name__ == "__main__":
+             'texture_mask_dilation_px': args.texture_mask_dilation_px,
+         })
+         refined_mesh_path = extract_mesh_and_texture_from_refined_sugar(refined_mesh_args)
+-        
+\ No newline at end of file

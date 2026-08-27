@@ -1,0 +1,207 @@
+\section{Versuchsaufbau}
+\label{sec:versuchsaufbau}
+
+Die Evaluation folgt einer gestuften Logik. Separate COLMAP-Voruntersuchungen
+begründen den SfM-Standard. Danach untersuchen automatisierte Matrixläufe
+Kameramodell, FPS und Auflösung. Eine kontrollierte Vierfeld-Ablation lokalisiert
+den Einfluss von Gaussian-Optimierung und Tiefenroute\footnote{Die
+Tiefenroute bezeichnet die Art, wie die für das Surface-Sampling benötigte
+Oberflächentiefe gewonnen wird: entweder durch Projektion der
+SuGaR-``Diamond''-Primitive in einen Z-Buffer (Diamond-Mesh-Tiefe) oder
+direkt aus dem Gaussian-Rasterizer.}. Abschließend
+vervollständigt eine zwölf Läufe umfassende SuGaR-Folgeprüfung den technischen
+Meshroutenvergleich auf der Coarse-Stufe.
+
+\subsection{Testdatensatz, Variablen und Konstanten}
+
+Die Tests verwenden das Alurohr-Video als linearen Labor-Testdatensatz. Die
+Matrixprofile bestehen aus 5 FPS und 2 FPS sowie den Auflösungen 1280$\times$720,
+960$\times$540 und 640$\times$360. Der Prompt lautet \texttt{pipe}. SIFT-
+Merkmale, Sequential-Overlap, Guided Matching, STS-Iterationszahl, Meshziel,
+Surface-Sample-Zahl und Seed werden konstant gehalten.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{3.5cm}X}
+\toprule
+Kategorie & Festlegung\\
+\midrule
+Datensatz/Prompt & Alurohr-Video, \texttt{pipe}\\
+Kameramodelle & \texttt{SIMPLE\_RADIAL}, \texttt{PINHOLE}, \texttt{OPENCV}\\
+Frameprofile & 2/5 FPS; $1280\times720$, $960\times540$, $640\times360$\\
+COLMAP-Standard & 4096 Plain-SIFT, Overlap 15, Guided Matching aus,
+Peak-Threshold 0,003\\
+STS & 7000 Gesamtiterationen, 5000 Objektcurriculum\\
+Mesh & 200.000 Zielvertices, 5.000.000 Surface-Samples, Poisson-Tiefe 10,
+Seed 42\\
+Masken & RGB \texttt{default}, DN \texttt{middle}, keine zusätzliche
+Dilatation\\
+Centerline & \texttt{single}, Voxel 0,1, B-Spline Grad 10\\
+Bildmetriken & ausschließlich objektmaskierte PSNR, SSIM und LPIPS\\
+\bottomrule
+\end{tabularx}
+\caption{Zentrale Variablen und kontrollierte Standardparameter.}
+\label{tab:versuchsparameter}
+\end{table}
+
+Die Bildmetriken sind die einzigen Qualitätsmetriken für Renderings.
+Maskenabdeckung, Registrierungsquote, Laufstatus und Laufzeit werden als
+technische Zusatzgrößen geführt. Sie werden nicht zu weiteren Bildmetriken
+umdefiniert.
+
+Für die Maskenlogik werden zwei Funktionen getrennt: Die erodierte
+\texttt{middle}-Maske bildet einen konservativen Objektkern und wird für das
+Coverage-Gate sowie für die Auswahl nichtleerer Eval-Ansichten verwendet. Die
+eigentliche Bildmetrik wird anschließend mit der weniger beschnittenen
+\texttt{default}-Maske berechnet. Dadurch werden unsichere Randbereiche bei
+der Zulassung eines Frames streng geprüft, ohne die Bildmetriken unnötig auf
+eine erodierte Objektfläche zu beschränken. Das Feld
+\texttt{mask\_level=default} in den Metrik-JSONs dokumentiert diese tatsächliche
+Auswertungsmaske.
+
+Die Maskenhierarchie selbst ist im Projektverlauf vereinheitlicht worden:
+Historisch war zwischenzeitlich auch die \texttt{default}-Maske dilatiert;
+verbindlich gilt nun \texttt{default} = unverändert, \texttt{middle} = einfach
+erodiert, \texttt{small} = zweifach erodiert, ohne Dilatation. SuGaR nutzt
+dabei nicht alle Maskenstufen gleichzeitig: Der maskierte RGB-Verlust der
+Coarse-Route arbeitet auf \texttt{default}, die Depth-Normal-Consistency auf
+der konservativeren \texttt{middle}-Maske.
+
+\subsection{COLMAP-Voruntersuchung}
+
+Eine getrennte CPU-Voruntersuchung vergleicht die Sparse-SfM-Stufe. Sie umfasst
+unter anderem 4096 gegen 8192 SIFT-Merkmale, Guided Matching und zwei
+Kompressionsprofile. Alle fünf ausgewerteten Hauptläufe registrierten 240 von
+240 Bildern; die vollständige Tabelle mit Punktzahlen, Tracks,
+Reprojektionsfehlern und Laufzeiten steht in
+Tabelle~\ref{tab:colmap-vorstudie} im Anhang~A. Die Untersuchung begründet den Standard
+4096 Plain-SIFT und deaktiviertes Guided Matching, ist aber kein
+vollständiger STS-/Meshvergleich.
+
+\subsection{Autopilot und Produktionslauf}
+
+Der kanonische Produktionslauf für den Testdatensatz verwendet das Video
+\path{Alurohr_THWS.mp4} mit OPENCV, 5 FPS, 720p und Route A bis zu Poisson-Mesh,
+B-Spline-Centerline und GeoJSON; er ist als Autopilot-Vollauf archiviert.
+Daneben existieren archivierte Autopilot-Volläufe für die übrigen
+Auflösungsstufen (Abschnitt~\ref{sec:versuchsaufbau}, Erfolgskriterium~6).
+
+\subsection{Kameramodell-/FPS-/Auflösungsmatrix}
+
+Insgesamt umfasst die vorliegende Arbeit drei Versuchsreihen; die zugehörigen Ergebnisse
+zeigen die Grafiken in Kapitel~7 (Ergebnisse) sowie die Detailtabellen in den
+Anhängen:
+
+\begin{itemize}
+  \item die zusammengeführte historische 24er-Matrix aus den sechs
+        Route-A-Versuchen von \path{matrix_full_pipe} (Kameramodell
+        \texttt{SIMPLE\_RADIAL}) und 18
+        Folgeexperimenten (\path{matrix_rest} mit den Kameramodellen
+        \texttt{PINHOLE} und \texttt{OPENCV} als Route-A-Ablationen sowie der
+        damaligen SuGaR-Variante mit \texttt{SIMPLE\_RADIAL}, jeweils über
+        drei Auflösungen und zwei FPS-Profile);
+  \item die Vierfeld-Ablation von Original-GS gegen SuGaR-Coarse mit zwei
+        Tiefenrouten (Abschnitt unten sowie
+        Abschnitt~\ref{sec:produktionskonfiguration});
+  \item die abgeschlossene zwölfteilige SuGaR-Coarse-Folgematrix
+        (\path{matrix_sugar_followup_12}).
+\end{itemize}
+
+Der Runner arbeitet seriell, weil alle Versuche denselben
+Live-Workspace verwenden und zwischen den Läufen archiviert und bereinigt
+wird.
+
+\subsection{Vierfeld-Ablation der Meshgewinnung}
+\label{subsec:vierfeld-ablation}
+
+Die Ursache sichtbarer Meshunterschiede wird mit vier Coarse-only-Varianten
+getrennt:
+
+\begin{enumerate}
+  \item A: Original-STS-GS mit projizierter Diamond-Mesh-Tiefe;
+  \item B: Original-STS-GS mit Gaussian-Rasterizer-Tiefe;
+  \item C: SuGaR-Coarse $c=9000$ mit Diamond-Mesh-Tiefe;
+  \item D: SuGaR-Coarse $c=9000$ mit Gaussian-Rasterizer-Tiefe.
+\end{enumerate}
+
+Kameras, Eingabemasken, Surface-Level, Poisson-Tiefe, Dichtequantil,
+Vertexziel, Samplezahl, Projektion und Seed bleiben konstant. Dadurch werden
+Gaussian-Optimierung und Tiefenroute als getrennte Einflussfaktoren untersucht.
+Die Auswertungsmethode der gerichteten Distanzen sowie ihre Grenzen sind in
+Abschnitt~\ref{sec:produktionskonfiguration} beschrieben.
+
+\subsection{Abgeschlossene SuGaR-Folgeprüfung}
+\label{subsec:sugar-folgepruefung}
+
+Die Folgematrix umfasst zwölf Läufe über die Kameramodelle
+\texttt{SIMPLE\_RADIAL} und \texttt{OPENCV} (jeweils mit
+\texttt{sugar\_coarse}) bei drei Auflösungen und zwei FPS-Profilen. Alle zwölf
+Manifeste und Coarse-Metrikdateien sind erfolgreich
+archiviert. Ein verfeinertes PLY wurde in diesen Läufen nicht exportiert; die
+Folgematrix bewertet daher nur die Coarse-Route. Die Ergebnisse zeigen die
+Grafiken in Abschnitt~\ref{sec:sugar-folgepruefung} und die Fehlerchronik in
+Tabelle~\ref{tab:fehlerchronik}. Da sämtliche Coarse-Läufe dieser Prüfung wie
+auch die Coarse-Arme der Vierfeld-Ablation mit Zielzählerstand 9000 trainiert
+wurden, blieben die erst oberhalb dieses Zählerstands aktivierten DN-/SDF-
+Terme des Forks in allen ausgewerteten Läufen ohne Wirkung.
+
+
+\subsection{Evaluationsprotokoll}
+
+Für jeden Lauf werden Masken- und Warp-Coverage sowie die COLMAP-Ausgaben
+archiviert. Hinzu kommen STS-Checkpoint (\path{point_cloud.ply}), gegebenenfalls
+SuGaR-Coarse-Checkpoint (\path{9000.pt}), Mesh-/Postprocess-Ausgaben, feste
+Eval-Frames und objektmaskierte PSNR-, SSIM- und LPIPS-Werte. Die Daten werden über
+\texttt{manifest.json}, \texttt{parameters.json}, \texttt{run.log} und
+\texttt{run.md} nachvollziehbar gehalten.
+
+Der feste Eval-Split teilt die 240 registrierten Kameras eines Laufs in 210
+Trainings- und 30 Evaluationsansichten. Die Evaluationsansichten sind genau
+deshalb aussagekräftig, weil ihre Bilder nicht am Training beteiligt waren;
+die Aufteilung ist als Liste archiviert und in allen Läufen identisch, sodass
+die Metriken zwischen den Konfigurationen vergleichbar bleiben.
+
+Die Matrixgrafiken verwenden den arithmetischen Mittelwert aus 2 und 5 FPS nur,
+wenn beide Läufe derselben Konfiguration vollständig erfolgreich waren. Ein
+technischer Fehler wird nicht als schlechter Qualitätswert in einen Mittelwert
+umgewandelt. Die neue Auswertung trennt zusätzlich die Modellstufen: Eine
+STS-Grafik liest ausschließlich die aus \path{point_cloud.ply} gerenderten
+\texttt{sts\_masked.json}-Dateien (Route~A), eine SuGaR-Grafik ausschließlich die
+aus \path{9000.pt} gerenderten \texttt{sugar\_coarse\_masked.json}-Dateien. Da
+beide Formate dieselben 3D-Gaussian-Parameter speichern, beruht der Unterschied
+in den Messwerten (rund $29{,}5\,\mathrm{dB}$ gegenüber $21{,}5\,\mathrm{dB}$)
+rein auf den veränderten Gaussian-Parametern nach der SuGaR-Coarse-Optimierung und
+nicht auf dem Dateiformat. Die \texttt{per\_frame}-Werte werden ergänzend als
+Boxplots mit Einzelpunkten dargestellt, damit Streuung und Ausreißer nicht durch
+den Mittelwert verborgen werden.
+
+Ein Lauf erhält nur dann den Status vollständig erfolgreich, wenn alle für
+seine Route vorgesehenen Stufen gültig sind: Masken und Coverage,
+COLMAP-Modell, Roh-/Ideal-Domäne, vollständig gematchter Eval-Split,
+STS-Checkpoint, Objektselektion, Mesh, Postprocessing, objektmaskierte Metriken
+und Ergebnisarchiv. Für SuGaR-Coarse muss zusätzlich das SuGaR-Rendering
+erfolgreich sein. Eine zuvor erzeugte \texttt{sts\_masked.json} bleibt eine
+STS-Baseline und wird nicht als SuGaR-Messung gewertet.
+
+\subsection{Erfolgskriterien der Projektarbeit}
+
+Die vorliegende Arbeit gilt als technisch erfolgreich, wenn:
+
+\begin{enumerate}
+  \item die zentrale Pipeline für den Testdatensatz durchläuft;
+  \item die Bild- und Maskendomänen konsistent sind;
+  \item STS, Meshgewinnung und Centerline-Extraktion reproduzierbar arbeiten;
+  \item der Status jedes Matrixlaufs und die Fehlerursache archiviert sind;
+  \item die Ergebnisse für eine spätere GNSS-basierte Bachelorbewertung
+        geeignet abgelegt werden.
+    \item interaktiver Vollauf, Autopilot und Matrixrunner in ihrer
+      jeweiligen Funktion eindeutig dokumentiert und über archivierte Läufe
+      nachgewiesen sind: neun erfolgreiche Autopilot-Volläufe (720p, qHD und
+      low), der kanonische Produktionslauf sowie die Matrix- und
+      Folgematrixbatches.
+\end{enumerate}
+
+Die PSNR-/SSIM-/LPIPS-Werte sind dabei Funktions- und Visualisierungsmetriken.
+Sie ersetzen nicht die spätere geometrische Bewertung mit Centerline-RMSE,
+Hausdorff-Distanz und GNSS-Referenz.

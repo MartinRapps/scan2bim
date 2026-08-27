@@ -1,0 +1,113 @@
+services:
+  # Container A: Vorverarbeitung (SAM 3 Video Tracking / Mask Export)
+  sam3-preprocess:
+    build:
+      context: .
+      dockerfile: ./docker/container-a-sam3/Dockerfile
+    container_name: sam3_preprocess
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    gpus: all
+    environment:
+      - HF_TOKEN=${HF_TOKEN:-}
+      - HF_HOME=/data/hf_cache
+      # Optimiere PyTorch CPU Multithreading (8 Threads = 8 P-Cores des i7-12700)
+      - OMP_NUM_THREADS=8
+      - MKL_NUM_THREADS=8
+      - OPENBLAS_NUM_THREADS=8
+      - MAX_JOBS=8
+      # Erlaube PyTorch, fragmentierten VRAM besser zu nutzen
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+    volumes:
+      - ./data:/data
+      - ./src:/app/src
+      - ./tools:/app/tools:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Container B: Structure from Motion (COLMAP CUDA 11.8/12.1)
+  colmap-sfm:
+    build:
+      context: .
+      dockerfile: ./docker/container-b-colmap/Dockerfile
+    container_name: colmap_sfm
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    gpus: all
+    environment:
+      - COLMAP_CAMERA_MODEL=${COLMAP_CAMERA_MODEL:-SIMPLE_RADIAL}
+      - COLMAP_MAX_FEATURES=${COLMAP_MAX_FEATURES:-4096}
+      - COLMAP_SEQUENTIAL_OVERLAP=${COLMAP_SEQUENTIAL_OVERLAP:-15}
+      - COLMAP_GUIDED_MATCHING=${COLMAP_GUIDED_MATCHING:-0}
+      - COLMAP_SIFT_PEAK_THRESHOLD=${COLMAP_SIFT_PEAK_THRESHOLD:-0.003}
+    volumes:
+      - ./data:/data
+      - ./src:/app/src
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Container C: Object-specific 3DGS (Segment-then-Splat STS CUDA 12.1)
+  sts-training:
+    build:
+      context: .
+      dockerfile: ./docker/container-c-sts/Dockerfile
+    container_name: sts_training
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    gpus: all
+    environment:
+      - MPLCONFIGDIR=/tmp/matplotlib
+      - PYTHONUNBUFFERED=1
+      - EVAL_FRAMES_PATH=${EVAL_FRAMES_PATH:-}
+      - XDG_CACHE_HOME=/data/hf_cache
+      - TORCH_HOME=/data/hf_cache/torch
+    volumes:
+      - ./data:/data
+      - ./src:/app/src
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Container D: Meshing (SuGaR CUDA 11.8)
+  sugar-meshing:
+    build:
+      context: .
+      dockerfile: ./docker/container-d-sugar/Dockerfile
+    container_name: sugar_meshing
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    gpus: all
+    volumes:
+      - ./data:/data
+      - ./src:/app/src
+    environment:
+      - SUGAR_EVAL_FRAMES_PATH=${SUGAR_EVAL_FRAMES_PATH:-}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Container E: Post-Processing (DGtal C++ & GDAL / CPU-only)
+  post-processing:
+    build:
+      context: .
+      dockerfile: ./docker/container-e-postprocess/Dockerfile
+    container_name: post_processing
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    volumes:
+      - ./data:/data
+      - ./src:/app/src
+    # Pure CPU-container, no GPU reservation needed

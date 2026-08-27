@@ -1,0 +1,69 @@
+\clearpage
+\section{Entwicklungs- und Fehlerchronologie}
+
+Dieser Anhang bewahrt wesentliche negative Ergebnisse und Korrekturen. Im
+Haupttext werden nur die wissenschaftlich entscheidenden Datenverträge und
+Schutzmaßnahmen erläutert.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.05}
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{p{2.6cm}XXX}
+\toprule
+Stufe & Beobachtung & Ursache und Korrektur & Erkenntnis\\
+\midrule
+SAM~3.1 & Speicherfehler oder formal leere Masken & Laufzeit und Parser wurden
+an das verwendete Modell angepasst; Ausgaben werden unmittelbar persistiert
+und über Stichproben sowie Coverage geprüft. & Ein erfolgreicher Prozess ist
+kein ausreichender Maskennachweis.\\
+COLMAP & Mehrere Sparse-Teilmodelle und ungeeignete Initialisierung & Die
+Übergabe prüft vollständige Modelle und wählt den punktreichsten Kandidaten;
+aktuelle Parameter wurden separat untersucht. & Modellwahl und
+Registrierungsquote sind Teil des Datenvertrags.\\
+Bilddomäne & Masken und Kameras beschrieben unterschiedliche Pixelräume & Das
+Originalmodell bleibt erhalten; Bilder und Masken werden gemeinsam in eine
+ideale PINHOLE-Domäne überführt. & Semantische und geometrische Daten müssen in
+derselben Bilddomäne liegen.\\
+Eval-Split & Leere Testkameraliste trotz 240 gültiger Maskenkameras & Namen wie
+\texttt{00000} und \texttt{00000.jpg} wurden als normalisierte Stems und
+numerische IDs abgeglichen; leere Listen werden abgelehnt. & Splitvalidierung
+muss vor Training und Metrikberechnung erfolgen.\\
+Matrixrunner & Nur die erste Variante wurde abgearbeitet & Unterprozesse
+konsumierten den Standardinput der TSV-Schleife; der Runner verwendet nun
+stdin-unabhängige Schleifen. & Ein Dry-Run ersetzt nicht die Kontrolle der
+tatsächlich archivierten Läufe.\\
+Metrik & Ein ausgewählter Eval-Frame besaß eine leere Maske & Der feste Split
+wird nach dem Maskenwarp ausschließlich aus nichtleeren idealen Masken erzeugt.
+& Globale Masken-Coverage und konkrete Eval-Eignung sind getrennte Kriterien.\\
+SuGaR-Render & Importfehler und falsches Tensorlayout & Der Containerpfad wird
+explizit importiert; HWC-Ausgaben werden vor dem Speichern in CHW überführt. &
+Vorhandene STS-Metriken sind keine erfolgreichen SuGaR-Metriken.\\
+Poisson & Leere oder ungültige Background-Punktwolke & Zu kleine Clouds und
+ungültige Normalen werden übersprungen, solange die Foreground-Geometrie gültig
+ist. & Diagnosekomponenten dürfen den Objektpfad nicht fälschlich abbrechen.\\
+Centerline & Der Netzwerkmodus verwarf alle kurzen Äste & Der
+\texttt{single}-Modus verwendet den Durchmesserpfad der größten Komponente. &
+Verzweigte Netze benötigen eine getrennte wissenschaftliche Untersuchung.\\
+\shortstack{Georeferenz-\\ierung} & Keine validierte 4x4-Matrix im Archivlauf & Der Export wird
+als Translation-Fallback gekennzeichnet. & Ein technisch erzeugtes GeoJSON ist
+kein Genauigkeitsnachweis.\\
+\bottomrule
+\end{tabularx}
+\caption{Ausgewählte Fehlerfälle, Korrekturen und übertragbare Erkenntnisse.}
+\label{tab:fehlerchronik}
+\end{table}
+
+Vollständige Laufprotokolle, Tracebacks und Zwischenartefakte liegen in den
+Run-Archiven unter \texttt{data/10\_runs/}. Historische Sonnenbrillen- und
+Gestellablationen bleiben Material zur Entwicklung der SuGaR-Route, werden aber
+nicht als Ergebnisse des aktuellen Alurohrdatensatzes ausgegeben.
+
+Die zu den Korrekturen gehörenden visuellen Zwischenstände sind über die
+historischen Screenshot-Panels im Haupttext belegt: die STS- und
+Objektfilterungsentwicklung in Kapitel~\ref{sec:implementierung}, die
+SuGaR-Coarse-Zwischenstände in Abschnitt~\ref{sec:sugar-folgepruefung}. Die
+Rohdateien liegen im Repository unter \texttt{PA/Screenshots/}; im Anlagenband
+sind die zusammengeführten Panels unter \texttt{06\_Panels/} abgelegt (siehe
+\texttt{ABGABE\_Index.md}).
