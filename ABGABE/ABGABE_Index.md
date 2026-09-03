@@ -28,13 +28,19 @@ ABGABE/
 │   ├── autopilot_qhd/  autopilot_low/  ← weitere Autopilot-Vollläufe
 │   ├── e2e_verifikation_260826/        ← 3 gemessene E2E-Läufe + e2e_times.csv/md
 │   ├── followup_12/                    ← 12 SuGaR-Coarse-Läufe (Manifeste + Metriken + Mesh)
-│   ├── matrix_24/                      ← Statusmanifeste der historischen Batches
+│   ├── matrix_24/                      ← entfällt (existiert nicht; Nachweise: CSVs in `03_Grafiken/`)
 │   └── qualitaetsvergleich_20260818/   ← Golden-Run-Arm 5fps/720p/opencv_a (+ weitere Arme nach Bedarf)
 ├── 05_SuGaR-Fork/
 │   ├── sugar_fork_diff_48bbfdd_a0fc37b.diff
 │   └── FORK_README.md                  ← Commit-Kette 48bbfdd → a0fc37b
 └── 06_Panels/                          ← pa_panel_*.png in Auflösung der PDF-Version
 ```
+
+> Hinweis: Diese Struktur beschreibt das **vollständige Abgabepaket**
+> (Git + Cloud/USB). Im Git-Repository liegen nur Dateien ≤100 MB
+> (GitHub-Limit); mit „Cloud" markierte Positionen (`01_Rohdaten/`,
+> `followup_12/`, Golden-Run-Arm, SuGaR-Vergleichsarm) werden per
+> Cloud-Download bzw. USB-Datenträger beigelegt.
 
 ## Zu jedem Eintrag: Herkunft und Zweck
 
@@ -99,14 +105,14 @@ Der Ordner `ABGABE/` ist nach dieser Struktur befüllt:
 | Ordner | Inhalt | Prüfsummen |
 |---|---|---|
 | `/` | `ABGABE_Index.md`, `pa.pdf` (Arbeitsfassung, 63 S. inkl. Erklärung + PlagAware-Einwilligung), `pa_anonym.pdf` (ohne Name/Matrikel — Fallback, falls die PlagAware-Einwilligung nicht erteilt wird; Fußnote 13 PABA), `Anlage_KI-Nutzung.pdf` + `.tex`, `Korrekturbericht_ProfPersona.md` + `Korrektur_Persona_und_Plan.md` (Prüfer-Simulation, siehe KI-Anlage) | – |
-| `01_Rohdaten/` | `Alurohr_THWS.mp4` (H.264, 1920×1080, 30 FPS) | ✓ |
+| `01_Rohdaten/` | `Alurohr_THWS.mp4` (H.264, 1920×1080, 30 FPS, 186 MB) — **nur via Cloud/USB** (GitHub-Limit 100 MB/Datei) | Cloud |
 | `02_COLMAP_Tests/` | Rohberichte der Voruntersuchung | ✓ |
 | `03_Grafiken/` | `matrix_repeat_2026-08-17/` (inkl. korrekt gelabelter `metric_vs_runtime.pdf`) + `verwendet_verbessert/` | ✓ |
 | `04_Run-Archive/e2e_verifikation_260826/` | Pflichtnachweis aller drei Läufe (Manifeste, Parameter, run.md/log, matrix.log, Metriken, eval_frames, Coverage-Reports) + `e2e_times.csv`/`.md` + Batch-Prüfsummen | ✓ |
 | `04_Run-Archive/autopilot_laeufe/` | `run.md`/`run.log` der archivierten Autopilot-Läufe | ✓ |
-| `04_Run-Archive/followup_12/` | vollständige `sugar_output`-Ordner der zwölf Folgematrix-Läufe (inkl. interner Refined-Mesh-Extraktion; Bewertung laut PA nur Coarse-Stufe — siehe README im Ordner) | ✓ |
-| `04_Run-Archive/golden_run_720p_opencv_a/` | **vollständiger** Arm aus `matrix_qualitaetsvergleich_20260818` (3,1 GB, inkl. live/) | ✓ |
-| `04_Run-Archive/sugar_vergleichsarm_720p/` | **vollständiger** SuGaR-Coarse-Vergleichslauf `opencv_sugar` (3,4 GB) | ✓ |
+| `04_Run-Archive/followup_12/` | vollständige `sugar_output`-Ordner der zwölf Folgematrix-Läufe (inkl. interner Refined-Mesh-Extraktion; Bewertung laut PA nur Coarse-Stufe — siehe README im Ordner) — **nur via Cloud/USB** (484 MB) | Cloud |
+| `04_Run-Archive/golden_run_720p_opencv_a/` | **vollständiger** Arm aus `matrix_qualitaetsvergleich_20260818` (3,1 GB, inkl. live/ — Dateien >100 MB) — **nur via Cloud/USB** | Cloud |
+| `04_Run-Archive/sugar_vergleichsarm_720p/` | **vollständiger** SuGaR-Coarse-Vergleichslauf `opencv_sugar` (3,4 GB) — **nur via Cloud/USB** | Cloud |
 | `05_SuGaR-Fork/` | `sugar_fork_diff_48bbfdd_a0fc37b.diff` + `FORK_README.md` (Commit-Kette) | ✓ |
 | `06_Panels/` | `pa_panel_*.png` | ✓ |
 
