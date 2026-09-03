@@ -13,29 +13,29 @@ Geometriedomäne. Der Ablauf ist:
   \item COLMAP schätzt aus unmaskierten Frames ein ursprüngliches
         Kameramodell und eine sparse Punktwolke.
   \item Bei verzeichnungsbehafteten Kameramodellen wird eine ideale PINHOLE-
-        Szene erzeugt; die Masken werden mit derselben Abbildung in diese
+        Szene erzeugt. Die Masken werden mit derselben Abbildung in diese
         Szene gewarpt, das heißt per Pixel-Neuzuordnung (Nearest Neighbor)
         auf die undistortierten Bilder übertragen, damit die binäre
         Maskensemantik erhalten bleibt.
   \item STS trainiert die objektspezifische Gaussian-Repräsentation.
   \item Die Hochopazitätskopie der Objekt-Gaussians wird über die gewählte
         Meshroute in ein Coarse-Mesh überführt.
-  \item DGtal extrahiert daraus eine lokale Centerline; anschließend können
+  \item DGtal extrahiert daraus eine lokale Centerline. Anschließend können
         B-Spline und GeoJSON erzeugt werden.
 \end{enumerate}
 
-Abbildung~\ref{fig:pa-pipeline-flow} fasst diesen Datenfluss zusammen: Die
+Nachfolgende Abbildung~\ref{fig:pa-pipeline-flow} fasst diesen Datenfluss zusammen. Die
 beiden aktuellen Meshrouten A und \texttt{sugar\_coarse} werden explizit
 getrennt dargestellt. Der CloudCompare-Schritt ist als optionaler
 Georeferenzierungszweig enthalten. Für den Testdatensatz existieren
-CloudCompare-Transformationsmatrizen; sie wurden jedoch ohne unabhängige
+CloudCompare-Transformationsmatrizen. Sie wurden jedoch ohne unabhängige
 Vermessungsreferenz erzeugt und sind daher kein validierter
-PA-Genauigkeitsnachweis. Die Referenzierung ist zunächst rein lokal, das
+Genauigkeitsnachweis. Die Referenzierung ist zunächst rein lokal, das
 heißt ohne Verschiebung in ein globales Koordinatensystem definiert. Das ist
 methodisch unproblematisch: Eine UTM-Referenz lässt sich nachträglich
 herstellen, indem die lokalen Koordinaten um einen frei wählbaren
 UTM-Ankerpunkt versetzt und die vorhandene 4x4-Transformationsmatrix
-anschließend unverändert angewandt wird; Rotation, Maßstab und Form der
+anschließend unverändert angewandt wird. Rotation, Maßstab und Form der
 Geometrie bleiben dabei erhalten. Was damit nicht entsteht, ist eine
 unabhängige Genauigkeitsaussage zur absoluten Lage -- diese bleibt der
 Bachelorarbeit vorbehalten.
@@ -106,17 +106,17 @@ prüfbare Eingaben und persistente Ausgaben.
 
 \subsection{Domänentrennung als zentraler Datenvertrag}
 
-Die methodische Kernidee ist die Domänentrennung: GCP und SfM bleiben im
-Originalraum, STS und SuGaR arbeiten in einer idealisierten, konsistenten
-Bilddomäne. Dadurch wird vermieden, dass eine Bildverzeichnung nur in den
+Die methodische Kernidee ist die Domänentrennung. Hierbei profitiert SfM von unmaskierten Hintergrundmerkmalen; GCP und SfM bleiben im
+Originalraum, während STS und SuGaR in einer idealisierten, konsistenten
+Bilddomäne arbeiten. Dadurch wird vermieden, dass eine Bildverzeichnung nur in den
 Kameraparametern, nicht aber in den Masken berücksichtigt wird.
 
 Bei \texttt{SIMPLE\_RADIAL} und \texttt{OPENCV} wird zuerst ein originales
 COLMAP-Modell auf den Rohframes geschätzt. Der COLMAP-Undistorter
 (\texttt{image\_undistorter}) erzeugt daraus eine separate ideale Szene, indem
 er die verzerrten Rohbilder mithilfe des bereits geschätzten Kameramodells
-resampled: Jedes Pixel wird an seine radiale Position im verzeichnungsfreien
-PINHOLE-Bild neu abgetastet; es wird dabei kein neues Kameramodell geschätzt,
+resampled. Jedes Pixel wird an seine radiale Position im verzeichnungsfreien
+PINHOLE-Bild neu abgetastet. Es wird dabei kein neues Kameramodell geschätzt,
 sondern das gelöste Modell angewandt. Die Masken werden mit der identischen
 Kameramodellabbildung transformiert. Bei \texttt{PINHOLE} wird dieselbe
 Schnittstelle als Pass-through verwendet. Somit sehen STS, Renderer,
@@ -129,7 +129,7 @@ Nach COLMAP rufen Inline-Vollauf und Matrixrunner denselben Maskenwarp mit
 identischer Abbildungsvorschrift auf, prüfen die Abdeckung der gewarpten
 Masken und übergibt \mbox{\path{data/03_masks_ideal}} an STS und SuGaR. Im
 Replay-Dispatcher gilt dasselbe für alle Läufe, die COLMAP selbst ausführen
-(Start ab \texttt{gcp}, \texttt{sam3} oder \texttt{colmap}); nur Replays ab
+(Start ab \texttt{gcp}, \texttt{sam3} oder \texttt{colmap}). Nur Replays ab
 \texttt{sts}, \texttt{sugar} oder \texttt{postprocess} setzen einen von
 vornherein passenden idealen Maskensatz voraus, weil dort keine frische
 COLMAP-Szene erzeugt wird.
@@ -140,7 +140,7 @@ Die SAM-Masken erfüllen mehrere getrennte Funktionen. Sie definieren die
 Objektzuordnung in STS, begrenzen die Auswahl der Ziel-Gaussians und stellen die
 Objektregion für die Bildmetriken bereit. In der SuGaR-Coarse-Vergleichsroute
 begrenzen sie zusätzlich die photometrische Supervision. Diese mehrfache
-Nutzung darf nicht mit einer geometrischen Garantie verwechselt werden: Eine
+Nutzung darf nicht mit einer geometrischen Garantie verwechselt werden. Eine
 binäre Maske beschreibt Bildpixel, während ein räumlich ausgedehnter Gaussian
 und das aus Samples rekonstruierte Mesh zusätzliche Unsicherheiten besitzen.
 
@@ -149,7 +149,7 @@ und das aus Samples rekonstruierte Mesh zusätzliche Unsicherheiten besitzen.
 Für die Projektarbeit wird Variante A als Produktionsroute verwendet. SuGaR-
 Coarse und Refinement bleiben als Vergleichsroute erhalten, sind aber nicht
 notwendig, um die direkte STS-Gaussian-Geometrie zu vermessen. Das Mesh ist ein
-abgeleitetes Produkt; die Gaussian-Wolke bleibt die primäre geometrische
+abgeleitetes Produkt. Die Gaussian-Wolke bleibt die primäre geometrische
 Hypothese.
 
 Route A führt keinen neuen SuGaR-Splat ein. Sie extrahiert die Oberfläche aus
@@ -161,13 +161,12 @@ eigentlichen Mesh-Extraktion zu unterscheiden.
 
 \subsection{Ausführungsformen}
 
-Der interaktive Vollauf führt durch Eingabeauswahl und Parameterentscheidungen.
+Der interaktive Vollauf führt Eingabeauswahl und Parameterentscheidungen durch.
 Vor der Parametrisierung fragt er nach einem Lauf-Preset für die
 Arbeitsvideoauflösung (720p, qHD oder low) und weist dabei die gemessenen
 Gesamtlaufzeiten der Produktionskonfiguration aus (Route A, 5 FPS,
-\texttt{OPENCV}: rund 40 Minuten bei 720p, 34 Minuten bei qHD und 24 Minuten
-bei low, jeweils inklusive SAM~3.1-, COLMAP-, Render- und Archivierungsanteil);
-das Preset dient der bewussten Wahl zwischen Bildauflösung und Rechenaufwand.
+\texttt{OPENCV}. Rund 40 Minuten bei 720p, 34 Minuten bei qHD und 24 Minuten
+bei low, jeweils inklusive SAM~3.1-, COLMAP-, Render- und Archivierungsanteil). Das Preset dient der bewussten Wahl zwischen Bildauflösung und Rechenaufwand.
 Der Autopilot fragt nach seiner Aktivierung nur noch das Lauf-Preset und den
 Objekt-Prompt ab, übernimmt für alle übrigen Entscheidungen validierte
 Defaults und überspringt den manuellen
@@ -180,8 +179,8 @@ Reprojektionsfehler) ohne die teuren Trainingsstufen und warpt die Rohmasken
 vor dem Stopp, sodass der Zwischenstand mit einem Replay ab \texttt{sts}
 fortsetzbar bleibt.
 Der Matrixrunner führt deklarierte Kombinationen dateibasiert
-(stdin-unabhängig) nacheinander aus, das heißt er liest die Konfiguration aus
-der TSV-Datei und berührt dabei nicht den Standardinput, den nachgelagerte
+(unabhängig von der Standardeingabe, stdin) nacheinander aus, das heißt er liest die Konfiguration aus
+der TSV-Datei und berührt dabei nicht die Standardeingabe, die nachgelagerte
 Unterprozesse für eigene Zwecke konsumieren könnten. Er archiviert jeden Lauf
 und setzt den Live-Arbeitsbereich zurück. Diese Modi nutzen dieselben
 fachlichen Pipelinekomponenten, erfüllen aber verschiedene Aufgaben der

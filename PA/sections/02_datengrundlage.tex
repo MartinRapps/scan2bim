@@ -16,11 +16,11 @@ wiederholbaren Bedingungen zu untersuchen.
 Die Videosequenz wurde durchgehend mit der Hauptkamera (1x-Weitwinkelkamera)
 des Google Pixel 8 Pro aufgenommen. Diese Kamera besitzt laut
 Herstellerangaben einen 50-MP-Sensor mit einer Blende von $f/1{,}68$, einem
-Sichtfeld von etwa $82^\circ$ und einer Sensorgröße von $1/1{,}31$ Zoll;
+Sichtfeld von etwa $82^\circ$ und einer Sensorgröße von $1/1{,}31$ Zoll.
 Google weist für die Weitwinkelkamera außerdem optische und elektronische
 Bildstabilisierung aus \parencite{googlePixel8ProSpecs}. Die Aufnahme erfolgte
 mit der OpenCamera-App. OpenCamera unterstützt eine Belichtungssperre sowie
-die Auswahl der Videoauflösung; die automatische Bildausrichtung (Auto-Level)
+die Auswahl der Videoauflösung. Die automatische Bildausrichtung (Auto-Level)
 ist eine separate, optionale Funktion \parencite{openCameraHelp}.
 
 Für den verwendeten Datensatz waren die Belichtung fest eingestellt, die
@@ -34,7 +34,7 @@ Pipeline-Arbeitsprofile und keine zusätzlichen Kameraaufnahmen.
 
 Die Bezeichnung \enquote{unverfälschtes Video} ist dabei auf die fehlende zusätzliche
 App-seitige Bildausrichtung und die festgehaltene Belichtung zu beziehen. Die
-Aufnahme ist kein Rohsensordatensatz: Das Pixel verarbeitet das Signal bereits
+Aufnahme ist kein Rohsensordatensatz. Das Pixel verarbeitet das Signal bereits
 über seine interne Bildverarbeitung und speichert hier ein H.264-Video.
 Insbesondere lässt sich aus der Datei allein nicht sicher nachweisen, ob die
 vom Gerät bereitgestellte optische beziehungsweise elektronische
@@ -46,8 +46,8 @@ Pipeline.
 Der Segmentierungsprompt lautet \texttt{pipe}. Die in der Projektarbeit
 untersuchten Profilvarianten aus zwei zeitlichen Abtastungen (2 und 5 FPS) und
 drei räumlichen Auflösungen ($1280\times720$, $960\times540$ und
-$640\times360$ Pixel) sind in Kapitel~\ref{sec:versuchsaufbau} zusammengefasst;
-für den Datensatz genügt hier der Hinweis, dass ein Lauf bei 5 FPS rund 240
+$640\times360$ Pixel) sind in Kapitel~\ref{sec:versuchsaufbau} zusammengefasst.
+Für den Datensatz genügt hier der Hinweis, dass ein Lauf bei 5 FPS rund 240
 Frames und bei 2 FPS rund 96 Frames umfasst. Ein Lauf verwendet in allen
 Verarbeitungsstufen denselben Frame-Satz, sodass Bildnamen, Masken, Kameras
 und feste Evaluationsansichten innerhalb eines Laufs konsistent bleiben.

@@ -1,7 +1,7 @@
 \section{Technische und methodische Grundlagen}
 \label{sec:grundlagen}
 
-Dieses Kapitel führt nur die Verfahren ein, die für Architektur,
+Dieses Kapitel führt die Verfahren ein, die für Architektur,
 Versuchsdesign und Interpretation der Pipeline notwendig sind. Die Arbeit
 entwickelt keine neuen Segmentierungs-, SfM- oder Splatting-Algorithmen. Ihre
 wissenschaftliche Leistung liegt in der konsistenten Verbindung und Prüfung
@@ -11,11 +11,11 @@ dieser Verfahren.
 
 Das Segment Anything Model überführt visuelle beziehungsweise sprachliche
 Prompts in Objektmasken \parencite{kirillov2023segment,metaSam3}. Für die
-Pipeline ist die Promptbarkeit wichtig: Die Zielklasse kann als Begriff wie
+Pipeline ist die Promptbarkeit wichtig. Die Zielklasse kann als Begriff wie
 \texttt{pipe} angegeben werden, ohne für jede neue lineare Objektart ein
 eigenes Modell zu trainieren. Die Videoverarbeitung propagiert die
 Objektdefinition über die Sequenz. Damit wird die zeitliche Konsistenz der
-Masken zu einem eigenen Qualitätskriterium; eine gute Einzelbildmaske genügt
+Masken zu einem eigenen Qualitätskriterium. Eine gute Einzelbildmaske genügt
 nicht, wenn das Objekt in späteren Frames verloren geht.
 
 Der kanonische SAM-Ausgang wird als Hierarchie gespeichert. \texttt{default}
@@ -23,16 +23,16 @@ ist die unveränderte Objektmaske, \texttt{middle} entsteht durch eine
 $5\times5$-Erosion und \texttt{small} durch zwei Erosionsschritte. Die
 Erosion wendet ein quadratisches Strukturelement von $5\times5$ Pixeln an:
 Ein Pixel gehört nur dann weiterhin zur Maske, wenn die gesamte
-$5\times5$-Nachbarschaft maskiert ist; dadurch werden unsichere Randpixel
+$5\times5$-Nachbarschaft maskiert ist. Dadurch werden unsichere Randpixel
 rund zwei Pixel breit entfernt. Der Wert $5\times5$ ist ein pragmatischer
-Standard: Er glättet unscharfe Maskenränder und entfernt dünne
+Standard. Er glättet unscharfe Maskenränder und entfernt dünne
 Rauschfragmente, ohne das dünne lineare Objekt über eine sinnvolle Bildbreite
 hinaus schrumpfen zu lassen. Die konservativeren Stufen entfernen zusätzlich
 unsichere Randpixel, können bei sehr dünnen Objekten aber auch relevante
 Objektfläche verlieren. Maskenstufe und optionale Dilatation sind deshalb
-explizite Parameter; in der aktuellen Projektfassung wird keine Dilatation
+explizite Parameter. In der aktuellen Projektfassung wird keine Dilatation
 angewendet. Historisch war zwischenzeitlich auch die \texttt{default}-Maske
-dilatiert; solche Stände werden als Entwicklungszwischenstände nicht
+dilatiert. Solche Stände werden als Entwicklungszwischenstände nicht
 fortgeführt, sondern durch die verbindliche Festlegung
 \texttt{default} = unverändert, \texttt{middle} = einfach erodiert und
 \texttt{small} = zweifach erodiert ersetzt (vgl. Abschnitt~\ref{sec:versuchsaufbau}).
@@ -56,7 +56,7 @@ flächendeckende und rauschfreie Merkmalsverteilung voraussetzen. Fehlt diese,
 ist das Gleichungssystem schlecht konditioniert – der Optimierer neigt dann
 zum Overfitting auf Bildrauschen oder koppelt Verzeichnungsparameter
 fälschlicherweise an Kamerabewegungen. Als Produktionsstandard
-ist \texttt{OPENCV} gewählt; die Begründung aus der Matrixauswertung steht in
+ist \texttt{OPENCV} gewählt. Die Begründung aus der Matrixauswertung steht in
 Abschnitt~\ref{sec:produktionskonfiguration}.
 
 Die Modellbezeichnung ist dabei keine hinterlegte Objektivkalibrierung. Das
@@ -103,30 +103,30 @@ Radiance-Field-Darstellung.
 Segment-then-Splat ergänzt die Gaussians um objektbezogene Zuordnungen
 \parencite{lu2025segment}. Das offizielle Verfahren gewinnt seine
 Mehrfachansichtsmasken über eine SAM-basierte Tracking-Pipeline
-(AutoSeg-SAM2): Ein SAM-Grid-Prompt segmentiert die erste Ansicht, SAM~2
+(AutoSeg-SAM2). Ein SAM-Grid-Prompt segmentiert die erste Ansicht, SAM~2
 verfolgt das Objekt anschließend über die Sequenz. Nach der Rekonstruktion
 wird jedem Objekt ein CLIP-Embedding zugeordnet, über das die Szene offen
 vokabularisch durchsucht werden kann. In der Projektpipeline übernehmen die
-extern erzeugten SAM-3.1-Masken beide Rollen: Die promptbare temporale
+extern erzeugten SAM-3.1-Masken beide Rollen. Die promptbare temporale
 Segmentierung liefert die Objektmasken direkt, und die CLIP-Embedding-
 Zuordnung entfällt, weil für den linearen Einobjektfall ausschließlich die
 gewählte Objektmaske als Suchbegriff benötigt wird. STS initialisiert die
 Szene aus dem COLMAP-Modell und ordnet jeden Gaussian über die vorgegebenen
-Masken einem Objekt zu: Während der Objekt-/Maskenphase wird der Bildverlust
+Masken einem Objekt zu. Während der Objekt-/Maskenphase wird der Bildverlust
 auf die maskierte Objektregion der zugeordneten Maske begrenzt, eine
 anschließende All-Object-Phase optimiert alle Objekte gemeinsam. In der
 Projektpipeline sind diese Masken die bereits segmentierten Eingabebilder in
 den drei Erosionsstufen (\texttt{default}, \texttt{middle}, \texttt{small}),
 nicht eine vom STS-System erzeugte Nachsegmentierung. Der Projektstandard
-umfasst 7000 Gesamtiterationen, aufgeteilt in 5000 Iterationen des
-Objektcurriculums und 2000 Iterationen der All-Object-Phase. Da im vorliegenden
+umfasst 7.000 Gesamtiterationen, aufgeteilt in 5.000 Iterationen des
+Objektcurriculums und 2.000 Iterationen der All-Object-Phase. Da im vorliegenden
 Einobjekt-Szenario keine weiteren Instanzen existieren, bewirkt die finale
 Phase keine zusätzliche semantische Entflechtung, sondern dient als konsistente
 Trainingsfortführung des isolierten Zielobjekts.
 
 Die Maskenstufen entfalten ihre Wirkung dabei je Komponente getrennt: STS
 setzt die bereitgestellten Masken für die Objektzuordnung und die
-Objektphasen-Supervision ein; darüber hinaus ist \texttt{middle} aktuell
+Objektphasen-Supervision ein. Darüber hinaus ist \texttt{middle} aktuell
 allein in der Coverage-Prüfung sowie der Kamera- und Eval-Split-Auswahl
 wirksam — Ansichten mit leerer \texttt{middle}-Maske werden vom STS-Training
 beziehungsweise von der Evaluation ausgeschlossen. Unabhängig davon belegen
@@ -142,11 +142,11 @@ beschrieben.
 
 Die Ziel-Gaussians werden über die konfigurierte Objekt-ID selektiert. Bei einem
 Datensatz mit genau einem linearen Objekt ist die Objekt-ID eine
-Formalschnittstelle des übernommenen STS-Schemas; die eigentliche Auswahl
+Formalschnittstelle des übernommenen STS-Schemas. Die eigentliche Auswahl
 trifft der nachgelagerte Opazitäts- und Farbfilter. Ein Opazitätsfilter kann
 schwach sichtbare Primitive entfernen. Die in der PLY gespeicherte
 Logit-Opazität $o_i$ ist der rohe, unbeschränkte Voraktivierungswert, den das
-3DGS-Modell lernt; sie wird erst durch die Sigmoid-Funktion
+3DGS-Modell lernt. Sie wird erst durch die Sigmoid-Funktion
 
 \begin{equation}
 	\alpha_i = \frac{1}{1+\exp(-o_i)}
@@ -161,7 +161,7 @@ getrennte Hochopazitätskopie. Das Setzen auf $\alpha=0{,}999999$ ist eine
 Initialisierungspolitik für die geometrische Extraktion, keine physikalische
 Aussage über Materialtransparenz: Ein endlicher Wert von exakt 1 ist nach der
 Sigmoid-Aktivierung numerisch nicht erreichbar, weil er einen unendlichen
-Logit erfordern würde; der nahezu opake Wert stabilisiert die anschließende
+Logit erfordern würde. Der nahezu opake Wert stabilisiert die anschließende
 Dichte- und Normalenberechnung beim Surface-Sampling.
 
 SuGaR richtet in seiner vollständigen Route 3D-Gaussians durch
@@ -191,7 +191,7 @@ mit $M(p)$ wird der Fehler im Hintergrund zu null gesetzt, sodass der
 Optimierer ausschließlich Gradienten für die Gaussians des Zielobjekts
 berechnet und den Hintergrund ignoriert. Die Division durch die Summe aller
 Maskenpixel $\sum_p M(p)$ normiert den Verlust auf den Mittelwert pro
-Objektpixel; die winzige Konstante $\varepsilon = 10^{-7}$ schützt vor einer
+Objektpixel. Die winzige Konstante $\varepsilon = 10^{-7}$ schützt vor einer
 Division durch null bei temporär leeren Masken.
 
 Beide maskennutzenden Verlustpfade des maskenbewussten SuGaR-Coarse-Trainings
@@ -199,19 +199,19 @@ verwenden unterschiedliche Maskenstufen. Die RGB-Supervision nach
 Gl.~\ref{eq:masked-rgb-loss} vergleicht das Splat-Rendering jeder
 Trainingskamera pixelweise mit dem aufgenommenen Bild, begrenzt auf die
 Maskenpixel (maskierter L1-Anteil plus maskierter DSSIM-Anteil mit einem
-$11\times11$-Fenster; das lokale Fenster zieht am Maskenrand begrenzt Kontext
+$11\times11$-Fenster. Das lokale Fenster zieht am Maskenrand begrenzt Kontext
 von außen ein). Sie verwendet die unveränderte \texttt{default}-Maske, damit
 die Bildsupervision möglichst die volle Objektprojektion abdeckt und
 Positionen, Opazitäten und Farben der Objekt-Gaussians vollständig
 spezifiziert werden. Eine Farbprojektion auf eine Oberfläche findet dabei
-nicht statt; die Farbübertragung aus den Ansichten erfolgt erst in der
+nicht statt. Die Farbübertragung aus den Ansichten erfolgt erst in der
 nachgelagerten UV-Texturphase des Forks.
 
 Die Depth-Normal-Consistency (DN) vergleicht dagegen die aus der gerenderten
 Gaussian-Tiefe abgeleiteten Normalen mit den gerenderten Normalen und wird
 bewusst auf der erodierten \texttt{middle}-Stufe ohne Dilatation angewandt.
-Der Grund ist die Silhouettenstabilität: Tiefe und daraus abgeleitete Normalen
-sind direkt an Objektkanten unzuverlässig, und genau dort kann eine
+Der Grund ist die Silhouettenstabilität. Tiefe und daraus abgeleitete Normalen
+sind direkt an Objektkanten unzuverlässig und genau dort kann eine
 \texttt{default}-Maske über die Objektsilhouette hinausragen. Ein solcher
 Maskenüberhang würde die Objektnormalen am Silhouettenrand in Richtung der
 Hintergrundtiefe ziehen und dadurch eine ausgestülpte oder abgeflachte
@@ -221,14 +221,14 @@ Objekt liegen.
 
 Diese Aufteilung stammt aus der Entwicklung des Forks und ist dort Teil des
 Datenvertrags zwischen Maskenhierarchie und Trainingsplan. Da die
-DN-/SDF-Terme erst oberhalb des Zählerstands 9000 aktiviert werden und alle
+DN-/SDF-Terme erst oberhalb des Zählerstands 9.000 aktiviert werden und alle
 ausgewerteten Läufe — einschließlich sämtlicher \texttt{sugar\_coarse}-Arme
-der Vierfeld-Ablation und der Folgeprüfung — mit Zielzählerstand 9000 oder
+der Vierfeld-Ablation und der Folgeprüfung — mit Zielzählerstand 9.000 oder
 weniger trainiert wurden, trat der DN-Term in keinem ausgewerteten Lauf
 tatsächlich in Wirkung. Die \texttt{middle}-Zuordnung bleibt dennoch
-dokumentiert, weil sie den Fork-Vertrag definiert; Zählermechanik und
+dokumentiert, weil sie den Fork-Vertrag definiert. Zählermechanik und
 Nachweislage der Läufe sind in Abschnitt~\ref{subsec:sugar-folgepruefung}
-erläutert. Standardläufe mit Zieliteration 9000 optimieren die Geometrie
+erläutert. Standardläufe mit Zieliteration 9.000 optimieren die Geometrie
 daher primär über den maskierten photometrischen Farbverlust.
 
 
@@ -328,8 +328,8 @@ Beide Formate beschreiben bei identischem Trainingsstand dieselben
 Präzision ist ein Laden aus einer \path{.pt}-Datei in das SuGaR-Modell
 inhaltlich gleichwertig zu einem Export in eine standardkonforme
 \path{.ply}-Datei. Unterschiede in den resultierenden Bildmetriken entstehen
-daher aus dem unterschiedlichen Trainingszustand der Gaussians (z.\,B. 7000
-Iterationen STS gegenüber 9000 Iterationen SuGaR-Coarse-Optimierung), nicht
+daher aus dem unterschiedlichen Trainingszustand der Gaussians (z.\,B. 7.000
+Iterationen STS gegenüber 9.000 Iterationen SuGaR-Coarse-Optimierung), nicht
 aus dem Dateiformat.
 
 \subsubsection*{Berechnung der Metriken}

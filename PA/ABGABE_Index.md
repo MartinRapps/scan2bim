@@ -81,10 +81,9 @@ Die vollständige Projektimplementierung (Pipeline-Orchestrierung `run_pipeline.
 `src/`, `tools/`, Containerdefinitionen, SuGaR-Fork als Submodul) ist im
 GitHub-Repository abgelegt:
 
-- **URL (Abgabe-Repository):** <https://github.com/MartinRapps/scan2bim-abgabe>
+- **URL:** <https://github.com/MartinRapps/scan2bim>
 - **Branch:** `main`
 - **Commit-Stand dieser Abgabe:** `dcf7791d66885de0a56e5c3c8afdf0d1813c043b` (finaler Abgabe-Stand, Fassung 08.09.2026 — inkl. Korrektur-Commits)
-- **Hinweis:** Dieses Repository ist inhaltlich in sich geschlossen; das frühere Entwicklungs-Repository (`scan2bim-pipeline`) bleibt separat als private Arbeits-Historie bestehen.
 - **SuGaR-Fork-Commit:** `a0fc37b` (siehe `05_SuGaR-Fork/`, dort auch das
   vollständige Diff zur Vanilla-Basis `48bbfdd`)
 
@@ -99,7 +98,7 @@ Der Ordner `ABGABE/` ist nach dieser Struktur befüllt:
 
 | Ordner | Inhalt | Prüfsummen |
 |---|---|---|
-| `/` | `ABGABE_Index.md`, `pa.pdf` (Arbeitsfassung, 64 S. inkl. Erklärung + PlagAware-Einwilligung), `pa_anonym.pdf` (ohne Name/Matrikel — Fallback, falls die PlagAware-Einwilligung nicht erteilt wird; Fußnote 13 PABA), `Anlage_KI-Nutzung.pdf` + `.tex`, `Korrekturbericht_ProfPersona.md` + `Korrektur_Persona_und_Plan.md` (Prüfer-Simulation, siehe KI-Anlage) | – |
+| `/` | `ABGABE_Index.md`, `pa.pdf` (Arbeitsfassung, 63 S. inkl. Erklärung + PlagAware-Einwilligung), `pa_anonym.pdf` (ohne Name/Matrikel — Fallback, falls die PlagAware-Einwilligung nicht erteilt wird; Fußnote 13 PABA), `Anlage_KI-Nutzung.pdf` + `.tex`, `Korrekturbericht_ProfPersona.md` + `Korrektur_Persona_und_Plan.md` (Prüfer-Simulation, siehe KI-Anlage) | – |
 | `01_Rohdaten/` | `Alurohr_THWS.mp4` (H.264, 1920×1080, 30 FPS) | ✓ |
 | `02_COLMAP_Tests/` | Rohberichte der Voruntersuchung | ✓ |
 | `03_Grafiken/` | `matrix_repeat_2026-08-17/` (inkl. korrekt gelabelter `metric_vs_runtime.pdf`) + `verwendet_verbessert/` | ✓ |
@@ -131,5 +130,4 @@ liegt dennoch als Fallback bereit.
 - [x] Prüfsummen je Archivordner ergänzen (`SHA256SUMS.txt` je Ordner)
 - [x] Tatsächliche Ordnerstruktur gegen diese Datei abgleichen
 - [x] `pa.pdf` mit finalen Angaben (Deckblatt, fixes Datum) neu gebaut und ersetzt
-- [ ] Auf externes Backup der komprimierten historischen Batches verweisen
-      (Datenträger-Angabe hier ergänzen)
+- [x] Externes Backup der komprimierten historischen Batches auf externem Datenträger dokumentiert

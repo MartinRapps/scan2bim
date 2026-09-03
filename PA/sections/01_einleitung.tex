@@ -30,12 +30,12 @@ maskengetriebenen Objekt- und Meshgewinnung sowie der automatisierten
 Durchführung und wissenschaftlichen Interpretation der Tests. STS und SuGaR
 sind dabei genutzte, nicht selbst entworfene Verfahren; der eigene Anteil in
 der Segmentierung liegt in der angepassten Maskenlogik: die Erosionshierarchie
-(default unverändert, middle und small erodiert) sowie die promptbasierte
+(default unverändert, middle und small erodiert; verbindliche Festlegung in Abschnitt 6.1) sowie die promptbasierte
 Auswahl sorgen dafür, dass automatisch genau ein
-segmentiertes Zielobjekt entsteht. Das offizielle STS-Verfahren geht davon
-verschieden, indem es sämtliche Szenenobjekte automatisch in drei
+segmentiertes Zielobjekt entsteht. Das offizielle STS-Verfahren unterscheidet
+sich davon, indem es sämtliche Szenenobjekte automatisch in drei
 Granularitätsstufen erfasst und erst nach der Rekonstruktion eine offene
-Textabfrage ermöglicht; der Objektprompt legt das Ziel hier dagegen bereits
+Textabfrage ermöglicht. Der Objektprompt legt das Ziel hier dagegen bereits
 vor dem Training fest, sodass Mehrfachsegmentierung und Nachabfrage
 entfallen. Die Funktionsweise ist in
 Abschnitt~\ref{sec:grundlagen} beschrieben.
@@ -79,10 +79,10 @@ $\pm10\,\mathrm{cm}$, eine vollständige Bewertung aller Kameramodelle, eine
 allgemeine Einführung in Computer Vision oder eine Produktionsentscheidung
 allein aus PSNR, SSIM und LPIPS. Die vorhandene Web-UI bleibt ebenfalls
 außerhalb des Untersuchungsumfangs und ist der späteren Bachelorarbeit
-vorbehalten; betrachtet werden CLI, Autopilot, Replay
+vorbehalten. Betrachtet werden hingegen CLI, Autopilot, Replay
 und Matrixrunner. Der Aufbau folgt dem Erarbeitungsstand: Kapitel 2 legt die
 Datengrundlage, Kapitel 3 die technischen Grundlagen und Kapitel 4 das
-Konzept; Kapitel 5 beschreibt die Implementierung und Kapitel 6 den
+Konzept fest. Kapitel 5 beschreibt die Implementierung und Kapitel 6 den
 Versuchsaufbau. Kapitel 7 berichtet die Ergebnisse, Kapitel 8 diskutiert sie
 im Licht der Grenzen und Kapitel 9 zieht das Fazit mit dem Ausblick auf die
 Bachelorarbeit.

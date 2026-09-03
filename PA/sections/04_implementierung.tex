@@ -7,7 +7,7 @@ Die fünf Container kapseln inkompatible CUDA- und Python-Abhängigkeiten. SAM
 läuft in einem modernen CUDA-12.6-Container, COLMAP in einem eigenen SfM-
 Container, STS in CUDA~12.1, SuGaR in CUDA~11.8 und DGtal/GDAL CPU-seitig.
 Bind-Mounts\footnote{Bind-Mounts sind Verzeichniseinbindungen, bei denen ein
-Host-Ordner direkt an eine Stelle im Container gemountet wird; Dateien werden
+Host-Ordner direkt an eine Stelle im Container gemountet wird. Dateien werden
 dabei nicht in die Container-Ebene kopiert, sondern beide Seiten greifen auf
 dieselben Dateisystemobjekte zu. Dadurch bleiben Artefakte nach Beendigung
 des Containers auf dem Host erhalten.} schreiben alle relevanten Artefakte in
@@ -35,7 +35,7 @@ E & DGtal/GDAL & kompatibles OBJ & lokale Centerline, B-Spline, CSV/GeoJSON\\
 Die Master-Skripte übernehmen die numerische Host-UID und -GID, das ist die
 Benutzer- und Gruppenkennung des ausführenden Nutzers auf dem Host. Dadurch
 gehören neu erzeugte Dateien auf dem Host dem eigenen Benutzer und nicht dem
-Container-Root; bind-gemountete Dateien bleiben so auch auf Hochschul- und
+Container-Root. Bind-gemountete Dateien bleiben so auch auf Hochschul- und
 Domänensystemen lesbar und bearbeitbar.
 Run-Tags und Ausgabeordner werden vor unbeabsichtigtem Überschreiben geschützt.
 Manifeste, Parameter und Logs bleiben außerhalb kurzlebiger Container erhalten.
@@ -49,7 +49,7 @@ Die Erweiterungen sind funktionale Codeänderungen, nicht nur andere
 Startparameter.
 
 Der Grund dafür liegt in einem grundlegenden Zielkonflikt der
-Standardimplementierung: In frühen Entwicklungstests mit unmodifiziertem
+Standardimplementierung. In frühen Entwicklungstests mit unmodifiziertem
 Vanilla-SuGaR führte der unveränderte Full-Image-RGB-Loss dazu, dass das
 System eine bereits auf das Rohr reduzierte Punktwolke weiterhin gegen den
 gesamten Boden- und Wandhintergrund optimierte. Wie in
@@ -58,66 +58,36 @@ Widerspruch zwischen 3D-Geometrie (nur Rohr) und 2D-Supervision (gesamtes
 Foto) zu massiven Floatern und seitlich in den Raum ragenden Dreiecksflügeln.
 
 Um 3D-Eingabe und 2D-Bildsupervision auf dieselbe Objektdefinition zu
-vereinheitlichen, wurde der SuGaR-Quellcode um einen maskierten
-Optimierungsverlust ($\mathcal{L}_{\mathrm{RGB}}^{M}$,
-Gleichung~\ref{eq:masked-rgb-loss}) erweitert. Für die standardisierte
-Versuchsmatrix war dieser maskenbewusste Fork von Beginn an als feste
-Vergleichsbasis integriert. Die in früheren Matrixläufen beobachteten Ausfälle
-dieser Route waren folglich keine Schwäche des maskierten Trainings, sondern
-ein rein technischer Fehler im nachgelagerten Renderpfad (Import- und
-Tensorlayoutfehler beim Erzeugen der Testansichten), der vor der finalen
-12er-Folgematrix behoben wurde.
+vereinheitlichen, wurde der SuGaR-Quellcode in einem lokalen Fork angepasst.
+Die wesentlichen funktionalen Änderungen gegenüber Vanilla-SuGaR umfassen:
 
-\begin{table}[H]
-\centering
-\small
-\begin{tabularx}{\textwidth}{p{2.4cm}p{4.1cm}X}
-\toprule
-Forkstand & Geänderte Bereiche & Funktionale Änderung\\
-\midrule
-\texttt{48bbfdd} & \path{sugar_utils/mask_utils.py},
-\path{sugar_trainers/}, \path{sugar_extractors/}, \path{train.py} &
-Einführung eines \texttt{SemanticMaskProvider}; maskierter RGB-/L1-/DSSIM-
-Loss in den Coarse-Trainern und im Refinement; maskierte
-Depth-Normal-Consistency; konfigurierbare Maskenstufen und Dilatationen;
-maskenkonsistentes UV-Baking; zusätzliche Mesh- und Trainingsargumente.\\
-\texttt{8f4f7a2} & \path{sugar_extractors/coarse_mesh.py}, \path{train.py} &
-Schutz vor zu kleinen Punktwolken und ungültigen Normalen bei der
-Poisson-Rekonstruktion; Korrektur der Coarse-Zählerprüfung für geladene STS-
-Checkpoints oberhalb von 6999.\\
-\texttt{e254000} & \path{extract_mesh.py},
-\path{sugar_extractors/coarse_mesh.py} &
-Diagnoseoption für Tiefen aus dem Gaussian-Rasterizer gegenüber der
-projizierten Diamond-Mesh-Tiefe.\\
-\texttt{ecda7ef} & \path{extract_mesh.py},
-\path{sugar_extractors/coarse_mesh.py}, \path{sugar_scene/sugar_model.py} &
-Konfigurierbare Surface-Sampling-Parameter und explizite Behandlung der
-Background-Mesh-Komponente.\\
-\texttt{eca4ea1} & \path{gaussian_splatting/scene/dataset_readers.py},
-\path{sugar_scene/cameras.py}, \path{sugar_scene/gs_model.py} &
-Normalisierte feste Eval-Splits und Schutz gegen nicht gematchte Kameras.\\
-\texttt{a0fc37b} (final) & \path{gaussian_splatting/scene/dataset_readers.py},
-\path{sugar_scene/gs_model.py} &
-Explizite Prüfung der Kameranamen des festen Eval-Splits; damit ist die
-Split-Kardinalität abgesichert.\\
-\bottomrule
-\end{tabularx}
-\caption{Funktionale Änderungen des maskenbewussten SuGaR-Forks.}
-\label{tab:sugar-fork-aenderungen}
-\end{table}
+\begin{itemize}
+  \item \textbf{Maskenbewusste Bildsupervision:} Einführung eines
+        \texttt{SemanticMaskProvider} für maskierten RGB- und DSSIM-Loss
+        ($\mathcal{L}_{\mathrm{RGB}}^{M}$, Gleichung~\ref{eq:masked-rgb-loss})
+        in Coarse-Training und Refinement sowie maskierte
+        Depth-Normal-Consistency;
+  \item \textbf{Geometrieabsicherung:} Schutz vor zu kleinen Punktwolken und
+        ungültigen Normalen bei der Poisson-Rekonstruktion sowie Korrektur
+        der Coarse-Zählerprüfung für STS-Startzähler;
+  \item \textbf{Extraktion und Evaluation:} Konfigurierbare Surface-Sampling-Parameter,
+        Diagnoseoption für Tiefenkarten aus dem Gaussian-Rasterizer und
+        Kardinalitätsprüfung für normalisierte feste Evaluations-Splits.
+\end{itemize}
 
-Parent-Gitlink, Fork-Checkout und Docker-Parameter \texttt{SUGAR\_REF}
-verweisen konsistent auf den Fork-Commit \texttt{a0fc37b} auf dem Zweig
-\texttt{project/masked-sugar}; genau dieser Stand wurde in allen archivierten
-Matrix- und Folgeläufen verwendet. Die vollständige Fork-Historie ab
-\texttt{48bbfdd} sowie der zugehörige Diff liegen als Datei
-\path{sugar_fork_diff_48bbfdd_a0fc37b.diff} im digitalen Anlagenband.
+Der finale Stand ist als Git-Submodul unter Commit \texttt{a0fc37b} (Zweig
+\texttt{project/masked-sugar}) eingebunden und wurde in allen archivierten
+Matrix- und Folgeläufen verwendet. Das vollständige Diff ab der Vanilla-Basis
+\texttt{48bbfdd} liegt als Datei \path{sugar_fork_diff_48bbfdd_a0fc37b.diff} im
+digitalen Anlagenband (Ordner \texttt{05\_SuGaR-Fork/}). Eine chronologische
+Zuordnung von Fehlerfällen und Korrekturschritten bietet Tabelle~\ref{tab:fehlerchronik}
+im Anhang~D.
 
 Für die Projektarbeit ist diese Forkentwicklung wissenschaftlich relevant,
-weil dadurch zwei Wirkorte derselben SAM-Semantik getrennt geprüft werden:
+weil dadurch zwei Wirkorte derselben SAM-Semantik getrennt geprüft werden.
 STS selektiert die Objekt-Gaussians, die Coarse-Route verwendet die Maske für
 ihre Bildsupervision und UV nutzt sie nur für die spätere Farbakkumulation.
-Eine UV-Maske kann daher das Coarse-Mesh nicht verändern; eine RGB-Maske kann
+Eine UV-Maske kann daher das Coarse-Mesh nicht verändern. Eine RGB-Maske kann
 hingegen die trainierte Gaussian-Geometrie beeinflussen.
 
 \subsection{Mehrfache Bild- und Maskenablagen}
@@ -171,15 +141,15 @@ Bilddomäne. Sie ließe sich später speichereffizienter organisieren, etwa durc
 einen Cache oder eine kontrollierte gemeinsame Workspace-Struktur, in der die
 idealen Bilder ohne zweite physische Kopie bereitgestellt werden. Eine solche
 Optimierung ist für die Funktion des aktuellen
-Workflows nicht elementar: Würde sie die idealen Bilder oder den stabilen
+Workflows nicht elementar. Würde sie die idealen Bilder oder den stabilen
 STS-Pfadvertrag entfernen, wären Kameras, Masken und Pixelkoordinaten nicht
 mehr konsistent.
 
 Speicher- und I/O-Optimierungen sind dennoch möglich. Die Promptversuche in
 \path{_attempts} können nach erfolgreicher Auswahl archiviert und aus dem
-Arbeitsbereich entfernt werden; in allen Läufen dieser Arbeit war der erste
+Arbeitsbereich entfernt werden. In allen Läufen dieser Arbeit war der erste
 Prompt bereits erfolgreich, sodass die Fallback-Kette nie greifen musste. Sie
-bleibt dennoch bewusst erhalten: Sie fängt leere Masken oder Speicherfehler
+bleibt dennoch bewusst erhalten. Sie fängt leere Masken oder Speicherfehler
 automatisch ab und dokumentiert in den Versuchsordnern nachvollziehbar, was
 probiert wurde. Die STS-Kompatibilitätskopien können langfristig
 regenerierbar statt dauerhaft gespeichert werden. Der Symlink unter
@@ -200,8 +170,8 @@ Die Konzentration auf ein zentrales CLI-Skript ist eine bewusste
 Scopeentscheidung. Zunächst soll eine robuste, automatisierbare Anwendung
 existieren; eine zusätzliche Bedienoberfläche würde eigene Zustands-, Upload-
 und Prozessfragen eröffnen. Der Autopilot verwendet unter anderem 5 FPS,
-$1280\times720$ Pixel, CRF 18, \texttt{OPENCV}, 4096 SIFT-Merkmale,
-Overlap 15, deaktiviertes Guided Matching, 7000 STS-Iterationen und Route A.
+$1280\times720$ Pixel, CRF 18, \texttt{OPENCV}, 4.096 SIFT-Merkmale,
+Overlap 15, deaktiviertes Guided Matching, 7.000 STS-Iterationen und Route A.
 Das Kameramodell \texttt{OPENCV} wurde auf Grundlage der Matrixauswertung in
 Abschnitt~\ref{sec:produktionskonfiguration} von der historischen
 \texttt{SIMPLE\_RADIAL}-Baseline zum Standard erhoben. Die Parameter werden
@@ -212,10 +182,10 @@ Der interaktive Vollauf fragt nach der Autopilot-Entscheidung zusätzlich nach
 einem Lauf-Preset, das die Auflösung des Arbeitsvideos und damit die
 Frame-/STS-/SuGaR-Auflösung festlegt: 720p ($1280\times720$, Standard),
 qHD ($960\times540$) oder low ($640\times360$). Bei qHD und low werden die
-Zielauflösungsfragen im Video-Preprocessing fest vorbesetzt; bei 720p bleiben
+Zielauflösungsfragen im Video-Preprocessing fest vorbesetzt. Bei 720p bleiben
 alle Eingabefragen erhalten. Die Abfrage weist die gemessenen Gesamtlaufzeiten
 der Produktionskonfiguration (Route A, 5 FPS,
-\texttt{OPENCV}) aus: rund 40 Minuten für 720p, 34 Minuten für qHD und
+\texttt{OPENCV}) aus. Rund 40 Minuten für 720p, 34 Minuten für qHD und
 24 Minuten für low. Die Werte stammen aus dem archivierten
 Verifikationsbatch \path{matrix_e2e_verifikation_260826}, dessen drei Läufe
 die vollständige Kette inklusive SAM~3.1, COLMAP, Maskenwarp, Rendering und
@@ -224,7 +194,7 @@ Archivierung durchlaufen (Kopfphase 5--8 Minuten, STS--Postprocess
 unabhängiger früherer Batch (\path{matrix_qualitaetsvergleich_20260818})
 bestätigt die Werte mit 40:16, 34:35 und 24:02 Minuten. Die
 Preset-Abfrage bleibt bewusst in beiden Modi
-aktiv: Der Autopilot fragt nach seiner Aktivierung ausschließlich Lauf-Preset
+aktiv. Der Autopilot fragt nach seiner Aktivierung ausschließlich Lauf-Preset
 und Objekt-Prompt ab und übernimmt alle übrigen Entscheidungen als
 Standardeingaben. Die gewählte Auflösung wird im Run-Report protokolliert.
 
@@ -241,17 +211,17 @@ Qualitätsrelevante Implementierungsentscheidungen sind:
   \item Matrixrunner, Inline-Vollauf und Replays mit frischem COLMAP-Lauf
         (Start ab \texttt{gcp}, \texttt{sam3} oder \texttt{colmap}) warpen die
         Rohmasken nach COLMAP in dieselbe ideale Bilddomäne wie die
-        STS-Bilder. Die Ablagen bleiben dabei getrennt: Die idealen Bilder
+        STS-Bilder. Die Ablagen bleiben dabei getrennt. Die idealen Bilder
         liegen unter \path{data/04_sfm/undistorted/images/}, die Rohmasken
         unter \path{data/03_masks/} und die gewarpten Masken unter
-        \path{data/03_masks_ideal/}; Letztere werden an STS sowie SuGaR
+        \path{data/03_masks_ideal/}. Letztere werden an STS sowie SuGaR
         übergeben. Der Matrixrunner erzeugt zusätzlich einen festen Eval-Split
         aus den nichtleeren idealen Masken. Replays ab \texttt{sts},
         \texttt{sugar} oder \texttt{postprocess} erzeugen keine neue
         COLMAP-Szene und verwenden daher bereits bereitgestellte ideale
         Masken.
   \item Die SuGaR-Kameranamen werden als normalisierte Dateinamen ohne
-        Endung (sogenannte Stems) verglichen; leere
+        Endung (sogenannte Stems) verglichen. Leere
         Kamera- oder Eval-Listen werden mit klaren Fehlern abgelehnt.
   \item Die Bildauswertung ist ausschließlich objektmaskiert. Full-frame-Werte
         würden bei einem object-only Splat überwiegend den nicht rekonstruierten
@@ -266,7 +236,7 @@ stammen. „Gültig" bedeutet hier: Die Punktwolke besitzt ausreichend viele
 Stützpunkte, und die zugehörigen Normalen sind endliche, von null
 verschiedene Vektoren, die sich normalisieren lassen. Trifft eine der
 Prüfungen nicht zu, bricht der Lauf an dieser Stelle mit einem expliziten
-Fehler ab, statt ein defektes Folgeprodukt still weiterzureichen; der Lauf
+Fehler ab, statt ein defektes Folgeprodukt still weiterzureichen. Der Lauf
 wird im Archiv als fehlgeschlagen geführt. Der Matrixrunner archiviert jeden
 Lauf, bevor der Live-Arbeitsbereich für die nächste Konfiguration bereinigt
 wird.
@@ -321,7 +291,7 @@ maskenbasierte Verlust nötig wurde. Teilbild 3 entstand aus einem fälschlich
 Floater hinterließ. Teilbild 4 stammt von der zuerst erprobten
 SuGaR-Coarse-Variante mit Zielzähler 15.000 und bewusst deaktivierter
 DN-Consistency (laut Entwicklungsnotizen; nicht durch Laufmanifeste belegt);
-da der DN-Term des Forks erst oberhalb des Zählerstands 9000
+da der DN-Term des Forks erst oberhalb des Zählerstands 9.000
 aktiviert wird, blieb die Regularisierung so über die vollen 15.000
 Iterationen rein dichtebasiert. Die lang gezogenen Strukturen entstanden dort
 jedoch durch die falsche Übergabe und die fehlende Maskenbasiertheit
@@ -330,7 +300,9 @@ nicht durch das Fehlen der DN-Consistency. Die Teilbilder 5 und 6
 zeigen einen Vergleich perfekt segmentierter Splats, Teilbild 7 die
 zugehörige Punktwolke. Insgesamt belegen beide Panels, dass ein
 funktionierendes STS-Rendering nicht selbstverständlich ist und welche
-Fehlerbilder die heutigen Quality-Gates ausschließen.
+Fehlerbilder die heutigen Quality-Gates ausschließen. Die detaillierte
+Chronologie dieser und weiterer Fehlversuche ist in
+Tabelle~\ref{tab:fehlerchronik} im Anhang~D aufgeführt.
 \subsection{Splat-Rendering und Generierung der Bildmetriken}
 
 Die Bildmetriken entstehen nicht im Nachgang aus dem extrahierten Dreiecksnetz,
@@ -340,7 +312,7 @@ erzeugt. Die Pipeline unterscheidet dabei drei getrennte Metrik-Dateien:
 
 \begin{enumerate}
   \item \textbf{\path{metrics/sts_masked.json} (Original-STS / Route A):}\\
-        Nach Abschluss des STS-Curriculums (7000 Iterationen) wird der Standard-3DGS-
+        Nach Abschluss des STS-Curriculums (7.000 Iterationen) wird der Standard-3DGS-
         Checkpoint \path{point_cloud/iteration_7000/point_cloud.ply} geladen. Das
         Skript \path{render_standard_splat} rendert die Ansichten des festen
         Eval-Splits -- also Kameras, deren Bilder nicht im Training enthalten
@@ -400,7 +372,7 @@ Postprocessdateien befinden sich im digitalen Anlagenteil.
 
 Die Entwicklung enthielt mehrere negative Ergebnisse. Für den Haupttext sind
 nicht die jeweiligen Stacktraces, sondern die daraus abgeleiteten
-Schnittstellenregeln relevant. Tabelle~\ref{tab:robustheit-kern} fasst die
+Schnittstellenregeln relevant. Die untenstehende Tabelle~\ref{tab:robustheit-kern} fasst die
 wichtigsten Beispiele zusammen; die ausführlichere Chronologie befindet sich
 in Tabelle~\ref{tab:fehlerchronik} im Anhang.
 
