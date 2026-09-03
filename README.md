@@ -8,12 +8,12 @@ eines linearen Objekts" (THWS, Studienbereich Geo). Enthält genau das, was zum
 
 ```bash
 cd PA
-bash build_pa.sh          # -> PA/build/pa.pdf (Fertigstellungspfad im Skript)
+bash build_pa.sh          # -> PA/build/pa.pdf
 # bzw. Windows: powershell -File build_pa.ps1
 ```
 
-Fertige Fassungen liegen zusätzlich als `PA/pa.pdf` (64 S., mit PlagAware-
-Einwilligung) und `PA/pa_anonym.pdf` (63 S., ohne Name/Matrikel) bei.
+Die abgegebene Fassung liegt unter `ABGABE/pa.pdf` (64 S., mit PlagAware-
+Einwilligung) und `ABGABE/pa_anonym.pdf` (63 S., ohne Name/Matrikel).
 
 ## Pipeline ausführen (Überblick)
 
@@ -24,8 +24,8 @@ docker compose build                 # Container bauen
 ./tools/run_experiment_matrix.sh     # Matrix-/Batchläufe
 ```
 
-Details: `setup_guide.md`, `README` der Pipeline-Funktionen in
-`run_pipeline.sh`, Auswertung via `tools/analyze_e2e_times.py`.
+Details: `setup_guide.md`, Parameterdokumentation in `run_pipeline.sh`
+(EXPLAIN-Texte), Auswertung via `tools/analyze_e2e_times.py`.
 
 ## Daten
 
