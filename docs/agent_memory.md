@@ -244,3 +244,51 @@ Step 5: Postprocess (postprocess.sh → Centerline + B-Spline + GeoJSON)
 - **SuGaR-Recovery:** `EXPORT_ONLY=1 REPLACE=1 ./run_pipeline.sh --from sugar` kopiert einen bereits vorhandenen OBJ/MTL/Texture-Export nach `data/06_mesh/` und startet danach Container E ohne erneutes SuGaR-Training. Eine Refined-PLY ist fuer die Centerline nicht erforderlich.
 - **STS-Curriculum-Logging:** `stage2_iters=5000` liegt innerhalb von `iterations=7000`: Iterationen 1--5000 rendern Small/Middle-Objektmasken, Iterationen 5001--7000 rendern alle Objekte. Container C verwendet `PYTHONUNBUFFERED=1`, damit die Stage-2-/Stage-3-Marker im Run-Log zeitlich korrekt sichtbar sind.
 - **COLMAP-Image:** Fuer die Projektarbeit bleibt `colmap/colmap:latest` bewusst bestehen. Der dokumentierte Tag `4.0.4-cuda` ist im offiziellen Repository nicht vorhanden; ein beobachteter `latest`-Digest vom 04.08.2026 war `sha256:b809882552887b6471094dcadd2f2eb01656b010663564c43a5e7f04c0a08f2f`.
+
+## Finaler Abgabestand & Korrekturen (Stand: 03.09.2026)
+
+### 1. Repository-Architektur (Zwei Repositories)
+- **`scan2bim-pipeline` (Arbeits-/Entwicklungs-Repo, Branch `pa-fertigstellung`):**
+  - Beinhaltet die komplette Entwicklungs- und Revisionshistorie, alle internen Arbeitsnotizen (`Korrekturplan_Kommentare.md`, `Arbeitsdatei_Fertigstellung.md`), unkomprimierte Artefakte und Zwischenstände.
+  - Bleibt als privates Entwicklungsarchiv bestehen.
+- **`scan2bim-abgabe` (Abgabe-Repo, Branch `main`, Remote `https://github.com/MartinRapps/scan2bim.git`, privat):**
+  - Aufgeräumtes, schlankes Abgabe-Repository für die Prüfer ohne internen Entwicklungsballast und ohne >100-MB-Dateien (vollständig GitHub-konform).
+  - Quell-Commit der Abgabe: `2eb124fee9113441e96aeacfd9c48a5e2f0ad2b0` (im `ABGABE_Index.md` stabil referenziert).
+  - Enthält die kompilierbare PA (`PA/`), Pipeline-Code (`src/`, `tools/`, `docker/`), den lokalen SuGaR-Fork (`third_party/SuGaR/` Quellstand `a0fc37b`), Grafiken und das `ABGABE/`-Prüferpaket.
+  - Die 31 GB Rechendaten (`data/`) und Schwerlast-Dateien aus `ABGABE/04_Run-Archive/` (z. B. 1,1-GB-Checkpoints) werden per Cloud-Download bzw. USB-Datenträger ausgeliefert (PABA 3.7).
+
+### 2. Stand der Projektarbeit (`pa.pdf` und `pa_anonym.pdf`)
+- **Seitenzahl & Kompilierung:** 63 Seiten, fehlerfrei kompilierbar via `bash build_pa.sh` und `bash build_pa_anonym.sh`.
+- **Titelblatt:** Vollständig ausgefüllt ohne eckige Klammern (Martin Rapps, Matrikel 6323014, B. Eng. Geovisualisierung, Erstprüfer Dr. Markus Müller, Zweitprüfer Andreas Rupp, Abgabetermin 08.09.2026).
+- **Eigenständigkeitserklärung (S. II):** Exakter Wortlaut der offiziellen PABA-Anlage 3 inklusive der vollständigen KI-Klausel und dem Satz: *„Ich versichere, dass ich ausschließlich KI-Werkzeuge verwendet habe, deren Nutzung vom Prüfer oder der Prüferin als Hilfsmittel zugelassen wurden.“*
+- **PlagAware-Einwilligung (S. III):** 1:1 Nachbau der offiziellen PABA-Anlage 4 mit den Daten des Verfassers vorausgefüllt (Name, Vorname, Matrikel, Studiengang, Titel). Der einschränkende Hinweis *„Diese Einwilligung ist freiwillig...“* wurde wunschgemäß entfernt. Handschriftlich nachzutragen: Adresse, studentische E-Mail, Ort/Datum, Unterschrift.
+- **Anonymisierte Fassung (`pa_anonym.pdf`):** Deckblatt ohne Name und Matrikelnummer; PlagAware-Seite ausgeblendet (entsprechend PABA Fußnote 13: PlagAware-Einwilligung macht Anonymisierung überflüssig, dennoch als Fallback generiert). Textstand ist 100 % identisch zur Hauptfassung.
+- **Kurzfassung:** Auf eine einzige Überschrift bereinigt (*„Kurzfassung“*, die doppelte `abstract`-Überschrift *„Zusammenfassung“* wurde entfernt). Beinhaltet konkrete Kernergebnisse (240/240 Bilder registriert, 29,62 dB PSNR, 9 erfolgreiche Autopilot-Volläufe).
+- **Anhang G (KI-Nutzung):** Formuliert als *„in sechs Bereiche gegliederte Dokumentation“*. Der veraltete Baustein *„Offen vor Abgabe: Die vollständige Eigenständigkeitserklärung…“* wurde ersatzlos entfernt.
+
+### 3. Fachliche & Stilistische Korrekturen
+- **GSD (Ground Sampling Distance / Bodenauflösung):** In Kapitel 8.3 sauber als *„Bodenauflösung (Ground Sampling Distance, GSD: reale Objektgröße eines Bildpixels)“* eingeführt. Die Argumentation bleibt relativ (720p feiner als low), da ohne geodätische Maßstabsreferenz keine absoluten Millimeterangaben zulässig sind.
+- **„zweifach“-Satz (Kapitel 8.3):** Präzisiert zu: *„Daraus folgen zwei Konsequenzen: Erstens dürfen Auflösungen nicht in einer globalen Rangliste verglichen werden. Zweitens sind nur gepaarte Vergleiche von STS gegen SuGaR innerhalb derselben Auflösung belastbar.“*
+- **SuGaR-Historie (Kapitel 5.2):** Die unübersichtliche 6-Zeilen-Tabelle mit Git-Commits (`48bbfdd` bis `a0fc37b`) wurde gestrafft und durch eine prägnante funktionale Aufzählung der Kernänderungen des finalen Forks ersetzt. Die Panels (Abb. 2, 3 in 5.7 und Abb. 8 in 7.8) bleiben im Text erhalten; ihre Kacheln sind verständlich erklärt und auf Anhang D verwiesen.
+- **Zeichensetzung & Grammatik:** Über 150 Semikola satzweise aufgelöst, faule Konnektor-Doppelpunkte durch Punkte ersetzt, Tausender-Punkte in Prosa durchgängig gesetzt (`4.096`, `7.000`, `9.000`, `2.011`, `1.650`, `1.199`, `8.192`).
+- **Begriffe:** *stdin* als *„Standardeingabe (stdin)“* definiert; *„führt … Entscheidungen durch“* und *„…und Kapitel 4 das Konzept fest.“* korrigiert.
+- **Widerspruchsbereinigung:**
+  - Dilatations-Widerspruch gelöst: Überall verbindlich als Erosionshierarchie (`default`, `middle`, `small`) ohne Dilatation definiert (1.2 und Tab. 3 korrigiert).
+  - Autopilot-Zählung korrigiert: Genau 9 erfolgreiche archivierte Volläufe (die restlichen 5 Ordner dokumentieren transparente Fehlversuche).
+  - Centerline-Werte auf den beiliegenden Golden Run abgeglichen: 85 Rohpunkte, 372 B-Spline-Punkte (`centerline_local_raw.csv` bzw. `centerline_local.csv`).
+  - Fehlverweis *„Anhang 9“* korrigiert zu *„Tabelle 9 im Anhang A“*.
+
+### 4. Laufzeitmessung & E2E-Zeiten
+- **Zeitzonen-Befund:** Container loggen intern UTC, Runner-Echos in Lokalzeit (+0200, CEST). Ohne Normierung entstanden Scheinpausen von exakt 2 Stunden. `tools/analyze_e2e_times.py` normiert alle Zeitstempel auf UTC-Epochen.
+- **Gemessene Gesamtlaufzeiten (Verifikationsbatch `matrix_e2e_verifikation_260826`):**
+  - 720p: 40:25 min (Kopf 7:49, STS→Post 32:23, Nachlauf ≤0:52)
+  - qHD: 33:52 min (Kopf 7:17, STS→Post 26:24, Nachlauf ≤0:44)
+  - low: 23:46 min (Kopf 5:27, STS→Post 18:11)
+  - Unabhängig bestätigt durch Gegenprobe-Batch `matrix_qualitaetsvergleich_20260818` (40:16 / 34:35 / 24:02 min).
+- **Preset-Dialog:** In `run_pipeline.sh` und PA-Kapitel 4.5/5.4/6.7 auf diese gemessenen Werte aktualisiert.
+- **Grafik `metric_vs_runtime`:** x-Achse und Untertitel ehrlich auf *„Archivierte Laufzeit STS→Postprocess (min)“* korrigiert, Caption verweist auf die E2E-Tabelle 7.6.
+
+### 5. KI-Anlage & Dokumentation
+- **`Anlage_KI-Nutzung.pdf` / `.tex` / `.md`:** 6 Seiten, 6 Bereiche inklusive des kleinschrittigen Prüfer-Persona-Workflows (Erstellung von `persona.md`, Ordnerstruktur-Review, Root-Dateien, kapitelweise Prüfung, Konsolidierung).
+- Modellliste: `GPT-5.6 Luna (max)`, `Gemini 3.5 Flash (max)`, `Gemini 3.7 Flash (max)`, `Kimi K3 (max)`, `GLM 5.3 Flash (max)`, `GPT-5.6 Sol (max)`.
+- Vollständiger Prüfbericht als `Korrekturbericht_ProfPersona.md` im Paket beiliegend.
