@@ -6,10 +6,10 @@ cd "$PA_DIR"
 mkdir -p build
 
 latexmk -pdf \
-  -jobname=pa \
+  -jobname=pa_anonym \
   -interaction=nonstopmode \
   -halt-on-error \
   -outdir=build \
-  main.tex
+  main_anonym.tex
 
-printf 'PDF erzeugt: %s\n' "$PA_DIR/build/pa.pdf"
+printf 'PDF erzeugt: %s\n' "$PA_DIR/build/pa_anonym.pdf"
