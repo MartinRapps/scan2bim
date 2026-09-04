@@ -291,4 +291,4 @@ Step 5: Postprocess (postprocess.sh → Centerline + B-Spline + GeoJSON)
 ### 5. KI-Anlage & Dokumentation
 - **`Anlage_KI-Nutzung.pdf` / `.tex` / `.md`:** 6 Seiten, 6 Bereiche inklusive des kleinschrittigen Prüfer-Persona-Workflows (Erstellung von `persona.md`, Ordnerstruktur-Review, Root-Dateien, kapitelweise Prüfung, Konsolidierung).
 - Modellliste: `GPT-5.6 Luna (max)`, `Gemini 3.5 Flash (max)`, `Gemini 3.7 Flash (max)`, `Kimi K3 (max)`, `GLM 5.3 Flash (max)`, `GPT-5.6 Sol (max)`.
-- Vollständiger Prüfbericht als `Korrekturbericht_ProfPersona.md` im Paket beiliegend.
+- Vollständige Prüfer-Simulation als methodischer Qualitätssicherungsschritt vor der Einreichung durchgeführt und in der KI-Anlage dokumentiert.
