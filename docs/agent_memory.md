@@ -253,13 +253,13 @@ Step 5: Postprocess (postprocess.sh → Centerline + B-Spline + GeoJSON)
   - Bleibt als privates Entwicklungsarchiv bestehen.
 - **`scan2bim-abgabe` (Abgabe-Repo, Branch `main`, Remote `https://github.com/MartinRapps/scan2bim.git`, privat):**
   - Aufgeräumtes, schlankes Abgabe-Repository für die Prüfer ohne internen Entwicklungsballast und ohne >100-MB-Dateien (vollständig GitHub-konform).
-  - Quell-Commit der Abgabe: `21904c81b9898086acb52d39b18697ad78d93593` (im `ABGABE_Index.md` stabil referenziert).
+  - Quell-Commit der Abgabe: `e85f650d3dff06dec216cc499e09b921a499b961` (im `ABGABE_Index.md` stabil referenziert).
   - Enthält die kompilierbare PA (`PA/`), Pipeline-Code (`src/`, `tools/`, `docker/`), den lokalen SuGaR-Fork (`third_party/SuGaR/` Quellstand `a0fc37b`), Grafiken und das `ABGABE/`-Prüferpaket.
   - Die 31 GB Rechendaten (`data/`) und Schwerlast-Dateien aus `ABGABE/04_Run-Archive/` (z. B. 1,1-GB-Checkpoints) werden per Cloud-Download bzw. USB-Datenträger ausgeliefert (PABA 3.7).
 
 ### 2. Stand der Projektarbeit (`pa.pdf` und `pa_anonym.pdf`)
 - **Seitenzahl & Kompilierung:** 65 Seiten (64 S. anonym), fehlerfrei kompilierbar via `bash build_pa.sh` und `bash build_pa_anonym.sh`.
-- **Titelblatt:** Vollständig ausgefüllt ohne eckige Klammern (Martin Rapps, Matrikel 6323014, B. Eng. Geovisualisierung, Erstprüfer Dr. Markus Müller, Zweitprüfer Andreas Rupp, Abgabetermin 08.09.2026).
+- **Titelblatt:** Vollständig ausgefüllt ohne eckige Klammern (Martin Rapps, Matrikel 6323014, B. Eng. Geovisualisierung, Erstprüfer Dr. Markus Müller, Zweitprüfer Andreas Rupp, Abgabetermin 04.09.2026).
 - **Eigenständigkeitserklärung (S. II):** Exakter Wortlaut der offiziellen PABA-Anlage 3 inklusive der vollständigen KI-Klausel und dem Satz: *„Ich versichere, dass ich ausschließlich KI-Werkzeuge verwendet habe, deren Nutzung vom Prüfer oder der Prüferin als Hilfsmittel zugelassen wurden.“*
 - **PlagAware-Einwilligung (S. III):** 1:1 Nachbau der offiziellen PABA-Anlage 4 mit den Daten des Verfassers vorausgefüllt (Name, Vorname, Matrikel, Studiengang, Titel). Der einschränkende Hinweis *„Diese Einwilligung ist freiwillig...“* wurde wunschgemäß entfernt. Handschriftlich nachzutragen: Adresse, studentische E-Mail, Ort/Datum, Unterschrift.
 - **Anonymisierte Fassung (`pa_anonym.pdf`):** Deckblatt ohne Name und Matrikelnummer; PlagAware-Seite ausgeblendet (entsprechend PABA Fußnote 13: PlagAware-Einwilligung macht Anonymisierung überflüssig, dennoch als Fallback generiert). Textstand ist 100 % identisch zur Hauptfassung.

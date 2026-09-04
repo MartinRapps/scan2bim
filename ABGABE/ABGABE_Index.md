@@ -89,7 +89,7 @@ GitHub-Repository abgelegt:
 
 - **URL:** <https://github.com/MartinRapps/scan2bim>
 - **Branch:** `main`
-- **Commit-Stand dieser Abgabe:** `21904c81b9898086acb52d39b18697ad78d93593` (finaler Abgabe-Stand, Fassung 08.09.2026 — inkl. Korrektur-Commits)
+- **Commit-Stand dieser Abgabe:** `e85f650d3dff06dec216cc499e09b921a499b961` (finaler Abgabe-Stand, Fassung 04.09.2026 — inkl. Korrektur-Commits)
 - **SuGaR-Fork-Commit:** `a0fc37b` (siehe `05_SuGaR-Fork/`, dort auch das
   vollständige Diff zur Vanilla-Basis `48bbfdd`)
 
