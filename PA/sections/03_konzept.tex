@@ -127,8 +127,8 @@ Diese vollständige Domänenkette ist im automatisierten Matrixpfad, im
 restaurierten Smoke-/Replaypfad und im normalen Inline-Vollauf nachgewiesen.
 Nach COLMAP rufen Inline-Vollauf und Matrixrunner denselben Maskenwarp mit
 identischer Abbildungsvorschrift auf, prüfen die Abdeckung der gewarpten
-Masken und übergibt \mbox{\path{data/03_masks_ideal}} an STS und SuGaR. Im
-Replay-Dispatcher gilt dasselbe für alle Läufe, die COLMAP selbst ausführen
+Masken und übergeben das Verzeichnis \path{data/03_masks_ideal} an STS und
+SuGaR. Im Replay-Dispatcher gilt dasselbe für alle Läufe, die COLMAP selbst ausführen
 (Start ab \texttt{gcp}, \texttt{sam3} oder \texttt{colmap}). Nur Replays ab
 \texttt{sts}, \texttt{sugar} oder \texttt{postprocess} setzen einen von
 vornherein passenden idealen Maskensatz voraus, weil dort keine frische
