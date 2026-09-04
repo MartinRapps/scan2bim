@@ -104,7 +104,7 @@ Der Ordner `ABGABE/` ist nach dieser Struktur befüllt:
 
 | Ordner | Inhalt | Prüfsummen |
 |---|---|---|
-| `/` | `ABGABE_Index.md`, `pa.pdf` (Arbeitsfassung, 65 S. inkl. Erklärung + PlagAware-Einwilligung), `pa_anonym.pdf` (ohne Name/Matrikel — Fallback, falls die PlagAware-Einwilligung nicht erteilt wird; Fußnote 13 PABA), `Anlage_KI-Nutzung.pdf` + `.tex`, `Korrekturbericht_ProfPersona.md` + `Korrektur_Persona_und_Plan.md` (Prüfer-Simulation, siehe KI-Anlage) | – |
+| `/` | `ABGABE_Index.md`, `pa.pdf` (Arbeitsfassung, 65 S. inkl. Erklärung + PlagAware-Einwilligung), `pa_anonym.pdf` (ohne Name/Matrikel — Fallback, falls die PlagAware-Einwilligung nicht erteilt wird; Fußnote 13 PABA), `Anlage_KI-Nutzung.pdf` (Dokumentation der KI-Nutzung) | – |
 | `01_Rohdaten/` | `Alurohr_THWS.mp4` (H.264, 1920×1080, 30 FPS, 186 MB) — **nur via Cloud/USB** (GitHub-Limit 100 MB/Datei) | Cloud |
 | `02_COLMAP_Tests/` | Rohberichte der Voruntersuchung | ✓ |
 | `03_Grafiken/` | `matrix_repeat_2026-08-17/` (inkl. korrekt gelabelter `metric_vs_runtime.pdf`) + `verwendet_verbessert/` | ✓ |
