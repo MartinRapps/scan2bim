@@ -253,7 +253,7 @@ Step 5: Postprocess (postprocess.sh → Centerline + B-Spline + GeoJSON)
   - Bleibt als privates Entwicklungsarchiv bestehen.
 - **`scan2bim-abgabe` (Abgabe-Repo, Branch `main`, Remote `https://github.com/MartinRapps/scan2bim.git`, privat):**
   - Aufgeräumtes, schlankes Abgabe-Repository für die Prüfer ohne internen Entwicklungsballast und ohne >100-MB-Dateien (vollständig GitHub-konform).
-  - Quell-Commit der Abgabe: `d6373666dff4d37cd327a6067ef86556711d27bc` (im `ABGABE_Index.md` stabil referenziert).
+  - Quell-Commit der Abgabe: `01619967a5c0a7e9fc69d7706e87da00044b95a8` (im `ABGABE_Index.md` stabil referenziert).
   - Enthält die kompilierbare PA (`PA/`), Pipeline-Code (`src/`, `tools/`, `docker/`), den lokalen SuGaR-Fork (`third_party/SuGaR/` Quellstand `a0fc37b`), Grafiken und das `ABGABE/`-Prüferpaket.
   - Die 31 GB Rechendaten (`data/`) und Schwerlast-Dateien aus `ABGABE/04_Run-Archive/` (z. B. 1,1-GB-Checkpoints) werden per Cloud-Download bzw. USB-Datenträger ausgeliefert (PABA 3.7).
 
